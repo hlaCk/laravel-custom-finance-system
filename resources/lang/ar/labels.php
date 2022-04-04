@@ -1,0 +1,48 @@
+<?php
+
+return [
+    'yes'                               => 'نعم',
+    'no'                                => 'لا',
+    'save'                              => 'حفظ',
+    'select_rounds'                     => 'حدد الجولات',
+    'place'                             => 'مكان',
+    'prize'                             => 'جائزة',
+    'horse'                             => 'خيل',
+    'jockey'                            => 'خيال',
+    'trainer'                           => 'مدرب',
+    'finished_at'                       => 'انتهى في',
+    'points'                            => 'نقاط',
+    'gate'                              => 'بوابة',
+    'number'                            => 'رقم',
+    'official_rating'                   => 'التقييم الرسمي',
+    'outfit'                            => 'ملابس',
+    'weight'                            => 'وزن',
+    'round_result_success_message'      => 'تم الإنشاء بنجاح.',
+    'horse_imported'                    => 'تم الاستيراد بنجاح',
+    'round_results_imported'            => 'تم الاستيراد بنجاح',
+    'round_results_not_imported'        => 'Some Results imported Successfully',
+    'round_results_not_imported_at_all' => 'تم استيراد :success نتيجة بنجاح، :fail نتائجة فشلت',
+    'rounds_horses_imported'            => 'تم الاستيراد بنجاح',
+    'login_page'                        => [
+        'panels' => [
+            'right' => config('app.name') . " v" . config('app.version'),
+        ],
+        'title' => [
+            '',
+            '',
+            '',
+        ],
+    ],
+    'system'                            => [
+        'name'          => 'Intar',
+        'type'          => 'ERP',
+        'copyright'     => 'mPhpMaster@gmail.com',
+        'copyright_url' => "mailto:mPhpMaster@gmail.com",
+        'welcome_to'    => 'v' . config('app.version'),
+    ],
+    'remember_me'                       => 'تذكرني',
+    'forgot_your_password'              => 'نسيت كلمة المرور الخاصة بك ؟ ',
+    'dont_have_an_account'              => 'لا تملك حساب؟',
+    'login'                             => 'تسجيل الدخول',
+    'sign_up_now'                       => 'سجل الآن',
+];

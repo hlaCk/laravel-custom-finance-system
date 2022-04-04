@@ -1,0 +1,48 @@
+<?php
+
+return [
+    'yes'                               => 'Yes',
+    'no'                                => 'No',
+    'save'                              => 'Save',
+    'select_rounds'                     => 'Select Race',
+    'place'                             => 'Place',
+    'prize'                             => 'Prize',
+    'horse'                             => 'Horse',
+    'jockey'                            => 'Jockey',
+    'trainer'                           => 'Trainer',
+    'finished_at'                       => 'Finished at',
+    'points'                            => 'Points',
+    'gate'                              => 'Gate',
+    'number'                            => 'Number',
+    'official_rating'                   => 'Official Rating',
+    'outfit'                            => 'Outfit',
+    'weight'                            => 'Weight',
+    'round_result_success_message'      => 'Round Result created successfully.',
+    'horse_imported'                    => 'Horse imported Successfully',
+    'round_results_imported'            => 'Results imported Successfully',
+    'round_results_not_imported'        => 'Some Results imported Successfully',
+    'round_results_not_imported_at_all' => ':success Result/s Imported Successfully, :fail Result/s Failed',
+    'rounds_horses_imported'            => 'Status Updated Successfully',
+    'login_page'                        => [
+        'panels' => [
+            'right' => config('app.name') . " v" . config('app.version'),
+        ],
+        'title'  => [
+            '',
+            '',
+            '',
+        ],
+    ],
+    'system'                            => [
+        'name'          => 'Intar',
+        'type'          => 'ERP',
+        'copyright'     => 'mPhpMaster@gmail.com',
+        'copyright_url' => "mailto:mPhpMaster@gmail.com",
+        'welcome_to'    => 'v' . config('app.version'),
+    ],
+    'remember_me'                       => 'Remember Me',
+    'forgot_your_password'              => 'Forgot Your Password?',
+    'dont_have_an_account'              => 'Don`t have an account?',
+    'login'                             => 'Login',
+    'sign_up_now'                       => 'Sign Up Now',
+];

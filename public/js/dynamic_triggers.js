@@ -1,0 +1,1 @@
+config.$on&&(Array.from(config.$on)||[]).forEach((function(attrs){const[eventName,eventCallbackContext]=Array.from(attrs)||[null,null];let eventCallback=()=>{};try{eventCallbackContext&&(eventCallback=eval(eventCallbackContext)),eventName&&eventCallback&&"function"==typeof eventCallback&&Nova.$on(eventName,eventCallback)}catch(e){console.error(e)}}));

@@ -1,0 +1,29 @@
+{
+    "private": true,
+    "scripts": {
+        "dev": "npm run development",
+        "development": "mix",
+        "watch": "mix watch",
+        "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "hot": "mix watch --hot",
+        "prod": "npm run production",
+        "production": "mix --production",
+        "build-nova-quick-search": "cd nova-components/NovaQuickSearch && npm run dev",
+        "build-nova-quick-search-prod": "cd nova-components/NovaQuickSearch && npm run prod",
+        "build-year-to-date": "cd nova-components/YearToDate && npm run dev",
+        "build-year-to-date-prod": "cd nova-components/YearToDate && npm run prod"
+    },
+    "devDependencies": {
+        "axios": "^0.21",
+        "laravel-mix": "^6.0.6",
+        "lodash": "^4.17.19",
+        "postcss": "^8.1.14",
+        "resolve-url-loader": "^4.0.0",
+        "sass": "^1.43.4",
+        "sass-loader": "^12.3.0"
+    },
+    "dependencies": {
+        "@fortawesome/fontawesome-free": "^5.15.4",
+        "font-awesome": "^4.7.0"
+    }
+}

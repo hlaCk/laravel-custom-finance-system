@@ -1,0 +1,1 @@
+Nova.translate=Nova.translate||function(t){return Nova.config.translations[t]||t},Nova.confirmEvent=Nova.confirmEvent||function(t){return swal({title:Nova.translate("Hold Up!"),text:Nova.translate("Are you sure you want to run this action?"),icon:"warning",buttons:[Nova.translate("No"),Nova.translate("Yes")],dangerMode:!0})};

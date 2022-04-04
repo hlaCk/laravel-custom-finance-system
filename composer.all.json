@@ -1,0 +1,167 @@
+{
+    "name": "laravel/laravel",
+    "type": "project",
+    "description": "The Laravel Framework.",
+    "keywords": ["framework", "laravel"],
+    "license": "MIT",
+    "require": {
+        "php": "^7.4|^8.0",
+        "alvinhu/nova-child-select": "^1.0",
+        "anaseqal/nova-import": "*",
+        "anaseqal/nova-sidebar-icons": "^0.0.3",
+        "bernhardh/nova-translation-editor": "^1.3",
+        "bissolli/nova-phone-field": "^0.0.4",
+        "cloudcake/nova-fixed-bars": "^1.1",
+        "codi/inline-select": "*",
+        "ek0519/quilljs": "*",
+        "crayon/nova-language-management": "^1.0",
+        "dillingham/nova-button": "^1.0",
+        "ebess/advanced-nova-media-library": "*",
+        "eolica/nova-locale-switcher": "*",
+        "epartment/nova-dependency-container": "^1.3",
+        "fruitcake/laravel-cors": "^2.0",
+        "gobrightspot/nova-detached-actions": "*",
+        "guzzlehttp/guzzle": "^7.0.1",
+        "khalin/nova-link-field": "^1.2",
+        "laraning/nova-time-field": "^1.2",
+        "laravel/framework": "^8.54",
+        "laravel/helpers": "^1.4",
+        "laravel/nova": "*",
+        "laravel/sanctum": "^2.11",
+        "laravel/tinker": "^2.5",
+        "mcamara/laravel-localization": "^1.6",
+        "michielfb/laravel-nova-time-field": "^1.2",
+        "mphpmaster/laravel-helpers": "*",
+        "nova/nova-theme": "*",
+        "optimistdigital/nova-menu-builder": "*",
+        "optimistdigital/nova-translatable": "^1.10",
+        "orlyapps/nova-belongsto-depend": "*",
+        "pishran/nova-rtl-theme": "^1.5",
+        "spatie/laravel-permission": "^5.1",
+        "spatie/laravel-translatable": "^4.6",
+        "spatie/laravel-translation-loader": "^2.7",
+        "techouse/select-auto-complete": "^1.3",
+        "vink/nova-cache-card": "^1.0"
+    },
+    "require-dev": {
+        "barryvdh/laravel-ide-helper": "^2.10",
+        "facade/ignition": "^2.5",
+        "fakerphp/faker": "^1.9.1",
+        "laravel/sail": "^1.0.1",
+        "mockery/mockery": "^1.4.4",
+        "nunomaduro/collision": "^5.10",
+        "phpunit/phpunit": "^9.5.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        },
+        "files": [
+            "app/Helpers/Functions/FHelpers.php",
+            "app/Helpers/Functions/FCurrent.php",
+            "app/Helpers/Functions/FTools.php",
+            "app/Helpers/Functions/FNova.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan optimize:clear --ansi",
+            "@php artisan package:discover --ansi",
+            "composer helpers"
+        ],
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi",
+            "@php artisan nova:publish",
+            "composer helpers"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi"
+        ],
+        "helpers": [
+            "@php artisan ide-helper:generate",
+            "@php artisan ide-helper:meta",
+            "@php artisan ide-helper:models -N -p --dir=app --dir=app/Models --dir=app/Nova --dir=app/Nova/Packages/*"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "repositories": {
+        "nova": {
+            "type": "path",
+            "url": "./nova"
+        },
+        "0": {
+            "type": "path",
+            "url": "./nova-components/NovaTheme"
+        },
+        "1": {
+            "type": "path",
+            "url": "./Packages/nova-belongsto-depend"
+        },
+        "2": {
+            "type": "path",
+            "url": "./Packages/nova-menu-builder"
+        },
+        "3": {
+            "type": "path",
+            "url": "./Packages/nova-breadcrumbs"
+        },
+        "4": {
+            "type": "path",
+            "url": "./Packages/advanced-nova-media-library"
+        },
+        "5": {
+            "type": "path",
+            "url": "./Packages/quilljs"
+        },
+        "6": {
+            "type": "path",
+            "url": "./Packages/searchable-select"
+        },
+        "7": {
+            "type": "path",
+            "url": "./Packages/nova-detached-actions"
+        },
+        "8": {
+            "type": "path",
+            "url": "./Packages/nova-import"
+        },
+        "9": {
+            "type": "path",
+            "url": "./Packages/laravel-helpers"
+        },
+        "10": {
+            "type": "path",
+            "url": "./nova-components/InlineSelect"
+        },
+        "11": {
+            "type": "path",
+            "url": "./Packages/nova-locale-switcher"
+        },
+        "12": {
+            "type": "path",
+            "url": "./Packages/nova-translatable"
+        }
+    }
+}

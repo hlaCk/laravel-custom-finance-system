@@ -1,0 +1,50 @@
+<?php
+
+
+return [
+
+    /**
+     * The locales which the `translatable` wrapper will use by default.
+     *
+     * Can be a:
+     *  - Keyed array (['en' => 'English])
+     *  - Callable that returns a keyed array
+     */
+    'locales'                 => config('nova.locales', []),//['en' => 'English','ar' => 'العربية'],
+
+
+    /**
+     * If enabled, the Nova's current locale will always be displayed as
+     * the first locale in the tabs arrangement.
+     *
+     * If disabled, the locales array order is respected.
+     */
+    'prioritize_nova_locale'  => true,
+
+
+    /**
+     * Defines the display type for the translatable tabs.
+     *
+     * Available options are: 'row', 'column'
+     */
+    'display_type'            => 'row',
+
+    /**
+     * Defines the display type for the translatable select.
+     *
+     * Available options are: 'left-absolute', 'left-static', 'right-absolute', 'right-static
+     */
+    'locale_select'           => [
+        'display_type' => 'right-absolute',
+    ],
+
+    /**
+     * If set to a locale key, the translatable fields will automatically fill other
+     * locales of the field's value when saving the field from the defined "default"
+     * locale.
+     *
+     * Set to locale key (`en`, `ru`, etc) or null to enable/disable or true to use current language.
+     */
+    'fill_other_locales_from' => true,
+
+];

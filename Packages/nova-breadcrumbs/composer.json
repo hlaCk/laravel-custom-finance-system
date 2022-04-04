@@ -1,0 +1,36 @@
+{
+    "name": "chris-ware/nova-breadcrumbs",
+    "description": "A Laravel Nova tool.",
+    "keywords": [
+        "laravel",
+        "nova"
+    ],
+    "license": "MIT",
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://nova.laravel.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0",
+        "laravel/nova": ">=3"
+    },
+    "autoload": {
+        "psr-4": {
+            "ChrisWare\\NovaBreadcrumbs\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "ChrisWare\\NovaBreadcrumbs\\ToolServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

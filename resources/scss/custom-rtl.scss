@@ -1,0 +1,146 @@
+// scss
+body {
+    #nova {
+        .side_navigation_menu_container {
+            .side_nav_icon{
+                width: 20px;
+                margin-right: auto;
+                margin-left: 10px;
+            }
+            .menu-logo-conntainer {
+                align-items: center;
+                justify-content: center;
+                background-color: var(--primary-dark-color);
+                .menu-logo {
+                    img {
+                        height: 55px;
+                    }
+                }
+            }
+            .sidemenu {
+                .sidebar-dropdown {
+                    [data-toggle=dropdown] {
+                        color: #000000;
+                        &:before {
+                            right: auto;
+                            left: 10px;
+                            content: "\2304";
+                            font-size: 1.3em;
+                            top: 7px;
+                            transform: rotate(90deg);
+                            transition: transform .1s;
+                        }
+                    }
+                    >input[type=checkbox] {
+                        &:checked+a[data-toggle=dropdown] {
+                            &:before {
+                                transform: rotate(0deg);
+                                top: 5px;
+                            }
+                        }
+                    }
+
+                    a {
+                        padding: 10px 12px !important;
+                    }
+
+                    .dropdown-menu {
+
+                        .nav_inner_li img, .inner-nav-icon {
+                            width: 10px;
+                        }
+                    }
+                    .nav_inner_li {
+                        a {
+                            padding: 10px 30px;
+                            color: #747474;
+                            img, img.inner-nav-icon {
+                                width: 14px;
+                            }
+                            &.router-link-active {
+                                background-color: #3c4b4f;
+                                color: white;
+                                box-shadow: 0 0 5px rgba(60, 75, 79, 0.6);
+                                span {
+                                    color: white;
+                                    padding: 0px 3px;
+                                }
+                                img, img.inner-nav-icon {
+                                    filter: brightness(0) invert(1);
+                                }
+                            }
+
+                            &.router-link-active:hover {
+                                opacity: 1;
+                            }
+                        }
+
+                        a:hover:not(.router-link-active) {
+                            background-color: #3c4b4fc7;
+                            opacity: 0.5;
+                            color: white;
+                            span {
+                                color: white;
+                                padding: 0px 3px;
+                            }
+                            img, img.inner-nav-icon {
+                                filter: brightness(0) invert(1);
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
+    .pin-r {
+        left: 0;
+        right: auto;
+    }
+
+    .pin-l {
+        right: 0;
+        left: auto;
+    }
+
+}
+#menu-builder-header{
+    left: 0 !important;
+    right: auto;
+}
+@media screen and (max-width: 992px) {
+    .h-header {
+        .pl-search {
+            width: 100%;
+        }
+    }
+    .bg-logo {
+        display: block !important;
+        height: 16.6%;
+        padding-top: 67px !important;
+        .menu-logo {
+            text-align: center;
+            img {
+                height: 45px !important;
+            }
+        }
+    }
+    .hamburger-menu{
+       margin-left: 1rem !important;
+       margin-right: 0px !important;
+    }
+
+    div[dusk$='index-component']{
+        .btn[dusk='create-button']::before{
+            margin-left : 20px;
+            margin-right: 0px !important;
+        }
+        .btn[dusk='attach-button']::before{
+            margin-left : 20px;
+            margin-right: 0px !important;
+        }
+    }
+
+
+}

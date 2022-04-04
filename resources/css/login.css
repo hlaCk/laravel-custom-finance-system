@@ -1,0 +1,261 @@
+img.logo {
+    width: 30%;
+    margin: auto;
+}
+
+body {
+    background: var(--40) !important;
+    font-family: Helvetica !important;
+}
+
+.container {
+    width: 72%;
+    height: 82%;
+    background-color: white;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 25px;
+    border-radius: 25px;
+    box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.4);
+}
+
+.right {
+    width: 50%;
+    height: 100.2%;
+    background-image: url("../images/login-bg.jpg");
+    background-repeat: no-repeat, repeat;
+    background-size: contain;
+    margin: 0;
+    position: absolute;
+
+    bottom: 50%;
+    left: 50%;
+    transform: translate(0%, 50%);
+    border-radius: 0px 25px 25px 0px;
+}
+
+.right::after {
+    z-index: -5;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary-dark-color);
+    border-radius: 0 25px 25px 0;
+    opacity: 0.7;
+}
+
+.right .logo {
+    text-align: center;
+    padding-top: 25%;
+}
+
+.right .logo img {
+    width: 35%;
+    margin: 0;
+    text-align: center;
+}
+
+.button {
+    padding: 10px;
+    margin-top: 4%;
+    width: 50%;
+    height: 70px;
+    border-radius: 150px;
+    background-color: #3c4b4f;
+    border: none;
+    color: white;
+    font: 30px Arial, sans-serif;
+    box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.5);
+    /*font: 21px Arial, sans-serif;*/
+}
+
+.signup_btn {
+    margin-top: 14% !important;
+}
+
+.button:hover {
+    opacity: 0.8;
+}
+
+a .button:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.left {
+    width: 50%;
+    height: 100%;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    transform: translate(0%, -50%);
+    border-radius: 25px 0px 0px 25px;
+    text-align: center;
+}
+
+.left .title {
+    margin-top: 100px !important;
+}
+
+.left .title h1 {
+    font-size: 40px;
+    color: #3c4b4f;
+    padding: 5px;
+    margin: 0;
+}
+
+.left .title span {
+    font-size: 14px;
+    color: #B8B8B8;
+}
+
+.input-icons {
+    margin-top: 20px;
+}
+
+.input-icons i {
+    position: absolute;
+}
+
+.input-icons {
+    width: 100%;
+    color: #B8B8B8;
+}
+
+.icon {
+    padding: 25px;
+    min-width: 40px;
+    font-size: 20px;
+    padding-left: 40px;
+
+}
+
+.input-field {
+    width: 75%;
+    padding: 27px 20px 25px 68px;
+    /*text-align: center;*/
+    border-radius: 120px;
+    border: solid 1px lightgray;
+    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.box1 {
+    font-size: 20px;
+}
+
+input[type=checkbox] {
+    display: none;
+}
+
+input[type=checkbox] + label:before {
+    font-family: FontAwesome;
+    display: inline-block;
+    margin-left: -240px;
+}
+
+input[type=checkbox] + label:before {
+    content: "\f096";
+}
+
+input[type=checkbox] + label:before {
+    letter-spacing: 10px;
+}
+
+input[type=checkbox]:checked + label:before {
+    content: "\f046";
+}
+
+input[type=checkbox]:checked + label:before {
+    letter-spacing: 8px;
+}
+
+@media only screen and (max-width: 1199px) {
+    .button {
+        width: 75%;
+        height: auto;
+        padding: 15px;
+        font: 21px Arial, sans-serif;
+    }
+
+    .title h1 {
+        font-size: 25px !Important;
+    }
+
+    .title span {
+        font-size: 15px !Important;
+    }
+
+    .icon {
+        padding: 20px;
+        padding-top: 15px;
+        font-size: 18px;
+    }
+
+    .input-field {
+        width: 84%;
+        padding: 14px 20px 14px 41px;
+    }
+
+    input[type=checkbox] + label:before {
+        margin-left: auto;
+    }
+
+    .container {
+        width: calc(100% - 40px);
+    }
+
+    body, body .h-full {
+        height: auto !important;
+    }
+
+    body {
+        padding-bottom: 20px;
+    }
+}
+
+@media only screen and (max-width: 575px) {
+    .container {
+        position: inherit;
+        height: auto;
+        transform: none;
+        top: 0;
+        margin: 30px 20px !important;
+        left: 0;
+    }
+
+    .right {
+        position: inherit;
+        height: auto;
+        width: 100%;
+        transform: matrix(1, 0, 0, 1, 0, 0);
+        left: 0;
+        top: 0;
+    }
+
+    .left {
+        position: inherit;
+        height: auto;
+        width: 100%;
+        transform: none;
+        left: 0;
+        top: 0;
+        margin-top: -60px;
+    }
+
+    .px-view.py-view.mx-auto {
+        padding: 0;
+    }
+
+    .button {
+        margin-bottom: 20px;
+    }
+
+}
