@@ -4,30 +4,50 @@
 
             @if (count($groups) > 1)
                 <li class="sidebar-dropdown mb-2 {{navigationItemIsHidden($group) ? ' hidden navigation_hidden_toggle' : ''}}">
-
                     <input
-                        type="checkbox" {{toCollect($resources)->search(getNovaResource()) !== false ? 'checked="checked"' : ''}}/>
+                        type="checkbox"
+                        {{ isActiveNavigationItem($resources) ? 'checked="checked"' : '' }}
+                    />
                     <a href="#" data-toggle="dropdown">
                         <span class="sidebar-label ml-4">{{ $group }}</span>
                     </a>
                     <ul class="dropdown-menu">
                         @foreach($resources as $resource)
                             <li class="nav_inner_li">
-                                <router-link :to="{
+                                @if(is_string($resource))
+                                    <router-link :to="{
                                         name: 'index',
                                         params: {
                                             resourceName: '{{ $resource::uriKey() }}'
                                         }
                                     }" class="flex items-center font-normal text-black text-base no-underline dim">
-                                    @if(property_exists($resource, 'icon'))
-                                        {!! $resource::$icon !!}
-                                    @elseif(method_exists($resource, 'icon'))
-                                        {!! $resource::icon() !!}
+                                        @if(property_exists($resource, 'icon'))
+                                            {!! $resource::$icon !!}
+                                        @elseif(method_exists($resource, 'icon'))
+                                            {!! $resource::icon() !!}
+                                        @else
+                                            <img src="{{ asset('images/circle_copy.svg') }}" alt="">
+                                        @endif
+                                        <span class="sidebar-label">{{ $resource::navigationLabel() }}</span>
+                                    </router-link>
+                                @else
+                                    @isset($resource['class'])
+                                        {!! app($resource['class'])->renderNavigation() !!}
+                                    @elseif(isset($resource['name']))
+                                        <router-link :to="{
+                                            name: '{{$resource['name']}}'
+                                        }" class="flex items-center font-normal text-black text-base no-underline dim">
+                                            @isset($resource['icon'])
+                                                {!! data_get($resource, 'icon') !!}
+                                            @else
+                                                <img src="{{ asset('images/circle_copy.svg') }}" alt="">
+                                            @endif
+                                            <span class="sidebar-label">{{ data_get($resource, 'navigationLabel', $resource['name']) }}</span>
+                                        </router-link>
                                     @else
-                                        <img src="{{ asset('images/circle_copy.svg') }}" alt="">
-                                    @endif
-                                    <span class="sidebar-label">{{ $resource::navigationLabel() }}</span>
-                                </router-link>
+
+                                    @endisset
+                                @endif
                             </li>
                         @endforeach
 

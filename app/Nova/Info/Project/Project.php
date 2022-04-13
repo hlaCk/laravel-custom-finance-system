@@ -59,12 +59,22 @@ class Project extends BaseResource
                  ->rules('required')
                  ->required(),
 
+            Field::Currency(__('models/info/project/project.fields.cost'), 'cost')
+                 ->default(0)
+                 ->rules('required')
+                 ->required(),
+
             BelongsTo::make(
                 __('models/info/project/project.fields.project_status'),
                 'project_status',
                 ProjectStatus::class
             )
-                ->default(fn()=>\App\Models\Info\Project\ProjectStatus::where('name',static::$model::DEFAULT_PROJECT_STATUS_NAME)->first()->id)
+                     ->default(
+                         fn() => \App\Models\Info\Project\ProjectStatus::where(
+                             'name',
+                             static::$model::DEFAULT_PROJECT_STATUS_NAME
+                         )->first()->id
+                     )
                      ->showCreateRelationButton(),
 
             StatusSelect::forResource($this),

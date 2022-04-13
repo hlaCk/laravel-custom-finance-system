@@ -13,11 +13,12 @@
         "cross-env": "^5.0.0",
         "deepmerge": "^4.2.2",
         "laravel-mix": "^1.0",
+        "laravel-nova": "^1.12.3",
         "sass": "^1.19.0",
         "sass-loader": "7.*"
     },
     "dependencies": {
         "vue": "^2.5.0",
-        "vuetify": "^2.6.4"
+        "vue2-datatable-component": "^2.3.1"
     }
 }

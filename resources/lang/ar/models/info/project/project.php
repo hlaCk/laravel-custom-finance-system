@@ -1,15 +1,16 @@
 <?php
 
 return [
-    'plural' => 'المشاريع',
+    'plural'   => 'المشاريع',
     'singular' => 'مشروع',
-    'fields' => [
-        'name' => 'الاسم',
+    'fields'   => [
+        'name'           => 'الاسم',
+        'cost'           => 'التكلفة',
         'project_status' => 'حالة المشروع',
-        'status' => 'الحالة',
-        'created_at' => 'تاريخ الانشاء',
-        'updated_at' => 'تاريخ التعديل',
-        'deleted_at' => 'تاريخ الحذف',
+        'status'         => 'الحالة',
+        'created_at'     => 'تاريخ الانشاء',
+        'updated_at'     => 'تاريخ التعديل',
+        'deleted_at'     => 'تاريخ الحذف',
     ],
     'statuses' => [
         1 => 'مفعل',

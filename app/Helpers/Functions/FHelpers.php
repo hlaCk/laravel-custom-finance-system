@@ -250,6 +250,28 @@ function navigationRenderCallback($navigation = null)
 {
     $_navigation = toCollect($navigation);
     $_navigation_sort = config('navigation.sort', []);
+    $_navigation_others = toCollect(config('navigation.others', []))
+        ->map(fn($v) => array_filter($v, fn($r) => data_get($r, 'active', false)))
+        ->filter(fn($resources, $group) => count($resources))
+        ->mapWithKeys(function ($resources, $group) {
+            return [
+                $group => $resources,
+            ];
+        });
+    // merge others with menu
+    $_navigation->mapWithKeys(function ($resources, $group) use(&$_navigation_others) {
+        /** @var \Laravel\Nova\ResourceCollection $resources */
+        if( $_navigation_others->has($group) ) {
+            foreach( $_navigation_others->get($group) as $item ) {
+                $resources->add($item);
+            }
+            $_navigation_others->forget($group);
+        }
+        return [ $group => $resources ];
+    });
+    // add missed groups in others to menu
+    $_navigation = $_navigation->merge($_navigation_others);
+
     $_navigation_sorted = [];
     foreach( $_navigation_sort as $group ) {
         $_navigation_sorted[] = $group;

@@ -67,14 +67,6 @@ Route::namespace('\App\Http\Controllers\Nova')
      ->prefix(config('nova.path'))
      ->group(function() {
          Route::get('/locale/{locale}', 'LocaleController@handle')->name('nova-locale');
-
-         Route::group([ 'prefix' => 'round-result', 'as' => 'round-result.' ], function() {
-             Route::post('prize', 'RoundResultController@getPrize')->name('get-prize');
-         });
-
-         Route::group([ 'prefix' => 'layout-page', 'as' => 'layout-page.' ], function() {
-             Route::post('image', 'LayoutPageController@getImage')->name('image');
-         });
      });
 
 Route::get('/', function () {

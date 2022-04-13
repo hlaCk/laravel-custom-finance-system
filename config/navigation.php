@@ -11,6 +11,7 @@ return [
         "Sheet",
         "Settings",
         "Administration",
+        "Reports",
     ],
 
     /**
@@ -31,7 +32,7 @@ return [
 
     // for quick search
     'others'            => [
-        'Administration'          => [
+        'Administration' => [
             $menu_builder = [
                 'active'          => false,
                 'group'           => $menu_group = 'Administration',
@@ -43,6 +44,15 @@ return [
                 'group'           => $translation_editor_group = 'Administration',
                 'navigationLabel' => 'Translation Editor',
                 'uriKey'          => config('app.nova.path') . '/nova-translation-editor',
+            ],
+        ],
+        'Reports'        => [
+            [
+                'active'          => true,
+                'group'           => 'Reports',
+                'navigationLabel' => 'Year To Date',
+                'uriKey'          => config('app.nova.path') . '/year-to-date',
+                'name'            => 'year-to-date',
             ],
         ],
     ],

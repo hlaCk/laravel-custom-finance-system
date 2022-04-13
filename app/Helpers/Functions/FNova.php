@@ -18,7 +18,7 @@ if( !function_exists('isRequestNovaCreate') ) {
     function isRequestNovaCreate(\Illuminate\Http\Request $request): bool
     {
         return $request instanceof \Laravel\Nova\Http\Requests\NovaRequest &&
-            $request->editMode === 'create';
+               $request->editMode === 'create';
     }
 }
 
@@ -26,7 +26,7 @@ if( !function_exists('isRequestNovaUpdate') ) {
     function isRequestNovaUpdate(\Illuminate\Http\Request $request): bool
     {
         return $request instanceof \Laravel\Nova\Http\Requests\NovaRequest &&
-            $request->editMode === 'update';
+               $request->editMode === 'update';
     }
 }
 
@@ -162,10 +162,10 @@ if( !function_exists('getNovaResourceInfoFromRequest') ) {
     function getNovaResourceInfoFromRequest(?\Illuminate\Http\Request $request = null, ?string $key = null)
     {
         $resourceInfo = [
-            'resource' => null,
+            'resource'     => null,
             'resourceName' => null,
-            'resourceId' => null,
-            'mode' => null,
+            'resourceId'   => null,
+            'mode'         => null,
         ];
 
         try {
@@ -173,13 +173,13 @@ if( !function_exists('getNovaResourceInfoFromRequest') ) {
 
             if( $request->segment(2) === 'resources' ) {
                 $resourceInfo = [
-                    'resource' => Nova::resourceForKey($resourceName = $request->segment(3)),
+                    'resource'     => Nova::resourceForKey($resourceName = $request->segment(3)),
                     'resourceName' => $resourceName,
-                    'resourceId' => $resourceId = $request->segment(4),
-                    'mode' => $request->segment(5) ?? ($resourceId ? 'view' : 'index'),
+                    'resourceId'   => $resourceId = $request->segment(4),
+                    'mode'         => $request->segment(5) ?? ($resourceId ? 'view' : 'index'),
                 ];
             }
-        } catch(Exception $exception) {
+        } catch( Exception $exception ) {
         }
 
         return is_null($key) ? $resourceInfo : data_get($resourceInfo, $key);
@@ -211,15 +211,18 @@ if( !function_exists('getNovaRequestParameters') ) {
                 if( is_array($results) && isset($results[ 'resource' ]) ) {
                     $results[ 'resource_class' ] = Nova::resourceForKey($results[ 'resource' ]);
                     $results[ 'resource_model' ] = Nova::modelInstanceForKey($results[ 'resource' ]);
-                    $results[ 'model' ] = fn() => isset($results[ 'resourceId' ]) && isset($results[ 'resource_model' ]) && class_exists($results[ 'resource_model' ]) ?
-                        $results[ 'resource_model' ]::find($results[ 'resourceId' ]) : null;
+                    $results[ 'model' ] =
+                        fn() => isset($results[ 'resourceId' ]) && isset($results[ 'resource_model' ]) && class_exists(
+                            $results[ 'resource_model' ]
+                        ) ?
+                            $results[ 'resource_model' ]::find($results[ 'resourceId' ]) : null;
                 }
             } else {
                 $key = (array) $key;
                 $results = blank($key) ? $results : array_only($results, $key);
             }
 
-        } catch(Exception $exception) {
+        } catch( Exception $exception ) {
         }
 
         return $results;
@@ -237,11 +240,41 @@ if( !function_exists('getNovaResource') ) {
 
         try {
             $resource = getNovaResourceInfoFromRequest(null, 'resource');
-        } catch(Exception $exception) {
+        } catch( Exception $exception ) {
             $resource = null;
         }
 
         return $resource;
+    }
+}
+
+if( !function_exists('isActiveNavigationItem') ) {
+    /**
+     * Check if the given resource is active now.
+     *
+     * @param array|\Illuminate\Contracts\Support\Arrayable|\Illuminate\Support\Collection $resources
+     *
+     * @return bool
+     */
+    function isActiveNavigationItem($resources): bool
+    {
+        $path = request()->path();
+        $resource = getNovaResource();
+
+        return toCollect($resources)
+                   ->search(function ($value) use ($path, $resource) {
+                       if( is_array($value) ) {
+                           return isset($value[ 'uriKey' ]) && (
+                                   $value[ 'uriKey' ] == $path || $value[ 'uriKey' ] == '/' . $path
+                               );
+                       } else {
+                           if( is_string($value) ) {
+                               return $value == $resource;
+                           }
+                       }
+
+                       return $resource && array_search($resource, (array) $value, false);
+                   }) !== false;
     }
 }
 
@@ -256,9 +289,9 @@ if( !function_exists('isCurrentResource') ) {
     function isCurrentResource(string $resource): bool
     {
         return ($currentResource = request('view')) &&
-            class_exists($resource) &&
-            method_exists($resource, 'uriKey') &&
-            $currentResource === 'resources/' . $resource::uriKey();
+               class_exists($resource) &&
+               method_exists($resource, 'uriKey') &&
+               $currentResource === 'resources/' . $resource::uriKey();
     }
 }
 
@@ -271,9 +304,11 @@ if( !function_exists('getNovaResources') ) {
      *
      * @return array
      */
-    function getNovaResources(string $app_dir = 'Nova', string $parent_class = \App\Nova\Abstracts\Resource::class): array
-    {
-        if(str_contains($app_dir, ',')) {
+    function getNovaResources(
+        string $app_dir = 'Nova',
+        string $parent_class = \App\Nova\Abstracts\Resource::class
+    ): array {
+        if( str_contains($app_dir, ',') ) {
             $resources = collect();
             foreach( explode(",", $app_dir) as $_app_dir ) {
                 $resources->add(glob(app_path($_app_dir) . DIRECTORY_SEPARATOR . '*.php'));
@@ -285,7 +320,7 @@ if( !function_exists('getNovaResources') ) {
         }
 
         return toCollect($resources)
-            ->map(function($resource) use ($parent_class) {
+            ->map(function ($resource) use ($parent_class) {
                 $resource_class = str_ireplace(
                     [ "/", ".php" ],
                     [ "\\", "" ],
@@ -338,7 +373,7 @@ if( !function_exists('getNovaResourcesDependencies') ) {
      */
     function getNovaResourcesDependencies(
         ?string $field = null,
-        ?array $options = null
+        ?array  $options = null
     ): array {
         $options = (array) ($options ?? getNovaResourcesAsOptions());
         $dependencies = [];
@@ -346,8 +381,15 @@ if( !function_exists('getNovaResourcesDependencies') ) {
         foreach( $options as $option => $label ) {
             $n = "text";
             $dependencies[] = \Epartment\NovaDependencyContainer\NovaDependencyContainer::make([
-                                                                                                   \Laravel\Nova\Fields\Text::make(($text = "{$option} Text ") . $n, $n),
-                                                                                               ])->dependsOn($field, $option);
+                                                                                                   \Laravel\Nova\Fields\Text::make(
+                                                                                                       ($text =
+                                                                                                           "{$option} Text ") . $n,
+                                                                                                       $n
+                                                                                                   ),
+                                                                                               ])->dependsOn(
+                $field,
+                $option
+            );
         }
 
         return $dependencies;

@@ -65,7 +65,7 @@ body {
                                     color: white;
                                     padding: 0px 3px;
                                 }
-                                img, img.inner-nav-icon {
+                                svg, img, img.inner-nav-icon {
                                     filter: brightness(0) invert(1);
                                 }
                             }
@@ -83,7 +83,7 @@ body {
                                 color: white;
                                 padding: 0px 3px;
                             }
-                            img, img.inner-nav-icon {
+                            svg, img, img.inner-nav-icon {
                                 filter: brightness(0) invert(1);
                             }
                         }

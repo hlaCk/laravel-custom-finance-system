@@ -24,6 +24,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.4",
+        "@yazan.alnughnugh/vue-datatable": "^1.0.5",
         "font-awesome": "^4.7.0"
     }
 }

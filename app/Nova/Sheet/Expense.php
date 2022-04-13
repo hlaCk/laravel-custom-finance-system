@@ -64,8 +64,8 @@ class Expense extends BaseResource
                  ->required(),
 
             Field::Currency(__('models/sheet/expense.fields.amount'), 'amount')
-                 ->rules('required')
                  ->default(0)
+                 ->rules('required')
                  ->required(),
 
             Field::Boolean(__('models/sheet/expense.fields.vat_included'), 'vat_included')
@@ -74,6 +74,7 @@ class Expense extends BaseResource
 
             BelongsTo::make(static::$model::trans('project'), 'project', Project::class)
                      ->showCreateRelationButton()
+                     ->searchable(true)
                      ->sortable(),
 
             BelongsTo::make(static::$model::trans('entry_category'), 'entry_category', EntryCategory::class)

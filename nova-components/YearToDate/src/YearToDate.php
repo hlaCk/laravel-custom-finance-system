@@ -25,6 +25,6 @@ class YearToDate extends Tool
      */
     public function renderNavigation()
     {
-        return view('year-to-date::navigation');
+        return ''; // view('year-to-date::navigation');
     }
 }

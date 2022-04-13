@@ -8,6 +8,7 @@ namespace App\Nova\Fields;
  * @method \Laravel\Nova\Fields\Select Select($name, $attribute = null, callable $resolveCallback = null)
  * @method \Laravel\Nova\Fields\Text Text($name, $attribute = null, callable $resolveCallback = null)
  * @method \Laravel\Nova\Fields\Textarea Textarea($name, $attribute = null, callable $resolveCallback = null)
+ * @method \Laravel\Nova\Fields\Currency Currency($name, $attribute = null, callable $resolveCallback = null)
  * @example Field::{CLASS NAME}(...arguments)
  */
 class Field

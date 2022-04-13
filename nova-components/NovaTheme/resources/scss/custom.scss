@@ -25,6 +25,7 @@ body {
                             color: #ffffff;
                         }
 
+                        svg,
                         img.side_nav_icon {
                             filter: brightness(0) invert(1);
                         }
@@ -95,6 +96,7 @@ body {
                                     color: white;
                                     padding: 0px 3px;
                                 }
+                                svg,
                                 img, img.inner-nav-icon {
                                     filter: brightness(0) invert(1);
                                 }
@@ -113,6 +115,7 @@ body {
                                 color: white;
                                 padding: 0px 3px;
                             }
+                            svg,
                             img, img.inner-nav-icon {
                                 filter: brightness(0) invert(1);
                             }

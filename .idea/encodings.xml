@@ -6,6 +6,10 @@
     <file url="file://$PROJECT_DIR$/Packages/laravel-helpers/Providers/MPhpMasterHelpersProvider.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Packages/laravel-helpers/composer.json" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Packages/laravel-helpers/mixins/GlobInvoke.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/DataGrid/Sheet/ExpensesGrid.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Http/Controllers/Api/Sheet/ExpenseController.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Http/Controllers/Api/Sheet/ExpenseController.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Http/Resources/Api/Abstracts/SelectOptionsResource.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Interfaces/Chart/IAccount.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Interfaces/Info/IClient.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Interfaces/Sheet/IExpense.php" charset="UTF-8" />
@@ -48,6 +52,12 @@
     <file url="file://$PROJECT_DIR$/database/seeders/ProjectStatusSeeder.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/nova-components/NovaTheme/resources/css/custom.css" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/nova-components/NovaTheme/resources/scss/custom.scss" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nova-components/YearToDate/resources/js/components/Form.vue" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nova-components/YearToDate/resources/js/components/InfoLabelField.vue" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nova-components/YearToDate/resources/js/components/SelectProjectField.vue" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nova-components/YearToDate/resources/js/components/ShowProjectInfo.vue" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nova-components/YearToDate/src/Http/Controllers/ProjectController.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nova-components/YearToDate/src/Http/Resources/ProjectResource.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/nova-components/YearToDate/webpack.config.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/js/dynamic_triggers.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/js/login_as_admin.js" charset="UTF-8" />

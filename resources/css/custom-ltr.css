@@ -363,10 +363,12 @@ body #nova .side_navigation_menu_container .sidemenu .sidebar-dropdown .nav_inne
     width: 14px
 }
 
+body #nova .side_navigation_menu_container .sidemenu .sidebar-dropdown .nav_inner_li a.router-link-active svg,
 body #nova .side_navigation_menu_container .sidemenu .sidebar-dropdown .nav_inner_li a.router-link-active img {
     filter: brightness(0) invert(1)
 }
 
+body #nova .side_navigation_menu_container .sidemenu .sidebar-dropdown .nav_inner_li a:hover:not(.router-link-active) svg,
 body #nova .side_navigation_menu_container .sidemenu .sidebar-dropdown .nav_inner_li a:hover:not(.router-link-active) img {
     filter: brightness(0) invert(1)
 }

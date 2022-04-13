@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +13,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/endpoint', function (Request $request) {
-//     //
-// });
+Route::get('projects', [ \Sheets\YearToDate\Http\Controllers\ProjectController::class, 'index' ])->name('YearToDate::get-projects');
+Route::get('projects/{project}', [ \Sheets\YearToDate\Http\Controllers\ProjectController::class, 'show' ])->name('YearToDate::show-project');

@@ -1,15 +1,16 @@
 <?php
 
 return [
-    'plural' => 'Projects',
+    'plural'   => 'Projects',
     'singular' => 'Project',
-    'fields' => [
-        'name' => 'Name',
+    'fields'   => [
+        'name'           => 'Name',
+        'cost'           => 'Cost',
         'project_status' => 'Project Status',
-        'status' => 'Status',
-        'created_at' => 'Created at',
-        'updated_at' => 'Updated at',
-        'deleted_at' => 'Deleted at',
+        'status'         => 'Status',
+        'created_at'     => 'Created at',
+        'updated_at'     => 'Updated at',
+        'deleted_at'     => 'Deleted at',
     ],
     'statuses' => [
         1 => 'Active',

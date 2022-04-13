@@ -23,7 +23,7 @@ trait Searchable
      *
      * @var int
      */
-    public $debounce = 500;
+    public $debounce = 100;
 
     /**
      * Specify if the relationship should be searchable.
