@@ -4,6 +4,7 @@ namespace App\Models\Info;
 
 use App\Interfaces\IBooleanStatus;
 use App\Models\Abstracts\Model;
+use App\Models\Sheet\Expense;
 use App\Traits\THasBooleanStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -56,6 +57,11 @@ class EntryCategory extends Model implements IBooleanStatus
     public static function getDefaultStatus(): int
     {
         return static::ACTIVE;
+    }
+
+    public function expenses()
+    {
+        return $this->hasMany(Expense::class);
     }
 
 }

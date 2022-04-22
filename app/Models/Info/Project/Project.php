@@ -4,8 +4,10 @@ namespace App\Models\Info\Project;
 
 use App\Interfaces\IBooleanStatus;
 use App\Models\Abstracts\Model;
+use App\Models\Sheet\Credit;
 use App\Models\Sheet\Expense;
 use App\Traits\THasBooleanStatus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Nova\Fields\Currency;
@@ -72,31 +74,9 @@ class Project extends Model implements IBooleanStatus
         return $this->belongsTo(ProjectStatus::class);
     }
 
-    /**
-     * @param int|int[]|null  $entry_category_id
-     * @param string|\Closure $groupBy
-     *
-     * @return \Illuminate\Support\HigherOrderCollectionProxy
-     */
-    public function expenses_ytd_by_month($entry_category_id = null, $groupBy = 'M/Y')
+    public function credits()
     {
-        $entry_category_id = $entry_category_id === '*' || $entry_category_id === [ '*' ] ? null : $entry_category_id;
-        return $this->expenses()
-                    ->when(
-                        !is_null($entry_category_id),
-                        fn($q) => $q->whereIn('entry_category_id', (array) $entry_category_id)
-                    )
-                    ->whereDate('date', '>=', now()->firstOfYear())
-                    ->with('entry_category')
-                    ->get([
-                              'amount',
-                              'date',
-                              'entry_category_id',
-                          ])
-                    ->groupBy(fn($model) => optional($model->entry_category)->name)
-            ->map
-            ->groupBy(fn($model) => $model->date->format(value($groupBy)))
-            ->map(fn($byDate) => $byDate->map->sum('amount'));
+        return $this->hasMany(Credit::class);
     }
 
     public function expenses()
@@ -105,19 +85,56 @@ class Project extends Model implements IBooleanStatus
     }
 
     /**
-     * @param int|int[]|null $entry_category_id
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param \DateTime|string|null                 $from_date
+     * @param array|int|string|null                 $entry_category_id
      *
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|Builder
      */
-    public function expenses_ytd($entry_category_id = null)
+    public function scopeExpensesByDate(Builder $builder, $from_date = null, $entry_category_id = null)
     {
-        $entry_category_id = $entry_category_id === '*' || $entry_category_id === [ '*' ] ? null : $entry_category_id;
         return $this->expenses()
                     ->when(
                         !is_null($entry_category_id),
                         fn($q) => $q->whereIn('entry_category_id', (array) $entry_category_id)
                     )
-                    ->whereDate('date', '>=', now()->firstOfYear())
+                    ->when(
+                        !is_null($from_date),
+                        fn($q) => $q->whereDate('date', '>=', $from_date)
+                    );
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param \DateTime|string|null                 $from_date
+     * @param array|int|string|null                 $credit_category_id
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|Builder
+     */
+    public function scopeCreditsByDate(Builder $builder, $from_date = null, $credit_category_id = null)
+    {
+        return $this->credits()
+                    ->when(
+                        !is_null($credit_category_id),
+                        fn($q) => $q->whereIn('credit_category_id', (array) $credit_category_id)
+                    )
+                    ->when(
+                        !is_null($from_date),
+                        fn($q) => $q->whereDate('date', '>=', $from_date)
+                    );
+    }
+
+    /**
+     * @param int|int[]|null        $entry_category_id
+     * @param \DateTime|string|null $from_date default: `now()->firstOfYear()`
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function expenses_ytd($entry_category_id = null, $from_date = null)
+    {
+        $from_date ??= now()->firstOfYear();
+        $entry_category_id = $entry_category_id === '*' || $entry_category_id === [ '*' ] ? null : $entry_category_id;
+        return $this->expensesByDate($from_date, $entry_category_id)
                     ->with('entry_category')
                     ->get([
                               'amount',
@@ -126,6 +143,101 @@ class Project extends Model implements IBooleanStatus
                           ])
                     ->groupBy(fn($model) => optional($model->entry_category)->name)
             ->map->sum('amount');
+    }
+
+    /**
+     * @param int|int[]|null        $entry_category_id
+     * @param \DateTime|string|null $from_date default: `now()->firstOfYear()`
+     * @param string|\Closure|null  $groupBy
+     *
+     * @return \Illuminate\Support\HigherOrderCollectionProxy
+     */
+    public function expenses_ytd_by_month($entry_category_id = null, $from_date = null, $groupBy = 'M/Y')
+    {
+        $from_date ??= now()->firstOfYear();
+        $group_by_entry_categories =
+            $entry_category_id === '*' || $entry_category_id === [ '*' ] || !is_null($entry_category_id);
+        $entry_category_id = $entry_category_id === '*' || $entry_category_id === [ '*' ] ? null : $entry_category_id;
+        return $this->expensesByDate($from_date, $entry_category_id)
+                    ->with('entry_category')
+                    ->get([
+                              'amount',
+                              'date',
+                              'entry_category_id',
+                          ])
+                    ->when(
+                        $group_by_entry_categories,
+                        fn($q) => $q->groupBy(fn($model) => $model->entry_category_name)
+                    )
+                    ->when(
+                        !is_null($groupBy),
+                        fn($q) => ($group_by_entry_categories ? $q->map : $q)->groupBy(
+                            fn($model) => $model->date->format(value($groupBy))
+                        )
+                    )
+                    ->when(
+                        $group_by_entry_categories && !is_null($groupBy),
+                        fn($q) => $q->map(fn($model) => $model->map->sum('amount')),
+                        fn($q) => $q->map->sum('amount')
+                    );
+    }
+
+    /**
+     * @param int|int[]|null        $credit_category_id
+     * @param \DateTime|string|null $from_date default: `now()->firstOfYear()`
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function credits_ytd($credit_category_id = null, $from_date = null)
+    {
+        $from_date ??= now()->firstOfYear();
+        $credit_category_id = $credit_category_id === '*' || $credit_category_id === [ '*' ] ? null : $credit_category_id;
+        return $this->creditsByDate($from_date, $credit_category_id)
+                    ->with('credit_category')
+                    ->get([
+                              'amount',
+                              'date',
+                              'credit_category_id',
+                          ])
+                    ->groupBy(fn($model) => optional($model->credit_category)->name)
+            ->map->sum('amount');
+    }
+
+    /**
+     * @param int|int[]|null        $credit_category_id
+     * @param \DateTime|string|null $from_date default: `now()->firstOfYear()`
+     * @param string|\Closure|null  $groupBy
+     *
+     * @return \Illuminate\Support\HigherOrderCollectionProxy
+     */
+    public function credits_ytd_by_month($credit_category_id = null, $from_date = null, $groupBy = 'M/Y')
+    {
+        $from_date ??= now()->firstOfYear();
+        $group_by_credit_categories =
+            $credit_category_id === '*' || $credit_category_id === [ '*' ] || !is_null($credit_category_id);
+        $credit_category_id = $credit_category_id === '*' || $credit_category_id === [ '*' ] ? null : $credit_category_id;
+        return $this->creditsByDate($from_date, $credit_category_id)
+                    ->with('credit_category')
+                    ->get([
+                              'amount',
+                              'date',
+                              'credit_category_id',
+                          ])
+                    ->when(
+                        $group_by_credit_categories,
+                        fn($q) => $q->groupBy(fn($model) => $model->credit_category_name)
+                    )
+                    ->when(
+                        !is_null($groupBy),
+                        fn($q) => ($group_by_credit_categories ? $q->map : $q)->groupBy(
+                            fn($model) => $model->date->format(value($groupBy))
+                        )
+                    )
+                    ->when(
+                        $group_by_credit_categories && !is_null($groupBy),
+                        fn($q) => $q->map(fn($model) => $model->map->sum('amount')),
+                        fn($q) => $q->map->sum('amount')
+                    );
     }
 
     public function getProjectStatusNameAttribute()

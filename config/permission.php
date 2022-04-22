@@ -209,6 +209,22 @@ return [
         [ 'name' => 'expense.restore', 'group' => 'expense', 'guard_name' => 'web' ],
         [ 'name' => 'expense.force_delete', 'group' => 'expense', 'guard_name' => 'web' ],
 
+        [ 'name' => 'credit_category.view_any', 'group' => 'credit_category', 'guard_name' => 'web' ],
+        [ 'name' => 'credit_category.view', 'group' => 'credit_category', 'guard_name' => 'web' ],
+        [ 'name' => 'credit_category.create', 'group' => 'credit_category', 'guard_name' => 'web' ],
+        [ 'name' => 'credit_category.edit', 'group' => 'credit_category', 'guard_name' => 'web' ],
+        [ 'name' => 'credit_category.delete', 'group' => 'credit_category', 'guard_name' => 'web' ],
+        [ 'name' => 'credit_category.restore', 'group' => 'credit_category', 'guard_name' => 'web' ],
+        [ 'name' => 'credit_category.force_delete', 'group' => 'credit_category', 'guard_name' => 'web' ],
+
+        [ 'name' => 'credit.view_any', 'group' => 'credit', 'guard_name' => 'web' ],
+        [ 'name' => 'credit.view', 'group' => 'credit', 'guard_name' => 'web' ],
+        [ 'name' => 'credit.create', 'group' => 'credit', 'guard_name' => 'web' ],
+        [ 'name' => 'credit.edit', 'group' => 'credit', 'guard_name' => 'web' ],
+        [ 'name' => 'credit.delete', 'group' => 'credit', 'guard_name' => 'web' ],
+        [ 'name' => 'credit.restore', 'group' => 'credit', 'guard_name' => 'web' ],
+        [ 'name' => 'credit.force_delete', 'group' => 'credit', 'guard_name' => 'web' ],
+
 //        [ 'name' => 'example.view_any', 'group' => 'example', 'guard_name' => 'web' ],
 //        [ 'name' => 'example.view', 'group' => 'example', 'guard_name' => 'web' ],
 //        [ 'name' => 'example.create', 'group' => 'example', 'guard_name' => 'web' ],

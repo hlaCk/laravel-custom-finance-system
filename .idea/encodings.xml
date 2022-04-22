@@ -8,13 +8,14 @@
     <file url="file://$PROJECT_DIR$/Packages/laravel-helpers/mixins/GlobInvoke.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/DataGrid/Sheet/ExpensesGrid.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Http/Controllers/Api/Sheet/ExpenseController.php" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/Http/Controllers/Api/Sheet/ExpenseController.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Http/Resources/Api/Abstracts/SelectOptionsResource.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Interfaces/Chart/IAccount.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Interfaces/Info/IClient.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Interfaces/Sheet/ICredit.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Interfaces/Sheet/IExpense.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Models/Abstracts/Authenticatable.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Models/Abstracts/Model.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Models/Info/CreditCategory.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Models/Info/EntryCategory.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Models/Info/Project/Project.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Models/Info/Project/ProjectStatus.php" charset="UTF-8" />
@@ -22,21 +23,26 @@
     <file url="file://$PROJECT_DIR$/app/Models/Settings/Permission.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Models/Settings/Role.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Models/Settings/Setting.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Models/Sheet/Credit.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Models/Sheet/Expense.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Nova/Chart/Account.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Nova/Info/CreditCategory.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Nova/Info/EntryCategory.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Nova/Info/Project/Project.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Nova/Info/User.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Nova/Settings/Permission.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Nova/Settings/Role.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Nova/Settings/Setting.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Nova/Sheet/Credit.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Nova/Sheet/Expense.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Policies/Abstracts/BasePolicy.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Policies/Chart/AccountPolicy.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Policies/Info/CreditCategoryPolicy.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Policies/Info/EntryCategoryPolicy.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Policies/Info/Project/ProjectPolicy.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Policies/Info/Project/ProjectStatusPolicy.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Policies/Settings/SettingPolicy.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Policies/Sheet/CreditPolicy.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Policies/Sheet/ExpensePolicy.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/composer-all.json" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/database/migrations/2022_02_14_065825_add_foreign_keys_to_model_has_permissions_table.php" charset="windows-1256" />
@@ -47,6 +53,9 @@
     <file url="file://$PROJECT_DIR$/database/migrations/2022_03_19_091745_create_projects_table.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/database/migrations/2022_03_20_001745_create_project_statuses_table.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/database/migrations/2022_03_20_091745_create_expenses_table.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/database/migrations/2022_04_22_081745_create_credit_categories_table.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/database/migrations/2022_04_22_091745_create_credits_table.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/database/seeders/CreditCategorySeeder.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/database/seeders/DatabaseSeeder.php" charset="windows-1256" />
     <file url="file://$PROJECT_DIR$/database/seeders/EntryCategorySeeder.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/database/seeders/ProjectStatusSeeder.php" charset="UTF-8" />
@@ -57,6 +66,13 @@
     <file url="file://$PROJECT_DIR$/nova-components/YearToDate/resources/js/components/SelectProjectField.vue" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/nova-components/YearToDate/resources/js/components/ShowProjectInfo.vue" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/nova-components/YearToDate/src/Http/Controllers/ProjectController.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nova-components/YearToDate/src/Http/Resources/EntryCategoryResource.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nova-components/YearToDate/src/Http/Resources/ProjectCreditResource.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nova-components/YearToDate/src/Http/Resources/ProjectCreditsYtdByCateoryResource.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nova-components/YearToDate/src/Http/Resources/ProjectCreditsYtdByMonthResource.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nova-components/YearToDate/src/Http/Resources/ProjectExpenseResource.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nova-components/YearToDate/src/Http/Resources/ProjectExpensesYtdByCateoryResource.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nova-components/YearToDate/src/Http/Resources/ProjectExpensesYtdByMonthResource.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/nova-components/YearToDate/src/Http/Resources/ProjectResource.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/nova-components/YearToDate/webpack.config.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/js/dynamic_triggers.js" charset="UTF-8" />
@@ -65,15 +81,19 @@
     <file url="file://$PROJECT_DIR$/resources/js/triggers.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/lang/ar/models/chart/account.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/lang/ar/models/info/client.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/resources/lang/ar/models/info/credit_category.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/lang/ar/models/info/entry_category.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/lang/ar/models/info/project/project.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/lang/ar/models/info/project/project_status.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/resources/lang/ar/models/sheet/credit.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/lang/ar/models/sheet/expense.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/lang/en/models/chart/account.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/lang/en/models/info/client.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/resources/lang/en/models/info/credit_category.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/lang/en/models/info/entry_category.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/lang/en/models/info/project/project.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/lang/en/models/info/project/project_status.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/resources/lang/en/models/sheet/credit.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/lang/en/models/sheet/expense.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/lang/vendor/nova/countries.ar.json" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/scss/sidebar-icons.scss" charset="UTF-8" />

@@ -1,12 +1,12 @@
 <?php
 
 return [
-    'plural' => 'Entry Categories',
-    'singular' => 'Entry Category',
+    'plural' => 'Credit Categories',
+    'singular' => 'Credit Category',
     'fields' => [
         'name' => 'Name',
         'status' => 'Status',
-        'expenses' => 'Expenses',
+        'credits' => 'Credits',
         'created_at' => 'Created at',
         'updated_at' => 'Updated at',
         'deleted_at' => 'Deleted at',

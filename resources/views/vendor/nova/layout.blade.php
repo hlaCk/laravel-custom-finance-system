@@ -7,6 +7,8 @@
 
     <title>{{ \Laravel\Nova\Nova::name() }}</title>
 
+
+
     <!-- Fonts -->
     <link rel="stylesheet" href="{{  mix('/css/Nunito.css') }}">
 

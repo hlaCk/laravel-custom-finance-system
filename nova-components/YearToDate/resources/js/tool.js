@@ -1,7 +1,16 @@
-import Datatable from 'vue2-datatable-component'
+// import Datatable from 'vue2-datatable-component'
+import {BootstrapVue, IconsPlugin} from 'bootstrap-vue'
+// import { BootstrapVue } from 'bootstrap-vue'
+// Import Bootstrap and BootstrapVue CSS files (order is important)
+// import 'bootstrap/dist/css/bootstrap.css'
+// import 'bootstrap-vue/dist/bootstrap-vue.css'
+
 
 Nova.booting( (Vue, router, store) => {
-    Vue.use(Datatable) // done!
+    Vue.use(BootstrapVue)
+    Vue.use(IconsPlugin)
+
+    // Vue.use(Datatable) // done!
     Vue.component('project-info-label-field', require('./components/InfoLabelField'));
     Vue.component('project-info', require('./components/ShowProjectInfo'));
     Vue.component('select-project-field', require('./components/SelectProjectField'));

@@ -5,18 +5,19 @@ namespace App\Nova\Info;
 use App\Nova\Abstracts\Resource as BaseResource;
 use App\Nova\Fields\Field;
 use App\Nova\Fields\StatusSelect;
-use App\Nova\Sheet\Expense;
+use App\Nova\Sheet\Credit;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
 
-class EntryCategory extends BaseResource
+class CreditCategory extends BaseResource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var string|\App\Models\Info\EntryCategory
+     * @var string|\App\Models\Info\CreditCategory
      */
-    public static $model = \App\Models\Info\EntryCategory::class;
+    public static $model = \App\Models\Info\CreditCategory::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -55,11 +56,11 @@ class EntryCategory extends BaseResource
             ID::make(__('ID'), 'id')
               ->sortable(),
 
-            Field::Text(__('models/info/entry_category.fields.name'), 'name')
+            Field::Text(__('models/info/credit_category.fields.name'), 'name')
                  ->rules('required')
                  ->required(),
 
-            Field::HasMany(static::$model::trans('expenses'), 'expenses', Expense::class),
+            Field::HasMany(static::$model::trans('credits'), 'credits', Credit::class),
 
             StatusSelect::forResource($this),
         ];

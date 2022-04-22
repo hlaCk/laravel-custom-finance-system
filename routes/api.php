@@ -22,4 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('rename-file',[ MediaController::class, 'renameFile']);
 Route::delete('media-delete/{media}',[ MediaController::class, 'deleteFile']);
 
-Route::get('expenses',[ \App\Http\Controllers\Api\Sheet\ExpenseController::class, 'all'])->name('expenses_all');
+//Route::get('expenses',[ \App\Http\Controllers\Api\Sheet\ExpenseController::class, 'all'])->name('expenses_all');

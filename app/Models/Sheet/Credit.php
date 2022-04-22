@@ -2,22 +2,22 @@
 
 namespace App\Models\Sheet;
 
-use App\Interfaces\Sheet\IExpense;
+use App\Interfaces\Sheet\ICredit;
 use App\Models\Abstracts\Model;
-use App\Models\Info\EntryCategory;
+use App\Models\Info\CreditCategory;
 use App\Models\Info\Project\Project;
 use App\Traits\THasBooleanStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Expense extends Model implements IExpense
+class Credit extends Model implements ICredit
 {
     use HasFactory;
     use SoftDeletes;
     use THasBooleanStatus;
     use \App\Traits\HasTranslations;
 
-    public $translatable = [  ];
+    public $translatable = [];
 
     /**
      * The attributes that are mass assignable.
@@ -31,7 +31,7 @@ class Expense extends Model implements IExpense
         'remarks',
         'status',
         'project_id',
-        'entry_category_id',
+        'credit_category_id',
     ];
 
     /**
@@ -51,13 +51,13 @@ class Expense extends Model implements IExpense
      * @var array
      */
     protected $casts = [
-        'remarks' => 'string',
-        'status' => 'integer',
-        'project_id' => 'integer',
-        'entry_category_id' => 'integer',
-        'amount' => 'double',
-        'vat_included' => 'boolean',
-        'date' => 'date',
+        'date'               => 'date',
+        'amount'             => 'double',
+        'vat_included'       => 'boolean',
+        'remarks'            => 'string',
+        'status'             => 'integer',
+        'project_id'         => 'integer',
+        'credit_category_id' => 'integer',
     ];
 
     protected $dates = [
@@ -77,13 +77,13 @@ class Expense extends Model implements IExpense
         return $this->belongsTo(Project::class);
     }
 
-    public function entry_category()
+    public function credit_category()
     {
-        return $this->belongsTo(EntryCategory::class);
+        return $this->belongsTo(CreditCategory::class);
     }
 
-    public function getEntryCategoryNameAttribute()
+    public function getCreditCategoryNameAttribute()
     {
-        return optional($this->entry_category)->name;
+        return optional($this->credit_category)->name;
     }
 }
