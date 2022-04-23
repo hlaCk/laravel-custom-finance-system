@@ -176,5 +176,19 @@
     "Don`t have an account?": "لا تملك حساب؟",
     "Menus": "القوائم",
     "Translation Editor": "محرر الترجمة",
-    "Visibility": "العرض"
+    "Visibility": "العرض",
+
+    "Cost": "التكلفة",
+    "Received Amount From Client": "المبلغ المستلم من العميل",
+    "Remaining With Client": "المتبقي لدى العميل",
+    "No. of Payments YTD": "عدد الدفعات",
+    "Project Expenses": "مصروفات المشروع",
+    "Balance YTD": "الرصيد",
+    "Projects Report YTD": "تقرير رصيد مشروع",
+    "Project": "المشروع",
+    "Sheet": "العمليات",
+    "Chart": "الشجرة",
+    "Reports": "التقارير",
+    "Show": "عرض",
+    "Back": "العودة"
 }

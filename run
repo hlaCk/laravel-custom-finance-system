@@ -1,0 +1,1 @@
+php artisan serve --host=localhost.test --port=8008

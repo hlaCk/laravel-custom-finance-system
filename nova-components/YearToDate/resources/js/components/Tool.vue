@@ -2,7 +2,7 @@
     <div>
         <heading class="mb-3">
             {{
-                __('Year To Date')
+                __('Projects Report YTD')
             }}
         </heading>
 

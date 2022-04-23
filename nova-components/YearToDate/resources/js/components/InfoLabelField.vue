@@ -1,7 +1,7 @@
 <template>
     <default-field :field="field">
         {{ label }}
-        <template slot="field">
+        <template slot="field" class="font-bold">
             {{ value }}
         </template>
     </default-field>

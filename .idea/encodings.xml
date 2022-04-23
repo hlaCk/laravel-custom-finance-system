@@ -64,6 +64,8 @@
     <file url="file://$PROJECT_DIR$/nova-components/YearToDate/resources/js/components/Form.vue" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/nova-components/YearToDate/resources/js/components/InfoLabelField.vue" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/nova-components/YearToDate/resources/js/components/SelectProjectField.vue" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nova-components/YearToDate/resources/js/components/ShowProjectCreditInfo.vue" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nova-components/YearToDate/resources/js/components/ShowProjectExpenseInfo.vue" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/nova-components/YearToDate/resources/js/components/ShowProjectInfo.vue" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/nova-components/YearToDate/src/Http/Controllers/ProjectController.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/nova-components/YearToDate/src/Http/Resources/EntryCategoryResource.php" charset="UTF-8" />

@@ -9,7 +9,7 @@
                         {{ isActiveNavigationItem($resources) ? 'checked="checked"' : '' }}
                     />
                     <a href="#" data-toggle="dropdown">
-                        <span class="sidebar-label ml-4">{{ $group }}</span>
+                        <span class="sidebar-label ml-4">{{ __($group) }}</span>
                     </a>
                     <ul class="dropdown-menu">
                         @foreach($resources as $resource)
@@ -42,7 +42,7 @@
                                             @else
                                                 <img src="{{ asset('images/circle_copy.svg') }}" alt="">
                                             @endif
-                                            <span class="sidebar-label">{{ data_get($resource, 'navigationLabel', $resource['name']) }}</span>
+                                            <span class="sidebar-label">{{ __(data_get($resource, 'navigationLabel', $resource['name'])) }}</span>
                                         </router-link>
                                     @else
 

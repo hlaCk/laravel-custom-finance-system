@@ -19,4 +19,8 @@ return [
         1 => 'New',
         2 => 'Expired',
     ],
+    'balance'  => 'Balance',
+    'credits'  => 'Credit',
+    'grand_total'  => 'Grand Total',
+    'no_of_payments'  => 'No. of Payments YTD',
 ];

@@ -26,10 +26,11 @@ class ProjectCreditsYtdByMonthResource extends JsonResource
     {
         /** @var \Illuminate\Support\Collection $model */
         $model = toCollect($this->resource);
+        $grand_total = $model->pull('grand_total') ?? $model->map->sum('value');
 
         return [
             'data'  => $model,
-            'grand_total' =>$model->sum('value')
+            'grand_total' => $grand_total
         ];
     }
 }

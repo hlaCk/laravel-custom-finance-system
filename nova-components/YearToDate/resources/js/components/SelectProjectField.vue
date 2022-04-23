@@ -1,7 +1,18 @@
 <template>
     <loading-view :loading="loading">
-        <form-select-field :field="project" :value="selectedProjectId"/>
+        <project-info-label-field
+            :field="project"
+            :label="project.name"
+            :value="selectedProjectId && projects[selectedProjectId]"
+            :class="{'d-none': !is_view}"
+        />
 
+        <form-select-field
+            id="project_select_field"
+            :field="project"
+            :value="selectedProjectId"
+            :class="{'d-none': !!is_view}"
+        />
     </loading-view>
 </template>
 
@@ -13,6 +24,12 @@ export default {
     props: {
         value: {
             default: 0,
+        },
+        is_view: {
+            type: Boolean,
+            required: false,
+            nullable: true,
+            default: false,
         },
     },
     provide() {
@@ -48,7 +65,7 @@ export default {
     ),
     async created() {
         this.getProjects()
-            .then( (x) => Nova.$emit( 'project-changed', {selected: this.value, projects: this.projects} ) )
+            .then( (x) => Nova.$emit( 'project-changed', {selected: this.value || 0, projects: this.projects} ) )
     },
     mounted() {
         this.registerChangeListener()
@@ -109,6 +126,16 @@ export default {
             set(value) {
                 this.project.value = value
             },
+        },
+    },
+    watch: {
+        is_view(n, o) {
+            let project_select_field = document.querySelector('#project_select_field select');
+            if( project_select_field ) {
+                // project_select_field.value=null
+                project_select_field.dispatchEvent && project_select_field.dispatchEvent(new Event('change'))
+                project_select_field.change && project_select_field.change()
+            }
         },
     },
 }

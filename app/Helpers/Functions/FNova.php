@@ -415,3 +415,57 @@ if( !function_exists('isLocaleAllowed') ) {
         return array_key_exists($locale, config('nova.locales'));
     }
 }
+
+if( !function_exists('getDefaultFromDate') ) {
+    /**
+     * @return \Illuminate\Support\Carbon
+     */
+    function getDefaultFromDate()
+    {
+        return now()->firstOfYear();
+    }
+}
+
+if( !function_exists('getDefaultToDate') ) {
+    /**
+     * @return \Illuminate\Support\Carbon
+     */
+    function getDefaultToDate()
+    {
+        return now()->endOfYear();
+    }
+}
+
+if( !function_exists('formatAttributeAsCurrency') ) {
+    /**
+     * @param string|\Closure                      $attribute
+     * @param \App\Models\Abstracts\Model|\Closure $model
+     * @param string|\Closure|null                 $locale
+     *
+     * @return string
+     */
+    function formatAttributeAsCurrency($attribute, $model, $locale = null)
+    {
+        $attribute = value($attribute);
+        $model = value($model);
+        $locale = value($locale, currentLocale());
+        return \Laravel\Nova\Fields\Currency::make($attribute)
+                                            ->formatMoney($model->$attribute, null, $locale);
+    }
+}
+
+if( !function_exists('formatValueAsCurrency') ) {
+    /**
+     * @param string|\Closure      $value
+     * @param string|\Closure|null $locale
+     *
+     * @return string
+     */
+    function formatValueAsCurrency($value, $locale = null)
+    {
+        $value = value($value);
+        $locale = value($locale, currentLocale());
+        return \Laravel\Nova\Fields\Currency::make($value)
+                                            ->formatMoney($value, null, $locale);
+    }
+}

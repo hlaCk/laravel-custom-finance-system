@@ -74,16 +74,6 @@ class Project extends Model implements IBooleanStatus
         return $this->belongsTo(ProjectStatus::class);
     }
 
-    public function credits()
-    {
-        return $this->hasMany(Credit::class);
-    }
-
-    public function expenses()
-    {
-        return $this->hasMany(Expense::class);
-    }
-
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
      * @param \DateTime|string|null                 $from_date
@@ -102,6 +92,11 @@ class Project extends Model implements IBooleanStatus
                         !is_null($from_date),
                         fn($q) => $q->whereDate('date', '>=', $from_date)
                     );
+    }
+
+    public function expenses()
+    {
+        return $this->hasMany(Expense::class);
     }
 
     /**
@@ -124,15 +119,20 @@ class Project extends Model implements IBooleanStatus
                     );
     }
 
+    public function credits()
+    {
+        return $this->hasMany(Credit::class);
+    }
+
     /**
      * @param int|int[]|null        $entry_category_id
-     * @param \DateTime|string|null $from_date default: `now()->firstOfYear()`
+     * @param \DateTime|string|null $from_date default: `getDefaultFromDate()`
      *
      * @return \Illuminate\Support\Collection
      */
     public function expenses_ytd($entry_category_id = null, $from_date = null)
     {
-        $from_date ??= now()->firstOfYear();
+        $from_date ??= getDefaultFromDate();
         $entry_category_id = $entry_category_id === '*' || $entry_category_id === [ '*' ] ? null : $entry_category_id;
         return $this->expensesByDate($from_date, $entry_category_id)
                     ->with('entry_category')
@@ -147,14 +147,14 @@ class Project extends Model implements IBooleanStatus
 
     /**
      * @param int|int[]|null        $entry_category_id
-     * @param \DateTime|string|null $from_date default: `now()->firstOfYear()`
+     * @param \DateTime|string|null $from_date default: `getDefaultFromDate()`
      * @param string|\Closure|null  $groupBy
      *
      * @return \Illuminate\Support\HigherOrderCollectionProxy
      */
     public function expenses_ytd_by_month($entry_category_id = null, $from_date = null, $groupBy = 'M/Y')
     {
-        $from_date ??= now()->firstOfYear();
+        $from_date ??= getDefaultFromDate();
         $group_by_entry_categories =
             $entry_category_id === '*' || $entry_category_id === [ '*' ] || !is_null($entry_category_id);
         $entry_category_id = $entry_category_id === '*' || $entry_category_id === [ '*' ] ? null : $entry_category_id;
@@ -184,14 +184,15 @@ class Project extends Model implements IBooleanStatus
 
     /**
      * @param int|int[]|null        $credit_category_id
-     * @param \DateTime|string|null $from_date default: `now()->firstOfYear()`
+     * @param \DateTime|string|null $from_date default: `getDefaultFromDate()`
      *
      * @return \Illuminate\Support\Collection
      */
     public function credits_ytd($credit_category_id = null, $from_date = null)
     {
-        $from_date ??= now()->firstOfYear();
-        $credit_category_id = $credit_category_id === '*' || $credit_category_id === [ '*' ] ? null : $credit_category_id;
+        $from_date ??= getDefaultFromDate();
+        $credit_category_id =
+            $credit_category_id === '*' || $credit_category_id === [ '*' ] ? null : $credit_category_id;
         return $this->creditsByDate($from_date, $credit_category_id)
                     ->with('credit_category')
                     ->get([
@@ -205,17 +206,18 @@ class Project extends Model implements IBooleanStatus
 
     /**
      * @param int|int[]|null        $credit_category_id
-     * @param \DateTime|string|null $from_date default: `now()->firstOfYear()`
+     * @param \DateTime|string|null $from_date default: `getDefaultFromDate()`
      * @param string|\Closure|null  $groupBy
      *
      * @return \Illuminate\Support\HigherOrderCollectionProxy
      */
     public function credits_ytd_by_month($credit_category_id = null, $from_date = null, $groupBy = 'M/Y')
     {
-        $from_date ??= now()->firstOfYear();
+        $from_date ??= getDefaultFromDate();
         $group_by_credit_categories =
             $credit_category_id === '*' || $credit_category_id === [ '*' ] || !is_null($credit_category_id);
-        $credit_category_id = $credit_category_id === '*' || $credit_category_id === [ '*' ] ? null : $credit_category_id;
+        $credit_category_id =
+            $credit_category_id === '*' || $credit_category_id === [ '*' ] ? null : $credit_category_id;
         return $this->creditsByDate($from_date, $credit_category_id)
                     ->with('credit_category')
                     ->get([
@@ -236,7 +238,10 @@ class Project extends Model implements IBooleanStatus
                     ->when(
                         $group_by_credit_categories && !is_null($groupBy),
                         fn($q) => $q->map(fn($model) => $model->map->sum('amount')),
-                        fn($q) => $q->map->sum('amount')
+                        fn($q) => $q->map(fn($qq) => [
+                            'count'  => $qq->count(),
+                            'amount' => $qq->sum('amount'),
+                        ])
                     );
     }
 
@@ -253,7 +258,9 @@ class Project extends Model implements IBooleanStatus
 
     public function getCreditTotalAttribute()
     {
-        return 0;
+        return (double) $this->credits_ytd_by_month(request()->credit_category_id, request()->from_date)
+            ->sum('amount')
+        ;
     }
 
     public function getCreditTotalLabelAttribute()
@@ -264,12 +271,14 @@ class Project extends Model implements IBooleanStatus
 
     public function getCreditCountAttribute()
     {
-        return 0;
+        return (double) $this->credits_ytd_by_month(request()->credit_category_id, request()->from_date)
+                             ->sum('count');
     }
 
     public function getExpensesTotalAttribute()
     {
-        return 0;
+        return (double) $this->expenses_ytd_by_month(null, request()->from_date)
+            ->sum();
     }
 
     public function getExpensesTotalLabelAttribute()
@@ -280,7 +289,7 @@ class Project extends Model implements IBooleanStatus
 
     public function getBalanceAttribute()
     {
-        return 0;
+        return (double) $this->credit_total - (double) $this->expenses_total;
     }
 
     public function getBalanceLabelAttribute()
@@ -291,7 +300,7 @@ class Project extends Model implements IBooleanStatus
 
     public function getRemainingAttribute()
     {
-        return 0;
+        return (double) $this->cost - (double) $this->credit_total;
     }
 
     public function getRemainingLabelAttribute()

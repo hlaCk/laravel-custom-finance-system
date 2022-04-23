@@ -2,13 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\Info\Client as ClientModel;
 use App\Models\Info\User as UserModel;
-use App\Nova\Info\Client;
-use App\Nova\Info\EntryCategory;
-use App\Nova\Info\Project\Project;
-use App\Nova\Info\User;
-use App\Nova\Settings\{Permission, Role, Setting};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Translation\Translator;
@@ -18,20 +12,6 @@ use Laravel\Nova\NovaApplicationServiceProvider;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
-
-    protected function resources()
-    {
-        Nova::resources(getNovaResources('Nova,Nova/*,Nova/*/*'));
-//        Nova::resources([
-//                            User::class,
-//                            Client::class,
-//                            EntryCategory::class,
-//                            Project::class,
-//                            Setting::class,
-//                            Role::class,
-//                            Permission::class,
-//                        ]);
-    }
 
     /**
      * Bootstrap any application services.
@@ -47,7 +27,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         Nova::script('globalEventListener', public_path('js/globalEventListener.js'));
         Nova::style('sidebar-icons', public_path('css/sidebar-icons.css'));
 
-        Nova::serving(function(ServingNova $event) {
+        Nova::serving(function (ServingNova $event) {
             if( $user = $event->request->user() ) {
                 /** @var UserModel $user */
                 $user->registerLocale();
@@ -57,8 +37,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                                       'locale_name' => config('nova.locales.' . currentLocale(), '-'),
                                       'direction' => currentLocale() === 'ar' ? 'rtl' : 'ltr',
                                       'isRTL' => currentLocale() === 'ar',
-//                                      'toggleHiddenNavigation' => (array) config('navigation.toggle_hidden_key'),
+                                      //                                      'toggleHiddenNavigation' => (array) config('navigation.toggle_hidden_key'),
                                       'version' => config('app.version'),
+                                      'zero_money' => formatValueAsCurrency(0),
                                   ]);
 
             //Nova::translations(__(""));
@@ -70,35 +51,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 //                $user->registerLocale();
 //            }
 //        });
-    }
-
-    /**
-     * Register the Nova routes.
-     *
-     * @return void
-     */
-    protected function routes()
-    {
-        Nova::routes()
-            ->withAuthenticationRoutes()
-            // ->withPasswordResetRoutes()
-            ->register();
-    }
-
-    /**
-     * Register the Nova gate.
-     *
-     * This gate determines who can access Nova in non-local environments.
-     *
-     * @return void
-     */
-    protected function gate()
-    {
-        Gate::define('viewNova', function($user) {
-            return in_array($user->email, [
-                //
-            ]);
-        });
     }
 
     /**
@@ -128,35 +80,19 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     }
 
     /**
-     * Get the tools that should be listed in the Nova sidebar.
+     * Register the Nova gate.
      *
-     * @return array
+     * This gate determines who can access Nova in non-local environments.
+     *
+     * @return void
      */
-    public function tools()
+    protected function gate()
     {
-        return [
-//            new \Anaseqal\NovaSidebarIcons\NovaSidebarIcons(),
-
-//            new \Bernhardh\NovaTranslationEditor\NovaTranslationEditor(),
-
-//            new \OptimistDigital\MenuBuilder\MenuBuilder,
-
-            \Eolica\NovaLocaleSwitcher\LocaleSwitcher::make()
-                                                     ->setLocales(config('nova.locales'))
-                                                     ->onSwitchLocale(function(Request $request) {
-                                                         if( isLocaleAllowed($locale = $request->post('locale')) ) {
-                                                             $session = session();
-                                                             $session->put([ 'locale' => $locale ]);
-                                                             $session->save();
-                                                         }
-                                                     }),
-
-//            \ChrisWare\NovaBreadcrumbs\NovaBreadcrumbs::make(),
-
-//            new \Anaseqal\NovaImport\NovaImport,
-
-            \Sheets\YearToDate\YearToDate::make(),
-        ];
+        Gate::define('viewNova', function ($user) {
+            return in_array($user->email, [
+                //
+            ]);
+        });
     }
 
     /**
@@ -166,19 +102,24 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function register()
     {
-        Nova::sortResourcesBy(function($resource) {
+        Nova::sortResourcesBy(function ($resource) {
             return method_exists($resource, 'priority') ? $resource::priority() : 99999;
         });
 
-        $this->app->singleton('translation-loader-local', function($app) {
+        $this->app->singleton('translation-loader-local', function ($app) {
             $translation_manager_local = config('translation-loader.translation-loader-local');
 
-            return $translation_manager_local && class_exists($translation_manager_local) ?
-                (new $translation_manager_local($app[ 'files' ], $app[ 'path.lang' ])) :
-                ($app[ 'translation.loader' ] ?? new \Spatie\TranslationLoader\TranslationLoaderManager($app[ 'files' ], $app[ 'path.lang' ]));
+            return $translation_manager_local && class_exists($translation_manager_local)
+                ?
+                (new $translation_manager_local($app[ 'files' ], $app[ 'path.lang' ]))
+                :
+                ($app[ 'translation.loader' ] ?? new \Spatie\TranslationLoader\TranslationLoaderManager(
+                        $app[ 'files' ],
+                        $app[ 'path.lang' ]
+                    ));
         });
 
-        $this->app->singleton('translator-local', function($app) {
+        $this->app->singleton('translator-local', function ($app) {
             $loader = $app[ 'translation-loader-local' ];
 
             // When registering the translator component, we'll need to set the default
@@ -192,6 +133,65 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
             return $trans;
         });
+    }
+
+    protected function resources()
+    {
+        Nova::resources(getNovaResources('Nova,Nova/*,Nova/*/*'));
+//        Nova::resources([
+//                            User::class,
+//                            Client::class,
+//                            EntryCategory::class,
+//                            Project::class,
+//                            Setting::class,
+//                            Role::class,
+//                            Permission::class,
+//                        ]);
+    }
+
+    /**
+     * Register the Nova routes.
+     *
+     * @return void
+     */
+    protected function routes()
+    {
+        Nova::routes()
+            ->withAuthenticationRoutes()
+            // ->withPasswordResetRoutes()
+            ->register();
+    }
+
+    /**
+     * Get the tools that should be listed in the Nova sidebar.
+     *
+     * @return array
+     */
+    public function tools()
+    {
+        return [
+//            new \Anaseqal\NovaSidebarIcons\NovaSidebarIcons(),
+
+//            new \Bernhardh\NovaTranslationEditor\NovaTranslationEditor(),
+
+//            new \OptimistDigital\MenuBuilder\MenuBuilder,
+
+\Eolica\NovaLocaleSwitcher\LocaleSwitcher::make()
+                                         ->setLocales(config('nova.locales'))
+                                         ->onSwitchLocale(function (Request $request) {
+                                             if( isLocaleAllowed($locale = $request->post('locale')) ) {
+                                                 $session = session();
+                                                 $session->put([ 'locale' => $locale ]);
+                                                 $session->save();
+                                             }
+                                         }),
+
+//            \ChrisWare\NovaBreadcrumbs\NovaBreadcrumbs::make(),
+
+//            new \Anaseqal\NovaImport\NovaImport,
+
+\Sheets\YearToDate\YearToDate::make(),
+        ];
     }
 
 }
