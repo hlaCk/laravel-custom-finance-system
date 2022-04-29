@@ -18,25 +18,16 @@ class SetNovaLocale
     {
         $default    = config( 'nova.default_locale', 'en' );
         $locales    = config( 'nova.locales', [] );
-        $locales_cp = config( 'nova.locales_cp', [] );
         if ( auth()->check() )
         {
             $locale = auth()->user()->locale;
             if ( isset( $locales[ $locale ] ) )
             {
-                app()->setLocale( $locale );
-                if ( isset( $locales_cp[ $locale ] ) )
-                {
-                    setlocale( LC_ALL, $locales_cp[ $locale ] );
-                }
+                setCurrentLocale( $locale );
             }
             else
             {
-                app()->setLocale( $default );
-                if ( isset( $locales_cp[ $default ] ) )
-                {
-                    setlocale( LC_ALL, $locales_cp[ $default ] );
-                }
+                setCurrentLocale( $default );
             }
         }
         else
@@ -44,21 +35,13 @@ class SetNovaLocale
             $locale = session( 'locale' );
             if ( isset( $locales[ $locale ] ) )
             {
-                app()->setLocale( $locale );
+                setCurrentLocale( $locale );
                 session([ 'locale' => $locale ]);
-                if ( isset( $locales_cp[ $locale ] ) )
-                {
-                    setlocale( LC_ALL, $locales_cp[ $locale ] );
-                }
             }
             else
             {
-                app()->setLocale( $default );
+                setCurrentLocale( $default );
                 session([ 'locale' => $default ]);
-                if ( isset( $locales_cp[ $default ] ) )
-                {
-                    setlocale( LC_ALL, $locales_cp[ $default ] );
-                }
             }
         }
         return $next( $request );

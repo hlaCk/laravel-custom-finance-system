@@ -16,8 +16,9 @@ if( !function_exists('currentLocale') ) {
      */
     function currentLocale($full = false): string
     {
-        if( $full )
+        if( $full ) {
             return (string) app()->getLocale();
+        }
 
         $locale = str_replace('_', '-', app()->getLocale());
         $locale = current(explode("-", $locale));

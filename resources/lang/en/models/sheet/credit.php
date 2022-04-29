@@ -23,4 +23,5 @@ return [
     'credits'  => 'Credit',
     'grand_total'  => 'Grand Total',
     'no_of_payments'  => 'No. of Payments YTD',
+    'ytd_header_label' => 'Credit to project',
 ];

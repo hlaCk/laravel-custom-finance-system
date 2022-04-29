@@ -1,17 +1,17 @@
 <template>
     <loading-view :loading="loading">
-        <project-info-label-field
+        <info-label-field
             :field="project"
             :label="project.name"
             :value="selectedProjectId && projects[selectedProjectId]"
-            :class="{'d-none': !is_view}"
+            :class="{'hidden': !is_view}"
         />
 
         <form-select-field
             id="project_select_field"
             :field="project"
             :value="selectedProjectId"
-            :class="{'d-none': !!is_view}"
+            :class="{'hidden': !!is_view}"
         />
     </loading-view>
 </template>
@@ -43,6 +43,7 @@ export default {
             project: {
                 name: Nova.translate( "Project" ),
                 singularLabel: Nova.translate( "Project" ),
+                placeholder: Nova.translate( "Choose project" ),
                 value: null,
                 attribute: "project",
                 helpText: "",
@@ -78,7 +79,7 @@ export default {
             this.projects = []
 
             return Nova.request()
-                       .get( `/nova-vendor/year-to-date/projects`, {params: {}} )
+                       .get( `/nova-vendor/report-components/projects`, {params: {}} )
                        .then( (res) => res.data )
                        .then( (res) => {
                            const {data} = res;

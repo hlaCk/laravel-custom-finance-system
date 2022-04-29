@@ -3,39 +3,39 @@ body {
     #nova {
         .side_navigation_menu_container {
             .side_nav_icon{
-                width: 20px;
-                margin-right: auto;
-                margin-left: 10px;
+                width: 20px !important;
+                margin-right: 10px !important;
+                margin-left: 10px !important;
             }
             .menu-logo-conntainer {
-                align-items: center;
-                justify-content: center;
-                background-color: var(--primary-dark-color);
+                align-items: center !important;
+                justify-content: center !important;
+                background-color: var(--primary-dark-color) !important;
                 .menu-logo {
                     img {
-                        height: 55px;
+                        height: 55px !important;
                     }
                 }
             }
             .sidemenu {
                 .sidebar-dropdown {
                     [data-toggle=dropdown] {
-                        color: #000000;
+                        color: #000000 !important;
                         &:before {
-                            right: auto;
-                            left: 10px;
-                            content: "\2304";
-                            font-size: 1.3em;
-                            top: 7px;
-                            transform: rotate(90deg);
-                            transition: transform .1s;
+                            right: auto !important;
+                            left: 10px !important;
+                            content: "\2304" !important;
+                            font-size: 1.3em !important;
+                            top: 7px !important;
+                            transform: rotate(90deg) !important;
+                            transition: transform .1s !important;
                         }
                     }
                     >input[type=checkbox] {
                         &:checked+a[data-toggle=dropdown] {
                             &:before {
-                                transform: rotate(0deg);
-                                top: 5px;
+                                transform: rotate(0deg) !important;
+                                top: 5px !important;
                             }
                         }
                     }
@@ -47,44 +47,44 @@ body {
                     .dropdown-menu {
 
                         .nav_inner_li img, .inner-nav-icon {
-                            width: 10px;
+                            width: 10px !important;
                         }
                     }
                     .nav_inner_li {
                         a {
-                            padding: 10px 30px;
-                            color: #747474;
+                            padding: 10px 30px !important;
+                            color: #747474 !important;
                             img, img.inner-nav-icon {
-                                width: 14px;
+                                width: 14px !important;
                             }
                             &.router-link-active {
-                                background-color: #3c4b4f;
-                                color: white;
-                                box-shadow: 0 0 5px rgba(60, 75, 79, 0.6);
+                                background-color: #3c4b4f !important;
+                                color: white !important;
+                                box-shadow: 0 0 5px rgba(60, 75, 79, 0.6) !important;
                                 span {
-                                    color: white;
-                                    padding: 0px 3px;
+                                    color: white !important;
+                                    padding: 0px 3px !important;
                                 }
                                 svg, img, img.inner-nav-icon {
-                                    filter: brightness(0) invert(1);
+                                    filter: brightness(0) invert(1) !important;
                                 }
                             }
 
                             &.router-link-active:hover {
-                                opacity: 1;
+                                opacity: 1 !important;
                             }
                         }
 
                         a:hover:not(.router-link-active) {
-                            background-color: #3c4b4fc7;
-                            opacity: 0.5;
-                            color: white;
+                            background-color: #3c4b4fc7 !important;
+                            opacity: 0.5 !important;
+                            color: white !important;
                             span {
-                                color: white;
-                                padding: 0px 3px;
+                                color: white !important;
+                                padding: 0px 3px !important;
                             }
                             svg, img, img.inner-nav-icon {
-                                filter: brightness(0) invert(1);
+                                filter: brightness(0) invert(1) !important;
                             }
                         }
                     }
@@ -95,32 +95,32 @@ body {
     }
 
     .pin-r {
-        left: 0;
-        right: auto;
+        left: 0 !important;
+        right: auto !important;
     }
 
     .pin-l {
-        right: 0;
-        left: auto;
+        right: 0 !important;
+        left: auto !important;
     }
 
 }
 #menu-builder-header{
     left: 0 !important;
-    right: auto;
+    right: auto !important;
 }
 @media screen and (max-width: 992px) {
     .h-header {
         .pl-search {
-            width: 100%;
+            width: 100% !important;
         }
     }
     .bg-logo {
         display: block !important;
-        height: 16.6%;
+        height: 16.6% !important;
         padding-top: 67px !important;
         .menu-logo {
-            text-align: center;
+            text-align: center !important;
             img {
                 height: 45px !important;
             }
@@ -133,11 +133,11 @@ body {
 
     div[dusk$='index-component']{
         .btn[dusk='create-button']::before{
-            margin-left : 20px;
+            margin-left : 20px !important;
             margin-right: 0px !important;
         }
         .btn[dusk='attach-button']::before{
-            margin-left : 20px;
+            margin-left : 20px !important;
             margin-right: 0px !important;
         }
     }

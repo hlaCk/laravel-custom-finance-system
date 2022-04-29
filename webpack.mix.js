@@ -12,6 +12,7 @@ const mix = require( 'laravel-mix' );
  */
 
 mix.js( 'resources/js/app.js', 'public/js' )
+   .copy( 'resources/js/global.js', 'public/js' )
    .copy( 'resources/js/triggers.js', 'public/js' )
    .copy( 'resources/js/helpers.js', 'public/js' )
    .copy( 'resources/js/globalEventListener.js', 'public/js' )
@@ -19,6 +20,7 @@ mix.js( 'resources/js/app.js', 'public/js' )
    // .copy( 'resources/js/toggleHiddenNavigation.js', 'public/js' )
    // .copy( 'resources/js/login_as_admin.js', 'public/js' )
    // .copy( 'resources/js/sweetalert.min.js', 'public/js' )
+   .postCss( 'resources/css/my_app.css', 'public/css' )
    .postCss( 'resources/css/custom-ltr.css', 'public/css' )
    .postCss( 'resources/css/login.css', 'public/css' )
    .postCss( 'resources/css/Nunito.css', 'public/css' )

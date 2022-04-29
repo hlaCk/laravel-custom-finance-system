@@ -23,4 +23,5 @@ return [
     'credits'  => 'الائتمان',
     'grand_total'  => 'الإجمالي العام',
     'no_of_payments'  => 'عدد الدفعات',
+    'ytd_header_label' => 'الائتمان للمشروع',
 ];

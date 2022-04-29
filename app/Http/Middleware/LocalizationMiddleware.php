@@ -18,7 +18,7 @@ class LocalizationMiddleware
     {
         $headerLang = request()->header('Accept-Language') ?? 'en';
         $headerLang = config("nova.locales.{$headerLang}") ? $headerLang : 'en';
-        app()->setLocale($headerLang);
+        setCurrentLocale($headerLang);
 
         return $next($request);
     }

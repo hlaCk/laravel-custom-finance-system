@@ -27,12 +27,12 @@ class NovaQuickSearchController extends ResourceAttachController
                     $app_locale = $locale ?: "";
                     $value = collect();
                     foreach( $locales as $locale ) {
-                        app()->setLocale($locale);
+                        setCurrentLocale($locale);
                         $added_value = is_array($resource) ? __(data_get($resource, 'group')) . ": " . __(data_get($resource, 'navigationLabel')) : null;
                         $added_value ??= (($_group = $resource::group()) ? "{$_group}: " : "") . $resource::navigationLabel();
                         $value->add($added_value);
                     }
-                    app()->setLocale($app_locale);
+                    setCurrentLocale($app_locale);
 
                     $label = $value->filter()->implode(' | ');
                     $value = is_array($resource) ? data_get($resource, 'uriKey') : $resource::uriKey();

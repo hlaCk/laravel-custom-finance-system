@@ -27,6 +27,7 @@
         "optimistdigital/nova-translatable": "^1.10",
         "orlyapps/nova-belongsto-depend": "*",
         "pishran/nova-rtl-theme": "^1.5",
+        "sheets/report-components": "*",
         "sheets/year-to-date": "*",
         "spatie/laravel-permission": "^5.1",
         "spatie/laravel-translatable": "^4.6",
@@ -51,6 +52,8 @@
         },
         "files": [
             "app/Helpers/Functions/FHelpers.php",
+            "app/Helpers/Functions/FIs.php",
+            "app/Helpers/Functions/FSet.php",
             "app/Helpers/Functions/FCurrent.php",
             "app/Helpers/Functions/FTools.php",
             "app/Helpers/Functions/FNova.php"
@@ -155,6 +158,10 @@
             "url": "./Packages/nova-translatable"
         },
         "13": {
+            "type": "path",
+            "url": "./nova-components/ReportComponents"
+        },
+        "14": {
             "type": "path",
             "url": "./nova-components/YearToDate"
         }

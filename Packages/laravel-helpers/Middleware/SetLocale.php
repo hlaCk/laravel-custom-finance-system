@@ -34,7 +34,8 @@ class SetLocale
         }
 
         if ( isset($language) ) {
-            app()->setLocale($language);
+            setCurrentLocale($language);
+
             if ( request('change_language') ) {
                 return redirect()->back();
             }

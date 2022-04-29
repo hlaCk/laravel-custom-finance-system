@@ -172,7 +172,7 @@ class Project extends Model implements IBooleanStatus
                     ->when(
                         !is_null($groupBy),
                         fn($q) => ($group_by_entry_categories ? $q->map : $q)->groupBy(
-                            fn($model) => $model->date->format(value($groupBy))
+                            fn($model) => $model->formatDate(value($groupBy))
                         )
                     )
                     ->when(
@@ -232,7 +232,7 @@ class Project extends Model implements IBooleanStatus
                     ->when(
                         !is_null($groupBy),
                         fn($q) => ($group_by_credit_categories ? $q->map : $q)->groupBy(
-                            fn($model) => $model->date->format(value($groupBy))
+                            fn($model) => $model->formatDate(value($groupBy))
                         )
                     )
                     ->when(
@@ -252,8 +252,7 @@ class Project extends Model implements IBooleanStatus
 
     public function getCostLabelAttribute()
     {
-        return Currency::make($attr = 'cost')
-                       ->formatMoney($this->$attr, null, currentLocale());
+        return formatValueAsCurrency($this->cost);
     }
 
     public function getCreditTotalAttribute()
@@ -265,8 +264,7 @@ class Project extends Model implements IBooleanStatus
 
     public function getCreditTotalLabelAttribute()
     {
-        return Currency::make($attr = 'credit_total')
-                       ->formatMoney($this->$attr, null, currentLocale());
+        return formatValueAsCurrency($this->credit_total);
     }
 
     public function getCreditCountAttribute()
@@ -283,8 +281,7 @@ class Project extends Model implements IBooleanStatus
 
     public function getExpensesTotalLabelAttribute()
     {
-        return Currency::make($attr = 'expenses_total')
-                       ->formatMoney($this->$attr, null, currentLocale());
+        return formatValueAsCurrency($this->expenses_total);
     }
 
     public function getBalanceAttribute()
@@ -294,8 +291,7 @@ class Project extends Model implements IBooleanStatus
 
     public function getBalanceLabelAttribute()
     {
-        return Currency::make($attr = 'balance')
-                       ->formatMoney($this->$attr, null, currentLocale());
+        return formatValueAsCurrency($this->balance);
     }
 
     public function getRemainingAttribute()
@@ -305,7 +301,6 @@ class Project extends Model implements IBooleanStatus
 
     public function getRemainingLabelAttribute()
     {
-        return Currency::make($attr = 'remaining')
-                       ->formatMoney($this->$attr, null, currentLocale());
+        return formatValueAsCurrency($this->remaining);
     }
 }

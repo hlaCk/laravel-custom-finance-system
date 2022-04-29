@@ -12,7 +12,7 @@ class LocaleController extends Controller
         abort_unless(isset($available_locales[ $locale ]), 404);
 
         session(compact('locale'));
-        app()->setLocale($locale);
+        setCurrentLocale($locale);
 
         if( auth()->check() ) {
             auth()->user()->updateLocale($locale);

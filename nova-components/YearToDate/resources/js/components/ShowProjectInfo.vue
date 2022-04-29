@@ -1,40 +1,40 @@
 <template>
     <loading-view :class="{
-    'd-none': !project_id
+    'hidden': !project_id
 }" :loading="loading">
         <div class="flex justify-start items-start">
             <div class="w-full">
-                <project-info-label-field
+                <info-label-field
                     :field="this.getFieldFor( {name: 'cost', value: getProjectInfo('cost_label')} )"
                     :label="__( 'Cost' )"
                     :value="getProjectInfo('cost_label')"
                 />
 
-                <project-info-label-field
+                <info-label-field
                     :field="this.getFieldFor( {name: 'credit_total', value: getProjectInfo('credit_total_label')} )"
                     :label="__( 'Received Amount From Client' )"
                     :value="getProjectInfo('credit_total_label')"
                 />
 
-                <project-info-label-field
+                <info-label-field
                     :field="this.getFieldFor( {name: 'remaining', value: getProjectInfo('remaining_label')} )"
                     :label="__( 'Remaining With Client' )"
                     :value="getProjectInfo('remaining_label')"
                 />
 
-                <project-info-label-field
+                <info-label-field
                     :field="this.getFieldFor( {name: 'credit_count', value: getProjectInfo('credit_count')} )"
                     :label="__( 'No. of Payments YTD' )"
                     :value="getProjectInfo('credit_count')"
                 />
 
-                <project-info-label-field
+                <info-label-field
                     :field="this.getFieldFor( {name: 'expenses_total', value: getProjectInfo('expenses_total_label')} )"
                     :label="__( 'Project Expenses' )"
                     :value="getProjectInfo('expenses_total_label')"
                 />
 
-                <project-info-label-field
+                <info-label-field
                     :field="this.getFieldFor( {name: 'balance', value: getProjectInfo('balance_label')} )"
                     :label="__( 'Balance YTD' )"
                     :value="getProjectInfo('balance_label')"

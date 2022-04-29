@@ -465,6 +465,8 @@ if( !function_exists('formatValueAsCurrency') ) {
     {
         $value = value($value);
         $locale = value($locale, currentLocale());
+        $locale ??= config('nova.money_locale', currentLocale());
+
         return \Laravel\Nova\Fields\Currency::make($value)
                                             ->formatMoney($value, null, $locale);
     }

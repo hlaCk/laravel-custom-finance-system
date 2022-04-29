@@ -1,6 +1,6 @@
 <template>
     <loading-view :class="{
-    'd-none': !project_id
+    'hidden': !project_id
 }" :loading="loading">
         <b-table
             striped

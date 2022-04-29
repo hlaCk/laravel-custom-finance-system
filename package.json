@@ -10,6 +10,8 @@
         "production": "mix --production",
         "build-nova-quick-search": "cd nova-components/NovaQuickSearch && npm run dev",
         "build-nova-quick-search-prod": "cd nova-components/NovaQuickSearch && npm run prod",
+        "build-report-components": "cd nova-components/ReportComponents && npm run dev",
+        "build-report-components-prod": "cd nova-components/ReportComponents && npm run prod",
         "build-year-to-date": "cd nova-components/YearToDate && npm run dev",
         "build-year-to-date-prod": "cd nova-components/YearToDate && npm run prod"
     },

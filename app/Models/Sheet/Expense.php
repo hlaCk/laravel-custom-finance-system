@@ -16,6 +16,7 @@ class Expense extends Model implements IExpense
     use SoftDeletes;
     use THasBooleanStatus;
     use \App\Traits\HasTranslations;
+    use \App\Traits\Sheet\TFormatDateAttribute;
 
     public $translatable = [  ];
 

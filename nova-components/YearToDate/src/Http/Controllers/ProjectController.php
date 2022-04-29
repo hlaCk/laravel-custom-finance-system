@@ -51,6 +51,14 @@ class ProjectController extends Controller
         return ProjectExpensesYtdByMonthResource::make($data);
     }
 
+    public static function getProjectCreditsColumnLabel() {
+        return __('models/sheet/credit.ytd_header_label');
+    }
+
+    public static function getProjectExpensesColumnLabel() {
+        return __('models/sheet/expense.ytd_header_label');
+    }
+
     public function project_credits_ytd_by_month_show(Request $request, Project $project)
     {
         $expenses = $project->expenses_ytd_by_month($request->entry_category_id, $request->from_date);
@@ -82,12 +90,12 @@ class ProjectController extends Controller
             ->filter(fn($value) => (double) $value);
 
         $dates =
-            iterator_to_array(getDefaultFromDate()->monthsUntil(getDefaultToDate())->map(fn($v) => $v->format('M/Y')));
+            iterator_to_array(getDefaultFromDate()->monthsUntil(getDefaultToDate())->map(fn($v) => $v->translatedFormat('M/Y')));
 
-        $new_balance = [ '#' => __('models/sheet/credit.balance') ];
-        $new_credits = [ '#' => __('models/sheet/credit.credits') ];
-        $new_no_of_payments = [ '#' => __('models/sheet/credit.no_of_payments') ];
-        $headers = [ [ 'label' => '#', 'class' => 'font-bold' ] ];
+        $new_balance = [ self::getProjectCreditsColumnLabel() => __('models/sheet/credit.balance') ];
+        $new_credits = [ self::getProjectCreditsColumnLabel() => __('models/sheet/credit.credits') ];
+        $new_no_of_payments = [ self::getProjectCreditsColumnLabel() => __('models/sheet/credit.no_of_payments') ];
+        $headers = [ [ 'label' => self::getProjectCreditsColumnLabel(), 'class' => 'font-bold' ] ];
         toCollect(array_fill(0, count($dates), '0'))
             ->map(
                 function ($v, $d) use (
@@ -169,8 +177,8 @@ class ProjectController extends Controller
     {
         $data = $project->expenses_ytd_by_month($request->entry_category_id ?? '*', $request->from_date);
         $dates =
-            iterator_to_array(getDefaultFromDate()->monthsUntil(getDefaultToDate())->map(fn($v) => $v->format('M/Y')));
-        $headers = [ [ 'label' => '#', 'class' => 'font-bold' ] ];
+            iterator_to_array(getDefaultFromDate()->monthsUntil(getDefaultToDate())->map(fn($v) => $v->translatedFormat('M/Y')));
+        $headers = [ [ 'label' => self::getProjectExpensesColumnLabel(), 'class' => 'font-bold' ] ];
         $headers = array_merge($headers, $dates);
         $headers[] = [ 'label' => __('models/sheet/credit.grand_total'), 'class' => 'text-center font-bold' ];
 
@@ -184,8 +192,8 @@ class ProjectController extends Controller
         $new_data = [];
         $new_data_for_sum = [];
         foreach( $data as $category => $_dates ) {
-            $new_data[ $category ] = [ '#' => $category ];
-            $new_data_for_sum[ $category ] = [ '#' => $category ];
+            $new_data[ $category ] = [ self::getProjectExpensesColumnLabel() => $category ];
+            $new_data_for_sum[ $category ] = [ self::getProjectExpensesColumnLabel() => $category ];
 
             foreach( $dates as $date ) {
                 $value = $_dates[ $date ] ?? 0;
@@ -200,7 +208,7 @@ class ProjectController extends Controller
         $new_data = toCollect(array_values($new_data));
         $new_data_for_sum = toCollect(array_values($new_data_for_sum));
 
-        $new_data_totals = [ '#' => null ];
+        $new_data_totals = [ self::getProjectExpensesColumnLabel() => null ];
         foreach( $dates as $date ) {
             $_sum_dates = $new_data_for_sum->sum($date);
             $new_data_totals[ $date ] = $_sum_dates ? formatValueAsCurrency($_sum_dates) : '-';

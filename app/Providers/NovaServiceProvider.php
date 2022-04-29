@@ -22,6 +22,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         parent::boot();
 
+        Nova::script('global', public_path('js/global.js'));
 //        Nova::script('sweetalert', public_path('js/sweetalert.min.js'));
         Nova::script('helpers', public_path('js/helpers.js'));
         Nova::script('globalEventListener', public_path('js/globalEventListener.js'));

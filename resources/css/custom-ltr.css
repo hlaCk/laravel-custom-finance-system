@@ -269,7 +269,7 @@ body:lang(en), li:lang(en), th:lang(en), td:lang(en), table:lang(en), div:lang(e
 }
 
 .text-right:lang(en) {
-    text-align: left;
+    text-align: left !important;
 }
 
 .pl-search:lang(en) {
@@ -279,11 +279,11 @@ body:lang(en), li:lang(en), th:lang(en), td:lang(en), table:lang(en), div:lang(e
 
 .sidebar-icon:lang(en) {
     margin-left: unset !important;
-    margin-right: 0.75rem;
+    margin-right: 0.75rem !important;
 }
 
 #popover_uwf0m97ec4:lang(en) {
-    transform: none;
+    transform: none !important;
 }
 
 ul.dropdown-menu li a:lang(en) {
@@ -291,15 +291,15 @@ ul.dropdown-menu li a:lang(en) {
 }
 
 svg.navigation-arrow:lang(en) {
-    float: right;
+    float: right !important;
 }
 
 .navigation-section:lang(en) {
-    padding: 10px 17px 10px 0px;
+    padding: 10px 17px 10px 0px !important;
 }
 
 .lang-switch:lang(en) {
-    margin-left: 21px;
+    margin-left: 21px !important;
 }
 
 /*.z-50.open:lang(en) {
@@ -314,32 +314,32 @@ svg.navigation-arrow:lang(en) {
 }
 
 /*[x-placement="bottom-start"]>div>div {
-    right: 187px;
+    right: 187px !important;
 }*/
 
 body #nova .side_navigation_menu_container .menu-logo-conntainer {
-    align-items: center;
-    justify-content: center;
-    background-color: var(--primary-dark-color);
+    align-items: center !important;
+    justify-content: center !important;
+    background-color: var(--primary-dark-color) !important;
 }
 
 body #nova .side_navigation_menu_container .menu-logo-conntainer .menu-logo img {
-    height: 55px;
+    height: 55px !important;
 }
 
 @media screen and (max-width: 992px) {
     .h-header .pl-search {
-        width: 100%;
+        width: 100% !important;
     }
 
     .bg-logo {
         display: block !important;
-        height: 16.6%;
+        height: 16.6% !important;
         padding-top: 67px !important;
     }
 
     .bg-logo .menu-logo {
-        text-align: center;
+        text-align: center !important;
     }
 
     .bg-logo img {
@@ -349,9 +349,9 @@ body #nova .side_navigation_menu_container .menu-logo-conntainer .menu-logo img 
 
 
 body #nova .side_navigation_menu_container .side_nav_icon {
-    width: 20px;
-    margin-right: auto;
-    margin-left: 10px;
+    width: 20px !important;
+    margin-right: 10px !important;
+    margin-left: 10px !important;
 }
 
 body #nova .side_navigation_menu_container .sidemenu .sidebar-dropdown .dropdown-menu .nav_inner_li img,
@@ -374,11 +374,11 @@ body #nova .side_navigation_menu_container .sidemenu .sidebar-dropdown .nav_inne
 }
 
 .pin-r {
-    right: 0;
-    left: auto;
+    right: 0 !important;
+    left: auto !important;
 }
 
 .pin-l {
-    left: 0;
-    right: auto;
+    left: 0 !important;
+    right: auto !important;
 }

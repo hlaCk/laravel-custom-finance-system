@@ -107,7 +107,7 @@ class User extends Authenticatable
     public function registerLocale(): self
     {
         if( array_key_exists($this->locale, config('nova.locales')) ) {
-            app()->setLocale($this->locale);
+            setCurrentLocale($this->locale);
         }
 
         return $this;

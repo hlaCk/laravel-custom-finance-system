@@ -19,4 +19,5 @@ return [
         1 => 'New',
         2 => 'Expired',
     ],
+    'ytd_header_label' => 'Expenses category',
 ];

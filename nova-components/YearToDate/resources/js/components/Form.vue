@@ -23,7 +23,7 @@
                 <progress-button
                     ref="back_button"
                     v-bind="{ ...$attrs }"
-                    :class="{'d-none': !submitted}"
+                    :class="{'hidden': !submitted}"
                     :disabled="loading"
                     :processing="loading"
                     dusk="reset_selected_project"
@@ -36,8 +36,8 @@
                     ref="prog_btn"
                     v-bind="{ ...$attrs }"
                     v-on="$listeners"
-                    :class="{'d-none': !!submitted}"
-                    :disabled="loading"
+                    :class="{'hidden': !!submitted}"
+                    :disabled="loading || !project_id"
                     :processing="loading"
                     dusk="submit-selected-project"
                     type="submit"
@@ -49,7 +49,7 @@
 
 
         <hr class="my-3"
-            :class="{'d-none': !submitted}" >
+            :class="{'hidden': !submitted}" >
 
         <card class="my-3">
             <project-info
@@ -57,13 +57,13 @@
         </card>
 
         <hr class="my-3"
-            :class="{'d-none': !submitted}" >
+            :class="{'hidden': !submitted}" >
 
         <project-credit-info
             :project_id="Number(selectedProjectId)" />
 
         <hr class="my-3"
-            :class="{'d-none': !submitted}" >
+            :class="{'hidden': !submitted}" >
 
         <project-expense-info
             :project_id="Number(selectedProjectId)"/>

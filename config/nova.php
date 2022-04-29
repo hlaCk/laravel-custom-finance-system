@@ -158,7 +158,7 @@ return [
     'menus_table_name'      => 'nova_menu_menus',
     'menu_items_table_name' => 'nova_menu_menu_items',
 
-    'menus'           => [
+    'menus'               => [
         // 'header' => [
         //     'name' => 'Header',
         //     'unique' => true,
@@ -169,7 +169,15 @@ return [
     # If you're just setting up, this is probably of no importance to you,
     # but later on, when you want custom menu item types with custom fields
     # , you can register them here:
-    'menu_item_types' => [],
-    'currency'        => 'SAR',
+    'menu_item_types'     => [],
+
+    // string: default currency
+    'currency'            => 'SAR',
+
+    // string: default locale to format money by formatValueAsCurrency()
+    'money_locale'        => 'en',
+
+    // string|null: force locale for carbon
+    'force_carbon_locale' => null,
 
 ];

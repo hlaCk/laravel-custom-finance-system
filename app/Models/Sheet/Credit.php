@@ -16,6 +16,7 @@ class Credit extends Model implements ICredit
     use SoftDeletes;
     use THasBooleanStatus;
     use \App\Traits\HasTranslations;
+    use \App\Traits\Sheet\TFormatDateAttribute;
 
     public $translatable = [];
 

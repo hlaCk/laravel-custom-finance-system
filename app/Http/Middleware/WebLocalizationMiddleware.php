@@ -18,7 +18,7 @@ class WebLocalizationMiddleware
     {
         $lang = request('lang', session('locale', config('app.locale', 'en')));
         $lang = config("nova.locales.{$lang}") ? $lang : 'en';
-        app()->setLocale($lang);
+        setCurrentLocale($lang);
 
         $session = session();
         $session->put([ 'locale' => $lang ]);
