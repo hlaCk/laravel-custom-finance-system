@@ -19,5 +19,6 @@ return [
         1 => 'New',
         2 => 'Expired',
     ],
-    'ytd_header_label' => 'Expenses category',
+    'projects_report_ytd_header_label' => 'Expenses category',
+    'company_report_ytd_header_label' => 'Summary',
 ];

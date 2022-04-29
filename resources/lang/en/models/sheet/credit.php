@@ -21,7 +21,11 @@ return [
     ],
     'balance'  => 'Balance',
     'credits'  => 'Credit',
+    'expenses'  => 'Expenses',
     'grand_total'  => 'Grand Total',
+    'total_of'  => 'Total:',
     'no_of_payments'  => 'No. of Payments YTD',
-    'ytd_header_label' => 'Credit to project',
+    'projects_report_ytd_header_label' => 'Credit to project',
+    'company_report_ytd_header_label' => 'Summary',
+    'company_report_ytd_by_project_header_label' => 'Credit By Project',
 ];

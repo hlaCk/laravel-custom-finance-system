@@ -28,6 +28,8 @@
         "orlyapps/nova-belongsto-depend": "*",
         "pishran/nova-rtl-theme": "^1.5",
         "sheets/report-components": "*",
+        "sheets/projects-report-y-t-d": "*",
+        "sheets/company-report-y-t-d": "*",
         "sheets/year-to-date": "*",
         "spatie/laravel-permission": "^5.1",
         "spatie/laravel-translatable": "^4.6",
@@ -164,6 +166,14 @@
         "14": {
             "type": "path",
             "url": "./nova-components/YearToDate"
+        },
+        "15": {
+            "type": "path",
+            "url": "./nova-components/ProjectsReportYTD"
+        },
+        "16": {
+            "type": "path",
+            "url": "./nova-components/CompanyReportYTD"
         }
     }
 }

@@ -12,6 +12,10 @@
         "build-nova-quick-search-prod": "cd nova-components/NovaQuickSearch && npm run prod",
         "build-report-components": "cd nova-components/ReportComponents && npm run dev",
         "build-report-components-prod": "cd nova-components/ReportComponents && npm run prod",
+        "build-projects-report-y-t-d": "cd nova-components/ProjectsReportYTD && npm run dev",
+        "build-projects-report-y-t-d-prod": "cd nova-components/ProjectsReportYTD && npm run prod",
+        "build-company-report-y-t-d": "cd nova-components/CompanyReportYTD && npm run dev",
+        "build-company-report-y-t-d-prod": "cd nova-components/CompanyReportYTD && npm run prod",
         "build-year-to-date": "cd nova-components/YearToDate && npm run dev",
         "build-year-to-date-prod": "cd nova-components/YearToDate && npm run prod"
     },

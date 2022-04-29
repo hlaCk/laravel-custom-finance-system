@@ -21,7 +21,11 @@ return [
     ],
     'balance'  => 'الرصيد',
     'credits'  => 'الائتمان',
+    'expenses'  => 'المصروفات',
     'grand_total'  => 'الإجمالي العام',
+    'total_of'  => 'الإجمالي:',
     'no_of_payments'  => 'عدد الدفعات',
-    'ytd_header_label' => 'الائتمان للمشروع',
+    'projects_report_ytd_header_label' => 'الائتمان للمشروع',
+    'company_report_ytd_header_label' => 'ملخص',
+    'company_report_ytd_by_project_header_label' => 'الائتمانات بالمشروع',
 ];

@@ -52,11 +52,11 @@ class ProjectController extends Controller
     }
 
     public static function getProjectCreditsColumnLabel() {
-        return __('models/sheet/credit.ytd_header_label');
+        return __('models/sheet/credit.projects_report_ytd_header_label');
     }
 
     public static function getProjectExpensesColumnLabel() {
-        return __('models/sheet/expense.ytd_header_label');
+        return __('models/sheet/expense.projects_report_ytd_header_label');
     }
 
     public function project_credits_ytd_by_month_show(Request $request, Project $project)
@@ -75,7 +75,9 @@ class ProjectController extends Controller
         }
 
         $expenses->except($exists)
-                 ->each(fn($value, $month) => ($balance[ $month ] = 0 - (double) $value));
+                 ->each(function ($value, $month) use (&$balance) {
+                     $balance[ $month ] = 0 - (double) $value;
+                 });
 
         $credits->except($exists)
                 ->each(fn($value, $month) => ($balance[ $month ] = (double) $value));

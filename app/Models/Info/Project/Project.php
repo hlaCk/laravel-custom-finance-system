@@ -106,9 +106,13 @@ class Project extends Model implements IBooleanStatus
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany|Builder
      */
-    public function scopeCreditsByDate(Builder $builder, $from_date = null, $credit_category_id = null)
+    public function scopeCreditsByDate(Builder $builder, $from_date = null, $credit_category_id = null, $project_id = null)
     {
         return $this->credits()
+                    ->when(
+                        !is_null($project_id),
+                        fn($q) => $q->whereIn('project_id', (array) $project_id)
+                    )
                     ->when(
                         !is_null($credit_category_id),
                         fn($q) => $q->whereIn('credit_category_id', (array) $credit_category_id)
@@ -185,22 +189,25 @@ class Project extends Model implements IBooleanStatus
     /**
      * @param int|int[]|null        $credit_category_id
      * @param \DateTime|string|null $from_date default: `getDefaultFromDate()`
+     * @param \Closure|null                  $group_by null = group by credit_category name
      *
      * @return \Illuminate\Support\Collection
      */
-    public function credits_ytd($credit_category_id = null, $from_date = null)
+    public function credits_ytd($credit_category_id = null, $from_date = null, ?\Closure $group_by = null)
     {
+        $group_by ??= fn($model) => optional($model->credit_category)->name;
         $from_date ??= getDefaultFromDate();
         $credit_category_id =
             $credit_category_id === '*' || $credit_category_id === [ '*' ] ? null : $credit_category_id;
         return $this->creditsByDate($from_date, $credit_category_id)
-                    ->with('credit_category')
+                    ->with(['credit_category', 'project'])
                     ->get([
                               'amount',
                               'date',
                               'credit_category_id',
+                              'project_id',
                           ])
-                    ->groupBy(fn($model) => optional($model->credit_category)->name)
+                    ->groupBy($group_by)
             ->map->sum('amount');
     }
 
