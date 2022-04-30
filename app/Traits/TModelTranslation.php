@@ -13,14 +13,18 @@ trait TModelTranslation
      */
     public static function trans(string $key, $replace = [], $locale = null)
     {
-        if($path = str_ireplace('App\\Models\\','', dirname(static::class))) {
-            $path = collect(explode('\\', $path))->map('snake_case')->implode('/');
+        $class_name = str_replace('\\', '/', static::class);
+        $class_basename = basename($class_name);
+        $class_dirname = dirname($class_name);
+
+        if($path = str_ireplace('App/Models/','', $class_dirname)) {
+            $path = collect(explode('/', $path))->map('snake_case')->implode('/');
             $path = $path ? str_finish("models/{$path}", '/') : "";
         } else {
             $path = "models/";
         }
 
-        $model = snake_case(class_basename(static::class));
+        $model = snake_case($class_basename);
 
         return getTrans(
             "{$path}{$model}.{$key}",
