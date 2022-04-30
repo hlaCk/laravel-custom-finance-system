@@ -11,12 +11,18 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @method static Builder|static byDate($from_date = null, $credit_category_id = null, $project_id = null)
+ *      @see Credit::scopeByDate()
+ *
+ */
 class Credit extends Model implements ICredit
 {
     use HasFactory;
     use SoftDeletes;
     use THasBooleanStatus;
     use \App\Traits\HasTranslations;
+    use \App\Traits\TBelongsToProject;
     use \App\Traits\Sheet\TFormatDateAttribute;
 
     public $translatable = [];
@@ -87,11 +93,6 @@ class Credit extends Model implements ICredit
     public function getCreditCategoryNameAttribute()
     {
         return optional($this->credit_category)->name;
-    }
-
-    public function getProjectNameAttribute()
-    {
-        return optional($this->project)->name;
     }
 
     /**

@@ -45,4 +45,5 @@ return [
     'dont_have_an_account'              => 'Don`t have an account?',
     'login'                             => 'Login',
     'sign_up_now'                       => 'Sign Up Now',
+    'all'                               => 'All',
 ];

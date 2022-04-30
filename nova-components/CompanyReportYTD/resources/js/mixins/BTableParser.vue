@@ -11,7 +11,7 @@ export default {
         /**
          * OPTIONAL
          * @param d
-         * @return {string}
+         * @return {boolean}
          */
         isFirstFooterCell(d) {
             return this.isLastRow(d) && this.getFieldKey(d) === this.bTableConfig.first_column_key
@@ -19,15 +19,7 @@ export default {
         /**
          * OPTIONAL
          * @param d
-         * @return {string}
-         */
-        isLastFooterCell(d) {
-            return this.isLastRow(d) && this.getFieldKey(d) === this.bTableConfig.last_column_key
-        },
-        /**
-         * OPTIONAL
-         * @param d
-         * @return {string}
+         * @return {boolean}
          */
         isFirstRow(d) {
             return this.getFieldIndex(d) === this.getFirstRowIndex(d)
@@ -35,10 +27,34 @@ export default {
         /**
          * OPTIONAL
          * @param d
-         * @return {string}
+         * @return {boolean}
+         */
+        isFirstColumn(d) {
+            return this.getFieldKey(d) === this.bTableConfig.first_column_key
+        },
+        /**
+         * OPTIONAL
+         * @param d
+         * @return {boolean}
+         */
+        isLastFooterCell(d) {
+            return this.isLastRow(d) && this.getFieldKey(d) === this.bTableConfig.last_column_key
+        },
+        /**
+         * OPTIONAL
+         * @param d
+         * @return {boolean}
          */
         isLastRow(d) {
             return this.getFieldIndex(d) === this.getLastRowIndex(d)
+        },
+        /**
+         * OPTIONAL
+         * @param d
+         * @return {boolean}
+         */
+        isLastColumn(d) {
+            return this.getFieldKey(d) === this.bTableConfig.last_column_key
         },
 
         /**

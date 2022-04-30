@@ -3,7 +3,7 @@
         <info-label-field
             :field="project"
             :label="project.name"
-            :value="selectedProjectId && projects[selectedProjectId]"
+            :value="project_name"
             :class="{'hidden': !is_view}"
         />
 
@@ -12,7 +12,14 @@
             :field="project"
             :value="selectedProjectId"
             :class="{'hidden': !!is_view}"
+        ></form-select-field>
+
+        <info-label-field
+            :field="project"
+            :label="__('Date')"
+            :value="reportDateRange"
         />
+
     </loading-view>
 </template>
 
@@ -21,6 +28,7 @@ import { HandlesValidationErrors } from 'laravel-nova'
 
 export default {
     mixins: [ HandlesValidationErrors ],
+    inject: [ 'selectedProjectId' ],
     props: {
         value: {
             default: 0,
@@ -31,11 +39,6 @@ export default {
             nullable: true,
             default: false,
         },
-    },
-    provide() {
-        return {
-            selectedProjectId: this.selectedProjectId,
-        };
     },
     data: () => (
         {
@@ -61,7 +64,7 @@ export default {
                 debounce: 100,
                 options: [],
             },
-            selectedProject: {},
+            selectedProject: 0,
         }
     ),
     async created() {
@@ -94,7 +97,7 @@ export default {
                        } );
         },
         handleProjectChange(v) {
-            this.selectedProjectId = v
+            this.selectedProject = v
             this.$emit( 'set-changed', {selected: v, projects: this.projects} )
             Nova.$emit( 'project-changed', {selected: v, projects: this.projects} )
         },
@@ -120,13 +123,11 @@ export default {
                 this.project.options = v
             },
         },
-        selectedProjectId: {
-            get() {
-                return this.project.value
-            },
-            set(value) {
-                this.project.value = value
-            },
+        project_name() {
+            return this.projects[ this.selectedProject ]
+        },
+        reportDateRange() {
+            return Nova.config.defaultDateRange || '-'
         },
     },
     watch: {

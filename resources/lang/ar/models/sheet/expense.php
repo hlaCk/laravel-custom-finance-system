@@ -21,4 +21,5 @@ return [
     ],
     'projects_report_ytd_header_label' => 'تصنيف المصروفات',
     'company_report_ytd_header_label'  => 'ملخص',
+    'company_report_ytd_by_project_header_label' => 'المصاريف بالمشروع',
 ];

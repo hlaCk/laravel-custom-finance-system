@@ -191,8 +191,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
 //            new \Anaseqal\NovaImport\NovaImport,
 
-\Sheets\YearToDate\YearToDate::make(),
-
 \Sheets\ProjectsReportYTD\ProjectsReportYTD::make(),
 
 \Sheets\CompanyReportYTD\CompanyReportYTD::make(),

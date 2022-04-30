@@ -23,6 +23,7 @@ return [
     'credits'  => 'الائتمان',
     'expenses'  => 'المصروفات',
     'grand_total'  => 'الإجمالي العام',
+    'total'  => 'الإجمالي',
     'total_of'  => 'الإجمالي:',
     'no_of_payments'  => 'عدد الدفعات',
     'projects_report_ytd_header_label' => 'الائتمان للمشروع',

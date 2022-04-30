@@ -52,6 +52,7 @@
     "Choose Type": "اختر نوع",
     "Choose an option": "اختر خيار",
     "Choose project": "حدد مشروع",
+    "Pick projects": "اخترع المشاريع",
     "Click to choose": "انقر لتختار",
     "Reset Filters": "إعادة تعين الفلتر",
     "Create": "إنشاء",
@@ -187,11 +188,14 @@
     "Balance YTD": "الرصيد",
     "Projects Report YTD": "تقرير رصيد مشروع",
     "ProjectsReportYTD": "تقرير رصيد مشروع",
-    "CompanyReportYTD": "تقرير رصيد مشروع",
+    "CompanyReportYTD": "تقرير رصيد المشاريع",
     "Project": "المشروع",
+    "Projects": "المشاريع",
     "Sheet": "العمليات",
     "Chart": "الشجرة",
     "Reports": "التقارير",
     "Show": "عرض",
-    "Back": "عودة"
+    "Back": "عودة",
+    "All": "الكل",
+    "Date": "التاريخ"
 }

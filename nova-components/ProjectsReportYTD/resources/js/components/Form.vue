@@ -72,8 +72,12 @@
 </template>
 
 <script>
+import SelectProjectField from "./SelectProjectField";
 
 export default {
+    components: {
+        'select-project-field': SelectProjectField,
+    },
     provide() {
         return {
             selectedProjectId: this.selectedProjectId,

@@ -6,7 +6,7 @@ Nova.booting( (Vue, router, store) => {
     Vue.use( LayoutPlugin )
 
     Vue.component( 'info-label-field', require( './components/InfoLabelField' ) );
-    Vue.component( 'select-project-field', require( './components/SelectProjectField' ) );
+    // Vue.component( 'select-project-field', require( './components/SelectProjectField' ) );
 
     Vue.component( 'project-info', require( './components/ShowProjectInfo' ) );
     Vue.component( 'project-credit-info', require( './components/ShowProjectCreditInfo' ) );

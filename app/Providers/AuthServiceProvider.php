@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use App\Nova\Info\Client;
-use App\Nova\Info\CreditCategory;
-use App\Nova\Info\EntryCategory;
-use App\Nova\Settings\Setting;
+use App\Models\Info\Client;
+use App\Models\Info\CreditCategory;
+use App\Models\Info\EntryCategory;
+use App\Models\Settings\Setting;
 use App\Policies\Info\ClientPolicy;
 use App\Policies\Info\CreditCategoryPolicy;
 use App\Policies\Info\EntryCategoryPolicy;
@@ -23,13 +23,13 @@ class AuthServiceProvider extends ServiceProvider
         // 'App\Models\Abstracts\Model' => 'App\Policies\ModelPolicy',
         EntryCategory::class                        => EntryCategoryPolicy::class,
         CreditCategory::class                        => CreditCategoryPolicy::class,
-        \App\Nova\Chart\Account::class              => \App\Policies\Chart\AccountPolicy::class,
-        \App\Nova\Info\Project\Project::class       => \App\Policies\Info\Project\ProjectPolicy::class,
-        \App\Nova\Info\Project\ProjectStatus::class => \App\Policies\Info\Project\ProjectStatusPolicy::class,
+        \App\Models\Chart\Account::class              => \App\Policies\Chart\AccountPolicy::class,
+        \App\Models\Info\Project\Project::class       => \App\Policies\Info\Project\ProjectPolicy::class,
+        \App\Models\Info\Project\ProjectStatus::class => \App\Policies\Info\Project\ProjectStatusPolicy::class,
         Client::class                               => ClientPolicy::class,
         Setting::class                              => SettingPolicy::class,
-        \App\Nova\Sheet\Expense::class           => \App\Policies\Sheet\ExpensePolicy::class,
-        \App\Nova\Sheet\Credit::class           => \App\Policies\Sheet\CreditPolicy::class,
+        \App\Models\Sheet\Expense::class           => \App\Policies\Sheet\ExpensePolicy::class,
+        \App\Models\Sheet\Credit::class           => \App\Policies\Sheet\CreditPolicy::class,
     ];
 
     /**

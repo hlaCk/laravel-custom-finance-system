@@ -23,6 +23,7 @@ return [
     'credits'  => 'Credit',
     'expenses'  => 'Expenses',
     'grand_total'  => 'Grand Total',
+    'total'  => 'Total',
     'total_of'  => 'Total:',
     'no_of_payments'  => 'No. of Payments YTD',
     'projects_report_ytd_header_label' => 'Credit to project',

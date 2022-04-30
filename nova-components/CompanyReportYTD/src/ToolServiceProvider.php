@@ -17,14 +17,18 @@ class ToolServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'company-report-y-t-d');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'company-report-y-t-d');
 
         $this->app->booted(function () {
             $this->routes();
         });
 
         Nova::serving(function (ServingNova $event) {
-            //
+            Nova::provideToScript([
+                                      'defaultFromDate'  => $defaultFromDate = getDefaultFromDate()->format('Y-m-d'),
+                                      'defaultToDate'    => $defaultToDate = getDefaultToDate()->format('Y-m-d'),
+                                      'defaultDateRange' => "{$defaultFromDate} - {$defaultToDate}",
+                                  ]);
         });
     }
 
@@ -35,13 +39,13 @@ class ToolServiceProvider extends ServiceProvider
      */
     protected function routes()
     {
-        if ($this->app->routesAreCached()) {
+        if( $this->app->routesAreCached() ) {
             return;
         }
 
-        Route::middleware(['nova', Authorize::class])
-                ->prefix('nova-vendor/company-report-y-t-d')
-                ->group(__DIR__.'/../routes/api.php');
+        Route::middleware([ 'nova', Authorize::class ])
+             ->prefix('nova-vendor/company-report-y-t-d')
+             ->group(__DIR__ . '/../routes/api.php');
     }
 
     /**

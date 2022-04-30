@@ -1,10 +1,10 @@
 <?php
 
-namespace Sheets\YearToDate\Http\Resources;
+namespace App\Http\Resources\Api\Abstracts;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProjectExpensesYtdByCateoryResource extends JsonResource
+abstract class DataByProjectBTableResource extends JsonResource
 {
 
     /**
@@ -24,6 +24,14 @@ class ProjectExpensesYtdByCateoryResource extends JsonResource
      */
     public function toArray($request)
     {
-        return $this->resource;
+        /** @var \Illuminate\Support\Collection $model */
+        $model = toCollect($this->resource);
+        $headers = $model->pull('headers', []);
+        $credits = $model->pull('data', []);
+
+        return [
+            'headers' => $headers,
+            'payload' => $credits,
+        ];
     }
 }

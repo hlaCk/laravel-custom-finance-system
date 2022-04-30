@@ -48,13 +48,6 @@ return [
         ],
         'Reports'        => [
             [
-                'active'          => !true,
-                'group'           => 'Reports',
-                'navigationLabel' => 'YearToDate',
-                'uriKey'          => config('app.nova.path') . '/year-to-date',
-                'name'            => 'year-to-date',
-            ],
-            [
                 'active'          => true,
                 'group'           => 'Reports',
                 'navigationLabel' => 'CompanyReportYTD',

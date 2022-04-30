@@ -418,7 +418,7 @@ if( !function_exists('isLocaleAllowed') ) {
 
 if( !function_exists('getDefaultFromDate') ) {
     /**
-     * @return \Illuminate\Support\Carbon
+     * @return \Carbon\Carbon|\Carbon\CarbonPeriod|\DateTime|\Illuminate\Support\Carbon
      */
     function getDefaultFromDate()
     {
@@ -428,7 +428,7 @@ if( !function_exists('getDefaultFromDate') ) {
 
 if( !function_exists('getDefaultToDate') ) {
     /**
-     * @return \Illuminate\Support\Carbon
+     * @return \Carbon\Carbon|\Carbon\CarbonPeriod|\DateTime|\Illuminate\Support\Carbon
      */
     function getDefaultToDate()
     {
@@ -469,5 +469,15 @@ if( !function_exists('formatValueAsCurrency') ) {
 
         return \Laravel\Nova\Fields\Currency::make($value)
                                             ->formatMoney($value, null, $locale);
+    }
+}
+
+if( !function_exists('makeFormatValueAsCurrency') ) {
+    /**
+     * @return \Closure
+     */
+    function makeFormatValueAsCurrency(): Closure
+    {
+        return static fn($v, $l = null) => formatValueAsCurrency($v, $l);
     }
 }

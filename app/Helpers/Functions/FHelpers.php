@@ -259,7 +259,7 @@ function navigationRenderCallback($navigation = null)
             ];
         });
     // merge others with menu
-    $_navigation->mapWithKeys(function ($resources, $group) use(&$_navigation_others) {
+    $_navigation->mapWithKeys(function ($resources, $group) use (&$_navigation_others) {
         /** @var \Laravel\Nova\ResourceCollection $resources */
         if( $_navigation_others->has($group) ) {
             foreach( $_navigation_others->get($group) as $item ) {
@@ -562,5 +562,66 @@ if( !function_exists('isAdmin') ) {
         $user ??= auth()->user();
 
         return $user && $user->hasRole('admin');
+    }
+}
+
+if( !function_exists('getDatePeriodUntil') ) {
+    /**
+     * @param \Carbon\Carbon|\Carbon\CarbonPeriod|\DateTime|\Illuminate\Support\Carbon|\Closure|null $from_date
+     * @param \Carbon\Carbon|\Carbon\CarbonPeriod|\DateTime|\Illuminate\Support\Carbon|\Closure|null $to_date
+     * @param string|\Closure|null                                                                   $format
+     * @param string|\Closure|null                                                                   $untilUnit
+     *
+     * @return \Carbon\Carbon|\Carbon\CarbonPeriod|\DateTime|\Illuminate\Support\Carbon|\Generator|\Iterator
+     */
+    function getDatePeriodUntil($from_date = null, $to_date = null, $format = 'Y-m-d', $untilUnit = 'months')
+    {
+        /** @value \Carbon\Carbon $from_date */
+        $from_date = value($from_date ?? getDefaultFromDate());
+        /** @value \Carbon\Carbon $to_date */
+        $to_date = value($to_date ?? getDefaultToDate());
+        /** @value string|null $untilUnit */
+        $untilUnit = ($untilUnit = value($untilUnit)) && is_string($untilUnit)
+            ? str_finish($untilUnit, 'Until') : null;
+        /** @value string|null $format */
+        $format = value($format);
+
+        if( $untilUnit && is_string($untilUnit) ) {
+            $result = $from_date->$untilUnit($to_date);
+        }
+
+        if( !is_null($format) ) {
+            $result = $result->map(fn($v) => $v->translatedFormat((string) $format));
+        }
+
+        return $result;
+    }
+}
+
+if( !function_exists('getDatePeriodUntilAsArray') ) {
+    /**
+     * @param \Carbon\Carbon|\Closure|null $from_date
+     * @param \Carbon\Carbon|\Closure|null $to_date
+     * @param string|\Closure|null         $format
+     * @param string|\Closure|null         $untilUnit
+     *
+     * @return array
+     */
+    function getDatePeriodUntilAsArray($from_date = null, $to_date = null, $format = 'Y-m-d', $untilUnit = 'months')
+    {
+        return iterator_to_array(getDatePeriodUntil(...func_get_args()));
+    }
+}
+
+if( !function_exists('collectExcept') ) {
+    /**
+     * @param \Illuminate\Support\Collection          $collect
+     * @param \Illuminate\Support\Collection|iterable $exists
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    function collectExcept($collect, $exists): \Illuminate\Support\Collection
+    {
+        return count($exists) ? $collect->except($exists) : $collect;
     }
 }

@@ -32,6 +32,9 @@ class Permission extends Resource
      */
     public static $search = [
         'id',
+        'name',
+        'group',
+        'guard_name',
     ];
 
     /**

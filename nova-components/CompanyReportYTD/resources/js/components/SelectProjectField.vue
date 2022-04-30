@@ -3,7 +3,7 @@
         <info-label-field
             :field="project"
             :label="project.name"
-            :value="selectedProjectId && projects[selectedProjectId]"
+            :value="getSelectedProjectsNames"
             :class="{'hidden': !is_view}"
         />
 

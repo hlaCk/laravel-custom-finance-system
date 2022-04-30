@@ -5,12 +5,17 @@ Nova.booting( (Vue, router, store) => {
     Vue.use( IconsPlugin )
     Vue.use( LayoutPlugin )
 
-    Vue.component( 'info-label-field', require( './components/InfoLabelField' ) );
+    // Vue.component( 'info-label-field', require( './components/InfoLabelField' ) );
     Vue.component( 'select-project-field', require( './components/SelectProjectField' ) );
+    Vue.component( 'select-projects-field', require( './components/SelectProjectsField' ) );
+    // Vue.component( 'vue-multi-select', require( './components/VueMultiSelect' ) );
 
-    Vue.component( 'credit-summary-table', require( './components/CreditSummaryTable' ) );
-    Vue.component( 'credit-by-project-table', require( './components/ShowProjectCreditByProjectInfo' ) );
+    Vue.component( 'credit-expenses-summary-table', require( './components/CreditExpensesSummaryTable' ) );
+    Vue.component( 'credit-by-project-table', require( './components/CreditByProjectTable' ) );
+    Vue.component( 'expenses-by-project-table', require( './components/ExpensesByProjectTable' ) );
 
+    Vue.component( 'expense-by-category-table', require( './components/ExpenseByCategoryTable' ) );
+    // Vue.component( 'project-expense-info', require( './components/ShowProjectExpenseInfo' ) );
 
 
     // Vue.component( 'project-info', require( './components/ShowProjectInfo' ) );

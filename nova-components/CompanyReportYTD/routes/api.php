@@ -15,30 +15,21 @@ use Sheets\CompanyReportYTD\Http\Controllers\ProjectController;
 */
 
 Route::prefix('projects')->group(function () {
-    Route::get('', [ ProjectController::class, 'index' ])
-         ->name('CompanyReportYTD::get-projects');
+    Route::post('expenses_credits_ytd_by_month', [ ProjectController::class, 'project_expenses_credits_ytd_by_month_show' ])
+         ->name('CompanyReportYTD::get-project-expenses-credits-ytd-by-month');
 
-    Route::get('credits_ytd_by_project', [ ProjectController::class, 'project_credits_ytd_by_project_show' ])
+    Route::post('credits_ytd_by_project', [ ProjectController::class, 'project_credits_ytd_by_project_show' ])
          ->name('CompanyReportYTD::get-project-credits-ytd-by-project');
 
-    Route::prefix('{project}')->group(function () {
-        Route::get('', [ ProjectController::class, 'show' ])
-             ->name('CompanyReportYTD::show-project');
+    Route::post('expenses_ytd_by_project', [ ProjectController::class, 'project_expenses_ytd_by_project_show' ])
+         ->name('CompanyReportYTD::get-project-expenses-ytd-by-project');
 
-        Route::get('expenses_credits_ytd_by_month', [ ProjectController::class, 'project_expenses_credits_ytd_by_month_show' ])
-             ->name('CompanyReportYTD::get-project-expenses-credits-ytd-by-month');
-    });
+    Route::post('expenses_ytd_by_category_month', [ ProjectController::class, 'project_expenses_ytd_by_category_month_show' ])
+         ->name('CompanyReportYTD::get-project-expenses-ytd-by-category-month');
+
+
+//    Route::prefix('{project}')->group(function () {
+//        Route::get('', [ ProjectController::class, 'show' ])
+//             ->name('CompanyReportYTD::show-project');
+//    });
 });
-
-Route::get(
-    'entry_categories',
-    [ ProjectController::class, 'entry_categories_index' ]
-)->name('CompanyReportYTD::get-entry-categories');
-Route::get(
-    'credit_categories',
-    [ ProjectController::class, 'credit_categories_index' ]
-)->name('CompanyReportYTD::get-credit-categories');
-
-Route::get('some/url', [ ProjectController::class, 'test' ])->name(
-    'CompanyReportYTD::test'
-);

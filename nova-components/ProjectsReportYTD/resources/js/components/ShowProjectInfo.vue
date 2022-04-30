@@ -73,9 +73,11 @@ export default {
     },
     methods: {
         async getProject(id = 0) {
+            id = id || this.selectedProjectId
+            if( !id ) return Promise.resolve(false)
+
             this.data = {}
             this.loading = true
-            id = id || this.selectedProjectId
             if( id ) {
                 return Nova.request()
                            .get(

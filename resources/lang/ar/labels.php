@@ -27,7 +27,7 @@ return [
         'panels' => [
             'right' => config('app.name') . " v" . config('app.version'),
         ],
-        'title' => [
+        'title'  => [
             '',
             '',
             '',
@@ -45,4 +45,5 @@ return [
     'dont_have_an_account'              => 'لا تملك حساب؟',
     'login'                             => 'تسجيل الدخول',
     'sign_up_now'                       => 'سجل الآن',
+    'all'                               => 'الكل',
 ];

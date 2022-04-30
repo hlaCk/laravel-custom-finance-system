@@ -1,6 +1,6 @@
 <template>
     <loading-view :class="{
-    'hidden': !project_id
+    'hidden': !hasProjects()
 }" :loading="loading">
         <b-table
             striped
@@ -18,33 +18,37 @@
             thead-tr-class="whitespace-no-wrap"
             v-bind="{ ...$attrs }"
             v-on="$listeners"
-        ></b-table>
+        >
+            <!-- A custom formatted column -->
+            <template #cell()="data">
+                <span :class="getTableCellClass(data)" v-html="getTableCellValue(data)"></span>
+            </template>
+
+        </b-table>
     </loading-view>
 </template>
 
 <script>
+import BTableParser from "../mixins/BTableParser";
 
 export default {
-    inject: [ "selectedProjectId" ],
+    inject: [ "selectedProjectIds" ],
+    mixins: [ BTableParser ],
     props: {
-        project_id: {
-            type: Number,
-            required: false,
-            nullable: true,
-            default: 0,
+        project_ids: {
+            type: Array,
+            required: true,
         },
     },
     data: () => (
         {
             loading: false,
-            grand_total: [],
             data: [],
-            headers: [],
             fields: [],
         }
     ),
     async created() {
-        this.getProject(this.project_id)
+        this.getProject()
     },
     mounted() {
         this.registerChangeListener()
@@ -53,55 +57,78 @@ export default {
         } )
     },
     methods: {
+        getTableCellClass(d) {
+            // let paddingClass = this.isFirstFooterCell(d) ? ' p-2' : ''
+            return (this.isLastColumn(d) ? 'font-bold' : '')// + paddingClass
+        },
+        getTableCellValue(d) {
+            return this.isLastColumn(d) ?
+                   this.parseNormalCell(d) :
+                   this.parseSmallCell(d)
+        },
+        parseSmallCell(d) {
+            return `<small>${d.value}</small>`
+        },
+
+
+        hasProjects() {
+            return Array.from(this.project_ids).length > 0
+        },
         resetData() {
             this.data = []
-            this.grand_total = []
-            this.headers = []
+            this.fields = []
         },
         async getProject(id = 0) {
+            if( !this.hasProjects() ) return Promise.resolve(false)
+
             this.loading = true
-            id = id || this.selectedProjectId
-            if( id ) {
-                return Nova.request()
-                           .get(
-                               `/nova-vendor/company-report-y-t-d/projects/${id}/expenses_credits_ytd_by_month`,
-                               {params: {}},
-                           )
-                           .then( (res) => res.data )
-                           .then( (res) => {
-                               const {data,grand_total} = res;
-                               const {balance, credits, expenses, headers, no_of_payments} = data;
 
-                               this.grand_total = grand_total
-                               this.data = [balance, credits, expenses, no_of_payments]
-                               this.headers = headers
-                               this.fields = headers.map((x)=>x && x.label ? {key: typeof(x) === 'object' && x.label || "", class: typeof(x) === 'object' && x.class || ""} : false)
-                                                     .filter(x=>x)
+            // let $project_ids = Array.from(this.project_ids).join(',')
+            return Nova.request()
+                       .post(
+                           `/nova-vendor/company-report-y-t-d/projects/expenses_credits_ytd_by_month`,
+                           {project_ids: this.project_ids},
+                       )
+                       .then( (res) => res.data )
+                       .then( (res) => {
+                           const { data: {payload,headers} } = res;
 
-                               return data
-                           } )
-                           .catch( (error) => {
-                               console.error( error.response.status, error )
-                           } )
-                           .finally( () => {
-                               this.loading = false
-                           } );
-            } else {
-                this.loading = false
-            }
+                           this.data = payload
+                           let parseField = (x) => {
+                               let isObj = typeof(x) === 'object';
+                               if( x && isObj && x.label ) {
+                                   x[ 'key' ] = x.key || x.label || ""
+                                   return x
+                               } else {
+                                   return {
+                                       'label': x,
+                                       'key': x,
+                                   };
+                               }
+                               return false;
+                           }
+                           this.fields = headers.map(parseField)
+                                                .filter(x=>x)
 
-            return Promise.resolve( {} )
+                           return payload
+                       } )
+                       .catch( (error) => {
+                           console.error( error.response.status, error )
+                       } )
+                       .finally( () => {
+                           this.loading = false
+                       } );
         },
         registerChangeListener() {
-            Nova.$on( 'project-changed', (v) => {
+            // Nova.$on( 'project-changed', (v) => {
                 // console.log(v)
                 // this.loading = true
                 // this.getProject(v.selected)
-            } )
+            // } )
         },
 
         removeChangeListener() {
-            Nova.$off( 'project-changed' )
+            // Nova.$off( 'project-changed' )
         },
         getFieldFor({name = "", value = null}) {
             return {
@@ -141,9 +168,9 @@ export default {
         },
     },
     watch: {
-        project_id(n,o) {
+        project_ids(n,o) {
             this.resetData()
-            this.getProject(n)
+            this.getProject()
         }
     }
 }

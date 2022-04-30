@@ -12,6 +12,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Nova\Fields\Currency;
 
+/**
+ * @method static Builder|static expensesByDate($from_date = null, $entry_category_id = null)
+ *      @see Project::scopeExpensesByDate()
+ *
+ */
 class Project extends Model implements IBooleanStatus
 {
     use HasFactory;
@@ -162,6 +167,7 @@ class Project extends Model implements IBooleanStatus
         $group_by_entry_categories =
             $entry_category_id === '*' || $entry_category_id === [ '*' ] || !is_null($entry_category_id);
         $entry_category_id = $entry_category_id === '*' || $entry_category_id === [ '*' ] ? null : $entry_category_id;
+
         return $this->expensesByDate($from_date, $entry_category_id)
                     ->with('entry_category')
                     ->get([

@@ -21,4 +21,5 @@ return [
     ],
     'projects_report_ytd_header_label' => 'Expenses category',
     'company_report_ytd_header_label' => 'Summary',
+    'company_report_ytd_by_project_header_label' => 'Expenses By Project',
 ];

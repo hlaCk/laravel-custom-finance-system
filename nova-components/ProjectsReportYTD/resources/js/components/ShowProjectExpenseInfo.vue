@@ -58,8 +58,10 @@ export default {
             this.headers = []
         },
         async getProject(id = 0) {
-            this.loading = true
             id = id || this.selectedProjectId
+            if( !id ) return Promise.resolve(false)
+
+            this.loading = true
             if( id ) {
                 return Nova.request()
                            .get(

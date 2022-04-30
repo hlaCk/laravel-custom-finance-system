@@ -7,13 +7,14 @@
             @submit.prevent="submitSelectedProject"
         >
             <card class="my-3">
-                <select-project-field
+                <select-projects-field
                     id="select_project_field"
                     :is_view="!!submitted"
-                    @set-changed="selectProjectChange"
+                    :selected-ids.sync="project_ids"
                     ref="select_project_field"
                     v-bind="{ ...$attrs }"
                     v-on="$listeners"
+                    multiple
                 />
 
             </card>
@@ -37,7 +38,7 @@
                     v-bind="{ ...$attrs }"
                     v-on="$listeners"
                     :class="{'hidden': !!submitted}"
-                    :disabled="loading || !project_id"
+                    :disabled="loading || !hasProjects()"
                     :processing="loading"
                     dusk="submit-selected-project"
                     type="submit"
@@ -52,8 +53,8 @@
             :class="{'hidden': !submitted}" >
 
         <card class="my-3">
-            <credit-summary-table
-                :project_id="Number(selectedProjectId)"/>
+            <credit-expenses-summary-table
+                :project_ids="selectedProjectIds"/>
         </card>
 
         <hr class="my-3"
@@ -61,8 +62,22 @@
 
         <card class="my-3">
             <credit-by-project-table
-                :project_id="Number(selectedProjectId)"/>
+                :project_ids="selectedProjectIds"/>
         </card>
+
+        <hr class="my-3"
+            :class="{'hidden': !submitted}" >
+
+        <card class="my-3">
+            <expenses-by-project-table
+                :project_ids="selectedProjectIds"/>
+        </card>
+
+        <hr class="my-3"
+            :class="{'hidden': !submitted}" >
+
+        <expense-by-category-table
+            :project_ids="selectedProjectIds"/>
 
     </loading-view>
 </template>
@@ -72,7 +87,7 @@
 export default {
     provide() {
         return {
-            selectedProjectId: this.selectedProjectId,
+            selectedProjectIds: this.selectedProjectIds,
         };
     },
     data: () => (
@@ -81,8 +96,8 @@ export default {
 
             loading: false,
             submitted: false,
-            selectedProjectId: 0,
-            project_id: 0,
+            selectedProjectIds: [],
+            project_ids: [],
         }
     ),
     metaInfo() {
@@ -93,15 +108,16 @@ export default {
     methods: {
         resetSelectedProject() {
             this.submitted = false
-            this.selectedProjectId = 0
+            // this.selectedProjectId = 0
+            this.selectedProjectIds = []
         },
         submitSelectedProject() {
-            this.submitted = !!this.project_id
-            this.selectedProjectId = this.project_id
+            this.submitted = this.hasProjects()
+            this.selectedProjectIds = Array.from(this.project_ids).filter(v=>v!==null)
         },
-        selectProjectChange({selected, projects}) {
-            this.project_id = selected || 0
-        },
+        hasProjects() {
+            return Array.from(this.project_ids).length > 0
+        }
     },
     computed: {
         projects: {
@@ -119,10 +135,10 @@ export default {
         },
     },
     watch: {
-        selectedProjectId(n, o) {
+        submitted(n, o) {
 
         },
-        submitted(n, o) {
+        project_ids(n, o) {
 
         },
     },
