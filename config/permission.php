@@ -153,13 +153,13 @@ return [
     ],
 
     'permissions' => [
-        [ 'name' => 'account.view_any', 'group' => 'account', 'guard_name' => 'web' ],
-        [ 'name' => 'account.view', 'group' => 'account', 'guard_name' => 'web' ],
-        [ 'name' => 'account.create', 'group' => 'account', 'guard_name' => 'web' ],
-        [ 'name' => 'account.edit', 'group' => 'account', 'guard_name' => 'web' ],
-        [ 'name' => 'account.delete', 'group' => 'account', 'guard_name' => 'web' ],
-        [ 'name' => 'account.restore', 'group' => 'account', 'guard_name' => 'web' ],
-        [ 'name' => 'account.force_delete', 'group' => 'account', 'guard_name' => 'web' ],
+//        [ 'name' => 'account.view_any', 'group' => 'account', 'guard_name' => 'web' ],
+//        [ 'name' => 'account.view', 'group' => 'account', 'guard_name' => 'web' ],
+//        [ 'name' => 'account.create', 'group' => 'account', 'guard_name' => 'web' ],
+//        [ 'name' => 'account.edit', 'group' => 'account', 'guard_name' => 'web' ],
+//        [ 'name' => 'account.delete', 'group' => 'account', 'guard_name' => 'web' ],
+//        [ 'name' => 'account.restore', 'group' => 'account', 'guard_name' => 'web' ],
+//        [ 'name' => 'account.force_delete', 'group' => 'account', 'guard_name' => 'web' ],
 
         [ 'name' => 'client.view_any', 'group' => 'client', 'guard_name' => 'web' ],
         [ 'name' => 'client.view', 'group' => 'client', 'guard_name' => 'web' ],
