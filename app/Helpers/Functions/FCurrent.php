@@ -27,6 +27,18 @@ if( !function_exists('currentLocale') ) {
     }
 }
 
+if( !function_exists('currentFakerLocale') ) {
+    /**
+     * return Faker Locale
+     *
+     * @return string
+     */
+    function currentFakerLocale(): string
+    {
+        return trim(config('app.faker_locale', ''));
+    }
+}
+
 if( !function_exists('currentUrl') ) {
     /**
      * Returns current url.

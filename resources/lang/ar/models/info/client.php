@@ -7,6 +7,7 @@ return [
         'name' => 'الاسم',
         'type' => "النوع",
         'status' => 'الحالة',
+        'projects' => 'المشاريع',
         'created_at' => 'تاريخ الانشاء',
         'updated_at' => 'تاريخ التعديل',
         'deleted_at' => 'تاريخ الحذف',

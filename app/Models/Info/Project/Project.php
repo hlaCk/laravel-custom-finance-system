@@ -4,17 +4,17 @@ namespace App\Models\Info\Project;
 
 use App\Interfaces\IBooleanStatus;
 use App\Models\Abstracts\Model;
+use App\Models\Info\Client;
 use App\Models\Sheet\Credit;
 use App\Models\Sheet\Expense;
 use App\Traits\THasBooleanStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Laravel\Nova\Fields\Currency;
 
 /**
  * @method static Builder|static expensesByDate($from_date = null, $entry_category_id = null)
- *      @see Project::scopeExpensesByDate()
+ * @see Project::scopeExpensesByDate()
  *
  */
 class Project extends Model implements IBooleanStatus
@@ -37,6 +37,7 @@ class Project extends Model implements IBooleanStatus
         'name',
         'cost',
         'project_status_id',
+        'client_id',
         'status',
     ];
 
@@ -61,6 +62,7 @@ class Project extends Model implements IBooleanStatus
         'cost'              => 'double',
         'status'            => 'integer',
         'project_status_id' => 'integer',
+        'client_id'         => 'integer',
     ];
 
     protected $dates = [
@@ -77,6 +79,11 @@ class Project extends Model implements IBooleanStatus
     public function project_status()
     {
         return $this->belongsTo(ProjectStatus::class);
+    }
+
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
     }
 
     /**
@@ -111,8 +118,12 @@ class Project extends Model implements IBooleanStatus
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany|Builder
      */
-    public function scopeCreditsByDate(Builder $builder, $from_date = null, $credit_category_id = null, $project_id = null)
-    {
+    public function scopeCreditsByDate(
+        Builder $builder,
+                $from_date = null,
+                $credit_category_id = null,
+                $project_id = null
+    ) {
         return $this->credits()
                     ->when(
                         !is_null($project_id),
@@ -155,47 +166,9 @@ class Project extends Model implements IBooleanStatus
     }
 
     /**
-     * @param int|int[]|null        $entry_category_id
-     * @param \DateTime|string|null $from_date default: `getDefaultFromDate()`
-     * @param string|\Closure|null  $groupBy
-     *
-     * @return \Illuminate\Support\HigherOrderCollectionProxy
-     */
-    public function expenses_ytd_by_month($entry_category_id = null, $from_date = null, $groupBy = 'M/Y')
-    {
-        $from_date ??= getDefaultFromDate();
-        $group_by_entry_categories =
-            $entry_category_id === '*' || $entry_category_id === [ '*' ] || !is_null($entry_category_id);
-        $entry_category_id = $entry_category_id === '*' || $entry_category_id === [ '*' ] ? null : $entry_category_id;
-
-        return $this->expensesByDate($from_date, $entry_category_id)
-                    ->with('entry_category')
-                    ->get([
-                              'amount',
-                              'date',
-                              'entry_category_id',
-                          ])
-                    ->when(
-                        $group_by_entry_categories,
-                        fn($q) => $q->groupBy(fn($model) => $model->entry_category_name)
-                    )
-                    ->when(
-                        !is_null($groupBy),
-                        fn($q) => ($group_by_entry_categories ? $q->map : $q)->groupBy(
-                            fn($model) => $model->formatDate(value($groupBy))
-                        )
-                    )
-                    ->when(
-                        $group_by_entry_categories && !is_null($groupBy),
-                        fn($q) => $q->map(fn($model) => $model->map->sum('amount')),
-                        fn($q) => $q->map->sum('amount')
-                    );
-    }
-
-    /**
      * @param int|int[]|null        $credit_category_id
      * @param \DateTime|string|null $from_date default: `getDefaultFromDate()`
-     * @param \Closure|null                  $group_by null = group by credit_category name
+     * @param \Closure|null         $group_by  null = group by credit_category name
      *
      * @return \Illuminate\Support\Collection
      */
@@ -206,7 +179,7 @@ class Project extends Model implements IBooleanStatus
         $credit_category_id =
             $credit_category_id === '*' || $credit_category_id === [ '*' ] ? null : $credit_category_id;
         return $this->creditsByDate($from_date, $credit_category_id)
-                    ->with(['credit_category', 'project'])
+                    ->with([ 'credit_category', 'project' ])
                     ->get([
                               'amount',
                               'date',
@@ -215,6 +188,22 @@ class Project extends Model implements IBooleanStatus
                           ])
                     ->groupBy($group_by)
             ->map->sum('amount');
+    }
+
+    public function getProjectStatusNameAttribute()
+    {
+        return ($project_status = $this->project_status) ? $project_status->name : "";
+    }
+
+    public function getCostLabelAttribute()
+    {
+        return formatValueAsCurrency($this->cost);
+    }
+
+    public function getCreditTotalAttribute()
+    {
+        return (double) $this->credits_ytd_by_month(request()->credit_category_id, request()->from_date)
+                             ->sum('amount');
     }
 
     /**
@@ -258,23 +247,6 @@ class Project extends Model implements IBooleanStatus
                     );
     }
 
-    public function getProjectStatusNameAttribute()
-    {
-        return ($project_status = $this->project_status) ? $project_status->name : "";
-    }
-
-    public function getCostLabelAttribute()
-    {
-        return formatValueAsCurrency($this->cost);
-    }
-
-    public function getCreditTotalAttribute()
-    {
-        return (double) $this->credits_ytd_by_month(request()->credit_category_id, request()->from_date)
-            ->sum('amount')
-        ;
-    }
-
     public function getCreditTotalLabelAttribute()
     {
         return formatValueAsCurrency($this->credit_total);
@@ -289,7 +261,45 @@ class Project extends Model implements IBooleanStatus
     public function getExpensesTotalAttribute()
     {
         return (double) $this->expenses_ytd_by_month(null, request()->from_date)
-            ->sum();
+                             ->sum();
+    }
+
+    /**
+     * @param int|int[]|null        $entry_category_id
+     * @param \DateTime|string|null $from_date default: `getDefaultFromDate()`
+     * @param string|\Closure|null  $groupBy
+     *
+     * @return \Illuminate\Support\HigherOrderCollectionProxy
+     */
+    public function expenses_ytd_by_month($entry_category_id = null, $from_date = null, $groupBy = 'M/Y')
+    {
+        $from_date ??= getDefaultFromDate();
+        $group_by_entry_categories =
+            $entry_category_id === '*' || $entry_category_id === [ '*' ] || !is_null($entry_category_id);
+        $entry_category_id = $entry_category_id === '*' || $entry_category_id === [ '*' ] ? null : $entry_category_id;
+
+        return $this->expensesByDate($from_date, $entry_category_id)
+                    ->with('entry_category')
+                    ->get([
+                              'amount',
+                              'date',
+                              'entry_category_id',
+                          ])
+                    ->when(
+                        $group_by_entry_categories,
+                        fn($q) => $q->groupBy(fn($model) => $model->entry_category_name)
+                    )
+                    ->when(
+                        !is_null($groupBy),
+                        fn($q) => ($group_by_entry_categories ? $q->map : $q)->groupBy(
+                            fn($model) => $model->formatDate(value($groupBy))
+                        )
+                    )
+                    ->when(
+                        $group_by_entry_categories && !is_null($groupBy),
+                        fn($q) => $q->map(fn($model) => $model->map->sum('amount')),
+                        fn($q) => $q->map->sum('amount')
+                    );
     }
 
     public function getExpensesTotalLabelAttribute()

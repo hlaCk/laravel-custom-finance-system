@@ -1,15 +1,24 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Info;
 
+use App\Models\Info\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use function now;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Info\User>
  */
-class UserFactory extends Factory
+class UserFactory extends \Database\Factories\AbstractFactory
 {
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = User::class;
+
     /**
      * Define the model's default state.
      *

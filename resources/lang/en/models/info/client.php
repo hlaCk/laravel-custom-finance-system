@@ -7,6 +7,7 @@ return [
         'name' => 'Name',
         'type' => "Type",
         'status' => 'Status',
+        'projects' => 'Projects',
         'created_at' => 'Created at',
         'updated_at' => 'Updated at',
         'deleted_at' => 'Deleted at',

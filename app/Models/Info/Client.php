@@ -4,6 +4,7 @@ namespace App\Models\Info;
 
 use App\Interfaces\Info\IClient;
 use App\Models\Abstracts\Model;
+use App\Models\Info\Project\Project;
 use App\Traits\THasBooleanStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -61,4 +62,8 @@ class Client extends Model implements IClient
         return static::ACTIVE;
     }
 
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
 }

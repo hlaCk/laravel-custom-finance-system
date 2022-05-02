@@ -5,6 +5,10 @@ namespace App\Nova\Info\Project;
 use App\Nova\Abstracts\Resource as BaseResource;
 use App\Nova\Fields\Field;
 use App\Nova\Fields\StatusSelect;
+use App\Nova\Info\Client;
+use App\Nova\Info\CreditCategory;
+use App\Nova\Sheet\Credit;
+use App\Nova\Sheet\Expense;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
@@ -76,6 +80,18 @@ class Project extends BaseResource
                          )->first()->id
                      )
                      ->showCreateRelationButton(),
+
+            BelongsTo::make(
+                __('models/info/project/project.fields.client'),
+                'client',
+                Client::class
+            )
+                     ->nullable()
+                     ->showCreateRelationButton(),
+
+            Field::HasMany(static::$model::trans('credits'), 'credits', Credit::class),
+
+            Field::HasMany(static::$model::trans('expenses'), 'expenses', Expense::class),
 
             StatusSelect::forResource($this),
         ];

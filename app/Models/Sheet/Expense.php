@@ -16,11 +16,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @see Expense::scopeByDate()
  *
  */
-class Expense extends Model implements IExpense
+class Expense extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    use THasBooleanStatus;
     use \App\Traits\HasTranslations;
     use \App\Traits\TBelongsToProject;
     use \App\Traits\Sheet\TFormatDateAttribute;
@@ -37,7 +36,6 @@ class Expense extends Model implements IExpense
         'amount',
         'vat_included',
         'remarks',
-        'status',
         'project_id',
         'entry_category_id',
     ];
@@ -60,7 +58,6 @@ class Expense extends Model implements IExpense
      */
     protected $casts = [
         'remarks'           => 'string',
-        'status'            => 'integer',
         'project_id'        => 'integer',
         'entry_category_id' => 'integer',
         'amount'            => 'double',
@@ -74,11 +71,6 @@ class Expense extends Model implements IExpense
         'deleted_at',
         'date',
     ];
-
-    public static function getDefaultStatus(): int
-    {
-        return static::ACTIVE;
-    }
 
     public function project()
     {

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Chart\Account>
  */
-class AccountFactory extends Factory
+class AccountFactory extends \Database\Factories\AbstractFactory
 {
     /**
      * Define the model's default state.

@@ -151,7 +151,7 @@ return [
 
     'locales_cp'     => [
         'en' => 'en_US.UTF-8',
-        'ar' => 'ar_AA.UTF-8',
+        'ar' => 'ar_SA.UTF-8',
     ],
     'default_locale' => 'en',
 

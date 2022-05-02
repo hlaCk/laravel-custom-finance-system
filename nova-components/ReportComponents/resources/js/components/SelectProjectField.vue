@@ -54,7 +54,7 @@ export default {
                 nullable: true,
                 readonly: false,
                 reverse: false,
-                searchable: false,
+                searchable: true,
                 prefixComponent: true,
                 withSubtitles: false,
                 textAlign: "left",

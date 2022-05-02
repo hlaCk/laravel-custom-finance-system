@@ -1,0 +1,45 @@
+<?php
+
+namespace {{ factoryNamespace }};
+
+use App\Models\User;
+use App\Models\{{ factory }};
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+class {{ factory }}Factory extends \Database\Factories\AbstractFactory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = {{ factory }}::class;
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'name' => $this->faker->firstName,
+            'user_id' => User::inRandomOrder()->first() ?: User::factory(),
+            'status' => $this->model::ACTIVE,
+        ];
+    }
+
+    /**
+     * Indicate that the user is suspended.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function active()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'status' => $this->model::ACTIVE,
+            ];
+        });
+    }
+}

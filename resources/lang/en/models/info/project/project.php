@@ -8,6 +8,7 @@ return [
         'cost'           => 'Cost',
         'project_status' => 'Project Status',
         'status'         => 'Status',
+        'client'         => 'Client',
         'created_at'     => 'Created at',
         'updated_at'     => 'Updated at',
         'deleted_at'     => 'Deleted at',

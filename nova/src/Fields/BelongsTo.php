@@ -116,6 +116,7 @@ class BelongsTo extends Field implements RelatableField
         $this->resourceName = $resource::uriKey();
         $this->belongsToRelationship = $this->attribute;
         $this->singularLabel = $name;
+        $this->showCreateRelationButton();
     }
 
     /**

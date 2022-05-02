@@ -5,6 +5,7 @@ namespace App\Nova\Info;
 use App\Nova\Abstracts\Resource as BaseResource;
 use App\Nova\Fields\Field;
 use App\Nova\Fields\StatusSelect;
+use App\Nova\Info\Project\Project;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 
@@ -66,6 +67,8 @@ class Client extends BaseResource
                  ->rules('nullable')
                  ->nullable()
                  ->default(static::$model::DEFAULT_TYPE),
+
+            Field::HasMany(static::$model::trans('projects'), 'projects', Project::class),
 
             StatusSelect::forResource($this),
         ];

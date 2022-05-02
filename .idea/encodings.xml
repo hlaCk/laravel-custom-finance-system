@@ -11,7 +11,6 @@
     <file url="file://$PROJECT_DIR$/app/Helpers/Functions/FSet.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Http/Controllers/Api/Sheet/ExpenseController.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Http/Resources/Api/Abstracts/DataByProjectBTableResource.php" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/Http/Resources/Api/Abstracts/DataByProjectBTableResource.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Http/Resources/Api/Abstracts/SelectOptionsResource.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Interfaces/Chart/IAccount.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Interfaces/Info/IClient.php" charset="UTF-8" />
@@ -49,6 +48,12 @@
     <file url="file://$PROJECT_DIR$/app/Policies/Sheet/CreditPolicy.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Policies/Sheet/ExpensePolicy.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/composer-all.json" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/database/factories/Abstract/Factory.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/database/factories/Abstract/Factory.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/database/factories/AbstractFactory.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/database/factories/Info/CreditCategoryFactory.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/database/factories/Info/UserFactory.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/database/factories/Sheet/ExpenseFactory.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/database/migrations/2022_02_14_065825_add_foreign_keys_to_model_has_permissions_table.php" charset="windows-1256" />
     <file url="file://$PROJECT_DIR$/database/migrations/2022_02_14_065825_add_foreign_keys_to_model_has_roles_table.php" charset="windows-1256" />
     <file url="file://$PROJECT_DIR$/database/migrations/2022_02_14_065825_add_foreign_keys_to_nova_menu_menu_items_table.php" charset="windows-1256" />
@@ -59,9 +64,16 @@
     <file url="file://$PROJECT_DIR$/database/migrations/2022_03_20_091745_create_expenses_table.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/database/migrations/2022_04_22_081745_create_credit_categories_table.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/database/migrations/2022_04_22_091745_create_credits_table.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/database/migrations/2022_05_01_204700_add_client_id_to_projects_table.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/database/seeders/Cases/Case1Seeder.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/database/seeders/Cases/CaseSeeder.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/database/seeders/CreditCategorySeeder.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/database/seeders/CreditSeeder.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/database/seeders/CreditSeeder.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/database/seeders/DatabaseSeeder.php" charset="windows-1256" />
     <file url="file://$PROJECT_DIR$/database/seeders/EntryCategorySeeder.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/database/seeders/ExpenseSeeder.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/database/seeders/ProjectSeeder.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/database/seeders/ProjectStatusSeeder.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/nova-components/CompanyReportYTD/resources/js/components/CreditByProjectTable.vue" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/nova-components/CompanyReportYTD/resources/js/components/CreditExpensesSummaryTable.vue" charset="UTF-8" />

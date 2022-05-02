@@ -6,21 +6,19 @@ use App\Interfaces\Sheet\ICredit;
 use App\Models\Abstracts\Model;
 use App\Models\Info\CreditCategory;
 use App\Models\Info\Project\Project;
-use App\Traits\THasBooleanStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @method static Builder|static byDate($from_date = null, $credit_category_id = null, $project_id = null)
- *      @see Credit::scopeByDate()
+ * @see Credit::scopeByDate()
  *
  */
-class Credit extends Model implements ICredit
+class Credit extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    use THasBooleanStatus;
     use \App\Traits\HasTranslations;
     use \App\Traits\TBelongsToProject;
     use \App\Traits\Sheet\TFormatDateAttribute;
@@ -37,7 +35,6 @@ class Credit extends Model implements ICredit
         'amount',
         'vat_included',
         'remarks',
-        'status',
         'project_id',
         'credit_category_id',
     ];
@@ -63,7 +60,6 @@ class Credit extends Model implements ICredit
         'amount'             => 'double',
         'vat_included'       => 'boolean',
         'remarks'            => 'string',
-        'status'             => 'integer',
         'project_id'         => 'integer',
         'credit_category_id' => 'integer',
     ];
@@ -74,11 +70,6 @@ class Credit extends Model implements ICredit
         'deleted_at',
         'date',
     ];
-
-    public static function getDefaultStatus(): int
-    {
-        return static::ACTIVE;
-    }
 
     public function project()
     {
@@ -106,17 +97,17 @@ class Credit extends Model implements ICredit
     public function scopeByDate(Builder $builder, $from_date = null, $credit_category_id = null, $project_id = null)
     {
         return $builder->when(
-                        !is_null($project_id),
-                        fn($q) => $q->whereIn('project_id', (array) $project_id)
-                    )
-                    ->when(
-                        !is_null($credit_category_id),
-                        fn($q) => $q->whereIn('credit_category_id', (array) $credit_category_id)
-                    )
-                    ->when(
-                        !is_null($from_date),
-                        fn($q) => $q->whereDate('date', '>=', $from_date)
-                    );
+            !is_null($project_id),
+            fn($q) => $q->whereIn('project_id', (array) $project_id)
+        )
+                       ->when(
+                           !is_null($credit_category_id),
+                           fn($q) => $q->whereIn('credit_category_id', (array) $credit_category_id)
+                       )
+                       ->when(
+                           !is_null($from_date),
+                           fn($q) => $q->whereDate('date', '>=', $from_date)
+                       );
 //            ;
     }
 
