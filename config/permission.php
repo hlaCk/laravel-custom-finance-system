@@ -185,6 +185,22 @@ return [
         [ 'name' => 'entry_category.restore', 'group' => 'entry_category', 'guard_name' => 'web' ],
         [ 'name' => 'entry_category.force_delete', 'group' => 'entry_category', 'guard_name' => 'web' ],
 
+        [ 'name' => 'contractor.view_any', 'group' => 'contractor', 'guard_name' => 'web' ],
+        [ 'name' => 'contractor.view', 'group' => 'contractor', 'guard_name' => 'web' ],
+        [ 'name' => 'contractor.create', 'group' => 'contractor', 'guard_name' => 'web' ],
+        [ 'name' => 'contractor.edit', 'group' => 'contractor', 'guard_name' => 'web' ],
+        [ 'name' => 'contractor.delete', 'group' => 'contractor', 'guard_name' => 'web' ],
+        [ 'name' => 'contractor.restore', 'group' => 'contractor', 'guard_name' => 'web' ],
+        [ 'name' => 'contractor.force_delete', 'group' => 'contractor', 'guard_name' => 'web' ],
+
+        [ 'name' => 'contractor_speciality.view_any', 'group' => 'contractor_speciality', 'guard_name' => 'web' ],
+        [ 'name' => 'contractor_speciality.view', 'group' => 'contractor_speciality', 'guard_name' => 'web' ],
+        [ 'name' => 'contractor_speciality.create', 'group' => 'contractor_speciality', 'guard_name' => 'web' ],
+        [ 'name' => 'contractor_speciality.edit', 'group' => 'contractor_speciality', 'guard_name' => 'web' ],
+        [ 'name' => 'contractor_speciality.delete', 'group' => 'contractor_speciality', 'guard_name' => 'web' ],
+        [ 'name' => 'contractor_speciality.restore', 'group' => 'contractor_speciality', 'guard_name' => 'web' ],
+        [ 'name' => 'contractor_speciality.force_delete', 'group' => 'contractor_speciality', 'guard_name' => 'web' ],
+
         [ 'name' => 'project.view_any', 'group' => 'project', 'guard_name' => 'web' ],
         [ 'name' => 'project.view', 'group' => 'project', 'guard_name' => 'web' ],
         [ 'name' => 'project.create', 'group' => 'project', 'guard_name' => 'web' ],
@@ -192,6 +208,14 @@ return [
         [ 'name' => 'project.delete', 'group' => 'project', 'guard_name' => 'web' ],
         [ 'name' => 'project.restore', 'group' => 'project', 'guard_name' => 'web' ],
         [ 'name' => 'project.force_delete', 'group' => 'project', 'guard_name' => 'web' ],
+
+        [ 'name' => 'project_cost.view_any', 'group' => 'project_cost', 'guard_name' => 'web' ],
+        [ 'name' => 'project_cost.view', 'group' => 'project_cost', 'guard_name' => 'web' ],
+        [ 'name' => 'project_cost.create', 'group' => 'project_cost', 'guard_name' => 'web' ],
+        [ 'name' => 'project_cost.edit', 'group' => 'project_cost', 'guard_name' => 'web' ],
+        [ 'name' => 'project_cost.delete', 'group' => 'project_cost', 'guard_name' => 'web' ],
+        [ 'name' => 'project_cost.restore', 'group' => 'project_cost', 'guard_name' => 'web' ],
+        [ 'name' => 'project_cost.force_delete', 'group' => 'project_cost', 'guard_name' => 'web' ],
 
         [ 'name' => 'project_status.view_any', 'group' => 'project_status', 'guard_name' => 'web' ],
         [ 'name' => 'project_status.view', 'group' => 'project_status', 'guard_name' => 'web' ],

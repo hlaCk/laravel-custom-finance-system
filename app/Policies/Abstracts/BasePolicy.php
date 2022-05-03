@@ -5,6 +5,9 @@ namespace App\Policies\Abstracts;
 use App\Models\Info\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Laravel\Nova\Nova;
 
 /**
  *
@@ -14,7 +17,55 @@ class BasePolicy
     use HandlesAuthorization;
 
     public static string $permission_name;
+    /**
+     * Indicates if the resource should be displayed in the sidebar.
+     *
+     * @var bool
+     */
+    public static $displayInNavigation = true;
+
+    /**
+     * Determine if this resource is available for navigation.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return bool
+     */
+    public static function availableForNavigation(Request $request)
+    {
+        if( !static::$displayInNavigation ) return false;
+
+        if( ($model = array_search(static::class, Gate::policies())) !== false ) {
+            /** @var \App\Nova\Abstracts\Resource $resource */
+            if( $resource = Nova::resourceForModel($model) ) {
+                if( !$resource::$displayInNavigation ) return false;
+            }
+        }
+
+        return static::userCan("view_any", $request->user());
+    }
+
     // public static bool $hideFromNavigation;
+
+    public static function userCan(string $permission, ?User $user = null): bool
+    {
+        if( !$user ) {
+            return false;
+        }
+
+        return $user->can(static::getPermissionName($permission));
+    }
+
+
+
+    public static function getPermissionName(string $permission): string
+    {
+        if( is_null($permission_name = static::$permission_name ?? null) ) {
+            return $permission;
+        }
+
+        return "{$permission_name}.$permission";
+    }
 
     /**
      * Determine whether the user can view any models.
@@ -31,7 +82,7 @@ class BasePolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param \App\Models\Info\User|null               $user
+     * @param \App\Models\Info\User|null          $user
      * @param \Illuminate\Database\Eloquent\Model $model
      *
      * @return mixed
@@ -56,7 +107,7 @@ class BasePolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param \App\Models\Info\User                    $user
+     * @param \App\Models\Info\User               $user
      * @param \Illuminate\Database\Eloquent\Model $model
      *
      * @return mixed
@@ -69,7 +120,7 @@ class BasePolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param \App\Models\Info\User                    $user
+     * @param \App\Models\Info\User               $user
      * @param \Illuminate\Database\Eloquent\Model $model
      *
      * @return mixed
@@ -77,32 +128,6 @@ class BasePolicy
     public function delete(User $user, Model $model)
     {
         return static::userCan("delete", $user);
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param \App\Models\Info\User                    $user
-     * @param \Illuminate\Database\Eloquent\Model $model
-     *
-     * @return mixed
-     */
-    public function restore(User $user, Model $model)
-    {
-        return static::userCan("restore", $user);
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param \App\Models\Info\User                    $user
-     * @param \Illuminate\Database\Eloquent\Model $model
-     *
-     * @return mixed
-     */
-    public function forceDelete(User $user, Model $model)
-    {
-        return false; // static::userCan("force_delete", $user);
     }
 
     /**
@@ -125,23 +150,30 @@ class BasePolicy
     // {
     //     return static::$hideFromNavigation ?? false;
     // }
-
-    public static function getPermissionName(string $permission): string
+    /**
+     * Determine whether the user can restore the model.
+     *
+     * @param \App\Models\Info\User               $user
+     * @param \Illuminate\Database\Eloquent\Model $model
+     *
+     * @return mixed
+     */
+    public function restore(User $user, Model $model)
     {
-        if( is_null($permission_name = static::$permission_name ?? null) ) {
-            return $permission;
-        }
-
-        return "{$permission_name}.$permission";
+        return static::userCan("restore", $user);
     }
 
-    public static function userCan(string $permission, ?User $user = null): bool
+    /**
+     * Determine whether the user can permanently delete the model.
+     *
+     * @param \App\Models\Info\User               $user
+     * @param \Illuminate\Database\Eloquent\Model $model
+     *
+     * @return mixed
+     */
+    public function forceDelete(User $user, Model $model)
     {
-        if( !$user ) {
-            return false;
-        }
-
-        return $user->can(static::getPermissionName($permission));
+        return false; // static::userCan("force_delete", $user);
     }
 
 }

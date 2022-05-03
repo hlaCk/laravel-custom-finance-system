@@ -13,6 +13,13 @@ use Laravel\Nova\Fields\ID;
 class CreditCategory extends BaseResource
 {
     /**
+     * To make the resource ($globallySearchable = false, $tableStyle = tight)
+     *
+     * @var bool
+     */
+    public static bool $partialResource = true;
+
+    /**
      * The model the resource corresponds to.
      *
      * @var string|\App\Models\Info\CreditCategory

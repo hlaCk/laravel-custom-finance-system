@@ -7,6 +7,7 @@ return [
     'sort'              => [
         "Chart",
         "Info",
+        "Contractors",
         "Project",
         "Sheet",
         "Settings",

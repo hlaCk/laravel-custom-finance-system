@@ -59,8 +59,8 @@ export default {
         },
         optionKey: "value",
         optionLabel: "label",
-        keyToggle: "g",
-        closeKeyToggle: "escape",
+        keyToggle: "KeyG",
+        closeKeyToggle: "Escape",
     }),
 
     metaInfo() {
@@ -81,11 +81,10 @@ export default {
         this.getOptions()
             .then(x => {
                     let keyLC = this.keyToggle
-                    let closeKeyLC = this.closeKeyToggle
                     keyLC && document.addEventListener("keydown", e => {
                         let classList = Array.from(classList = e.target.classList)
-                        // (classList.includes('pl-search') || classList.includes('form-global-search')) &&
-                        if (e.ctrlKey && e.key.toLowerCase() === keyLC) {
+
+                        if (e.ctrlKey && e.code.toLowerCase() === keyLC.toLowerCase()) {
                             this.toggleModal();
                             e.preventDefault();
                         }
@@ -93,9 +92,10 @@ export default {
                         return false;
                     })
 
+                let closeKeyLC = this.closeKeyToggle
                     closeKeyLC && document.addEventListener("keydown", (e) => {
-                        if (e.key.toLowerCase() === closeKeyLC && this.isModalShown()) {
-                            this.toggleModal();
+                        if (e.code.toLowerCase() === closeKeyLC.toLowerCase() && this.isModalShown()) {
+                            setTimeout(() =>this.toggleModal(), 10)
                         }
 
                         return false;

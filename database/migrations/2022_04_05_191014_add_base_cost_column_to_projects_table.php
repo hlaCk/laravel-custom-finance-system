@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddCostColumnToProjectsTable extends Migration
+class AddBaseCostColumnToProjectsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddCostColumnToProjectsTable extends Migration
     public function up()
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->double('cost')->default(0);
+            $table->double('base_cost')->default(0);
         });
     }
 
@@ -26,7 +26,7 @@ class AddCostColumnToProjectsTable extends Migration
     public function down()
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->dropColumn('cost');
+            $table->dropColumn('base_cost');
         });
     }
 }

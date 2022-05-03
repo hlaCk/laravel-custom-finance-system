@@ -297,6 +297,55 @@ if( !function_exists('isCurrentResource') ) {
 
 if( !function_exists('getNovaResources') ) {
     /**
+     * Get All nova resources with array of resources to exclude it.
+     *
+     * @param string              $app_dir
+     * @param array|\Closure|null $except
+     * @param string              $parent_class
+     *
+     * @return array
+     */
+    function getNovaResources(
+        string $app_dir = 'Nova',
+               $except = null,
+        string $parent_class = \App\Nova\Abstracts\Resource::class
+    ): array {
+        $except = (array) value($except ?? \App\Providers\NovaServiceProvider::$skipLoadingResources ?? []);
+
+        if( str_contains($app_dir, ',') ) {
+            $resources = collect();
+            foreach( explode(",", $app_dir) as $_dir ) {
+                $resources->add(glob(app_path($_dir) . DIRECTORY_SEPARATOR . '*.php'));
+            }
+
+            $resources = $resources->collapse()->values()->all();
+        } else {
+            $resources = glob(app_path($app_dir) . DIRECTORY_SEPARATOR . '*.php');
+        }
+
+        return toCollect($resources)
+            ->map(function ($resource) use ($parent_class) {
+                $resource_class = str_ireplace(
+                    [ "/", ".php" ],
+                    [ "\\", "" ],
+                    "App" . str_after($resource, app_path())
+                );
+                $is_nova_resource =
+                    $resource_class !== $parent_class && class_exists($resource_class) && is_subclass_of(
+                        $resource_class,
+                        $parent_class
+                    );
+
+                return $is_nova_resource ? $resource_class : null;
+            })
+            ->filter(fn($r) => $r && !in_array($r, $except))
+            ->values()
+            ->toArray();
+    }
+}
+
+if( !function_exists('getAllNovaResources') ) {
+    /**
      * Get All nova resources.
      *
      * @param string $app_dir
@@ -304,7 +353,7 @@ if( !function_exists('getNovaResources') ) {
      *
      * @return array
      */
-    function getNovaResources(
+    function getNovaAllResources(
         string $app_dir = 'Nova',
         string $parent_class = \App\Nova\Abstracts\Resource::class
     ): array {
@@ -353,7 +402,7 @@ if( !function_exists('getNovaResourcesAsOptions') ) {
         string $app_dir = 'Nova',
         string $parent_class = \App\Nova\Abstracts\Resource::class
     ): array {
-        return collect(getNovaResources($app_dir, $parent_class))
+        return collect(getNovaResources($app_dir, null, $parent_class))
             ->filter(fn($f) => class_exists($f) && is_subclass_of($f, $parent_class))
             ->mapWithKeys(fn($r) => [
                 /** @var \App\Nova\Abstracts\Resource $r */
@@ -393,14 +442,6 @@ if( !function_exists('getNovaResourcesDependencies') ) {
         }
 
         return $dependencies;
-
-        return collect(getNovaResources($app_dir, $parent_class))
-            ->filter(fn($f) => class_exists($f) && is_subclass_of($f, $parent_class))
-            ->mapWithKeys(fn($r) => [
-                /** @var \App\Nova\Abstracts\Resource $r */
-                $r::singularLabel() => $r::singularLabel() . ' - ' . $r::label(),
-            ])
-            ->toArray();
     }
 }
 

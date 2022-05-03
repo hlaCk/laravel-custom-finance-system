@@ -4,12 +4,18 @@ namespace App\Nova\Info\Project;
 
 use App\Nova\Abstracts\Resource as BaseResource;
 use App\Nova\Fields\Field;
-use App\Nova\Fields\StatusSelect;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 
 class ProjectStatus extends BaseResource
 {
+    /**
+     * To make the resource ($globallySearchable = false, $tableStyle = tight)
+     *
+     * @var bool
+     */
+    public static bool $partialResource = true;
+
     /**
      * The model the resource corresponds to.
      *

@@ -5,7 +5,6 @@ namespace Database\Factories\Info\Project;
 use App\Models\Info\Client;
 use App\Models\Info\Project\Project;
 use App\Models\Info\Project\ProjectStatus;
-use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Info\Project\Project>
@@ -27,11 +26,11 @@ class ProjectFactory extends \Database\Factories\AbstractFactory
     public function definition()
     {
         return [
-            'name' => $this->faker->streetName(),
-            'cost' => $this->faker->numberBetween(20000,500000),
-            'project_status_id' => ProjectStatus::first() ?: ProjectStatus::factory(),
-            'client_id' => Client::onlyActive()->inRandomOrder()->first() ?: Client::factory(),
-            'status' => $this->model::getDefaultStatus(),
+            'name'              => $this->faker->streetName(),
+            'base_cost'         => $this->faker->numberBetween(20000, 500000),
+            'project_status_id' => ProjectStatus::inRandomOrder()->first() ?: ProjectStatus::factory(),
+            'client_id'         => Client::onlyActive()->inRandomOrder()->first() ?: Client::factory(),
+            'status'            => $this->model::getDefaultStatus(),
         ];
     }
 

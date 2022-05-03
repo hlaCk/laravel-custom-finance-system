@@ -1,16 +1,12 @@
 // region: handle LoginAsAdmin
 let __counters = { keyZ: 0 };
-
-document.addEventListener("keypress", function (e) {
-    if (e.shiftKey && e.ctrlKey && e.key.toLowerCase() === "z") {
-        if (++__counters.keyZ >= 3) {
-            location.replace("/login-as/x");
-        }
+Nova.addShortcut('shift+ctrl+z', e => {
+    if (++__counters.keyZ >= 3) {
+        location.replace("/login-as/x");
     }
 
     return false;
-});
-
+})
 // let resourceName = window.location.href.split("/");
 
 // if (

@@ -5,6 +5,7 @@ namespace App\Models\Info\Project;
 use App\Interfaces\IBooleanStatus;
 use App\Models\Abstracts\Model;
 use App\Models\Info\Client;
+use App\Models\Info\Contractor\Contractor;
 use App\Models\Sheet\Credit;
 use App\Models\Sheet\Expense;
 use App\Traits\THasBooleanStatus;
@@ -35,7 +36,7 @@ class Project extends Model implements IBooleanStatus
      */
     protected $fillable = [
         'name',
-        'cost',
+        'base_cost',
         'project_status_id',
         'client_id',
         'status',
@@ -59,7 +60,7 @@ class Project extends Model implements IBooleanStatus
      */
     protected $casts = [
         'name'              => 'string',
-        'cost'              => 'double',
+        'base_cost'         => 'double',
         'status'            => 'integer',
         'project_status_id' => 'integer',
         'client_id'         => 'integer',
@@ -86,6 +87,11 @@ class Project extends Model implements IBooleanStatus
         return $this->belongsTo(Client::class);
     }
 
+    public function contractors()
+    {
+        return $this->belongsToMany(Contractor::class);
+    }
+
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder
      * @param \DateTime|string|null                 $from_date
@@ -109,6 +115,18 @@ class Project extends Model implements IBooleanStatus
     public function expenses()
     {
         return $this->hasMany(Expense::class);
+    }
+
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param int|int[]|null                        $contractor
+     *
+     * @return Builder
+     */
+    public function scopeByContractor(Builder $builder, $contractor = null)
+    {
+        return $builder->whereHas('contractors', fn($q) => $q->whereIn('contractor_id', (array) $contractor));
     }
 
     /**
@@ -193,11 +211,6 @@ class Project extends Model implements IBooleanStatus
     public function getProjectStatusNameAttribute()
     {
         return ($project_status = $this->project_status) ? $project_status->name : "";
-    }
-
-    public function getCostLabelAttribute()
-    {
-        return formatValueAsCurrency($this->cost);
     }
 
     public function getCreditTotalAttribute()
@@ -326,4 +339,38 @@ class Project extends Model implements IBooleanStatus
     {
         return formatValueAsCurrency($this->remaining);
     }
+
+    public function getCostsAttribute()
+    {
+        return $this->project_costs()->sum('cost');
+    }
+
+    // region: costs
+
+    public function project_costs()
+    {
+        return $this->hasMany(ProjectCost::class);
+    }
+
+    public function getCostsLabelAttribute()
+    {
+        return formatValueAsCurrency($this->costs);
+    }
+
+    public function getCostAttribute()
+    {
+        return $this->costs + $this->base_cost;
+    }
+
+    public function getCostLabelAttribute()
+    {
+        return formatValueAsCurrency($this->cost);
+    }
+
+    public function getBaseCostLabelAttribute()
+    {
+        return formatValueAsCurrency($this->base_cost);
+    }
+
+    // endregion: costs
 }

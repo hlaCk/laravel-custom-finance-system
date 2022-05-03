@@ -21,15 +21,18 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Abstracts\Model' => 'App\Policies\ModelPolicy',
-        EntryCategory::class                        => EntryCategoryPolicy::class,
-        CreditCategory::class                        => CreditCategoryPolicy::class,
-        \App\Models\Chart\Account::class              => \App\Policies\Chart\AccountPolicy::class,
-        \App\Models\Info\Project\Project::class       => \App\Policies\Info\Project\ProjectPolicy::class,
-        \App\Models\Info\Project\ProjectStatus::class => \App\Policies\Info\Project\ProjectStatusPolicy::class,
-        Client::class                               => ClientPolicy::class,
-        Setting::class                              => SettingPolicy::class,
-        \App\Models\Sheet\Expense::class           => \App\Policies\Sheet\ExpensePolicy::class,
-        \App\Models\Sheet\Credit::class           => \App\Policies\Sheet\CreditPolicy::class,
+        EntryCategory::class                                    => EntryCategoryPolicy::class,
+        CreditCategory::class                                   => CreditCategoryPolicy::class,
+        \App\Models\Chart\Account::class                        => \App\Policies\Chart\AccountPolicy::class,
+        \App\Models\Info\Contractor\Contractor::class           => \App\Policies\Info\Contractor\ContractorPolicy::class,
+        \App\Models\Info\Contractor\ContractorSpeciality::class => \App\Policies\Info\Contractor\ContractorSpecialityPolicy::class,
+        \App\Models\Info\Project\Project::class                 => \App\Policies\Info\Project\ProjectPolicy::class,
+        \App\Models\Info\Project\ProjectCost::class             => \App\Policies\Info\Project\ProjectCostPolicy::class,
+        \App\Models\Info\Project\ProjectStatus::class           => \App\Policies\Info\Project\ProjectStatusPolicy::class,
+        Client::class                                           => ClientPolicy::class,
+        Setting::class                                          => SettingPolicy::class,
+        \App\Models\Sheet\Expense::class                        => \App\Policies\Sheet\ExpensePolicy::class,
+        \App\Models\Sheet\Credit::class                         => \App\Policies\Sheet\CreditPolicy::class,
     ];
 
     /**

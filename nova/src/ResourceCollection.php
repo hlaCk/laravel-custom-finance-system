@@ -41,7 +41,13 @@ class ResourceCollection extends Collection
     public function searchable()
     {
         return $this->filter(function ($resource) {
-            return $resource::$globallySearchable;
+            /** @var \Laravel\Nova\Resource $resource */
+            try {
+                $result = $resource::isGloballySearchable();
+            } catch(\Exception $exception) {
+                $result = $resource::$globallySearchable;
+            }
+            return $result;
         });
     }
 

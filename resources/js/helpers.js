@@ -21,22 +21,16 @@ Nova.confirmEvent =
 
 
 // region: handle change lang
-document.addEventListener('keypress', function (e) {
-    if (
-        e.shiftKey &&
-        e.ctrlKey &&
-        e.key.toLowerCase() === 'l'
-    ) {
-        Nova.request()
-            .get(`/panel/locale/` + (Nova.config.locale === 'en' ? 'ar' : 'en'))
-            .then(e => {
-                location.reload();
-            })
-            .catch(e => {
-                console.error(e)
-            });
-    }
+// document.addEventListener("keyup", function (e) {
+//     console.log(e.code)
+// });
+
+Nova.addShortcut('shift+ctrl+l', e => {
+    Nova.request()
+        .get(`/panel/locale/` + (Nova.config.locale === 'en' ? 'ar' : 'en'))
+        .then(e =>  location.reload() )
+        .catch(e =>  console.error(e) );
 
     return false;
-});
+})
 // endregion: handle change lang

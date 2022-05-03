@@ -640,4 +640,14 @@ abstract class Resource implements ArrayAccess, JsonSerializable, UrlRoutable
             )
         );
     }
+
+    /**
+     * Determine if is the resource available in global search.
+     *
+     * @return bool
+     */
+    public static function isGloballySearchable()
+    {
+        return static::$globallySearchable;
+    }
 }

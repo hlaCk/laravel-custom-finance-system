@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\Cases\Case1Seeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,6 +19,9 @@ class DatabaseSeeder extends Seeder
         $this->call(EntryCategorySeeder::class);
         $this->call(CreditCategorySeeder::class);
         $this->call(ProjectStatusSeeder::class);
-        // $this->call(PageLayoutSeeder::class);
+        $this->call(ContractorSpecialitySeeder::class);
+
+        // todo: its for testing, comment it
+        $this->call(Case1Seeder::class);
     }
 }

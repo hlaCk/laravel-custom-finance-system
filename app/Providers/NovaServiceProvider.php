@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\Info\User as UserModel;
+use App\Nova\Chart\Account;
+use App\Nova\Info\Project\ProjectCost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Translation\Translator;
@@ -136,9 +138,16 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         });
     }
 
+    /**
+     * @var array array of resources to exclude it when calling method getNovaResources method.
+     */
+    public static array $skipLoadingResources = [
+        Account::class,
+    ];
     protected function resources()
     {
         Nova::resources(getNovaResources('Nova,Nova/*,Nova/*/*'));
+
 //        Nova::resources([
 //                            User::class,
 //                            Client::class,
