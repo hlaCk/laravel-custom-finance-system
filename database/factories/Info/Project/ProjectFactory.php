@@ -27,7 +27,7 @@ class ProjectFactory extends \Database\Factories\AbstractFactory
     public function definition()
     {
         return [
-            'name' => $this->faker->firstName,
+            'name' => $this->faker->streetName(),
             'cost' => $this->faker->numberBetween(20000,500000),
             'project_status_id' => ProjectStatus::first() ?: ProjectStatus::factory(),
             'client_id' => Client::onlyActive()->inRandomOrder()->first() ?: Client::factory(),

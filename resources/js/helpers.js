@@ -1,3 +1,4 @@
+
 // region: nova methods
 Nova.translate =
     Nova.translate ||
@@ -17,3 +18,25 @@ Nova.confirmEvent =
         });
     };
 // endregion: nova methods
+
+
+// region: handle change lang
+document.addEventListener('keypress', function (e) {
+    if (
+        e.shiftKey &&
+        e.ctrlKey &&
+        e.key.toLowerCase() === 'l'
+    ) {
+        Nova.request()
+            .get(`/panel/locale/` + (Nova.config.locale === 'en' ? 'ar' : 'en'))
+            .then(e => {
+                location.reload();
+            })
+            .catch(e => {
+                console.error(e)
+            });
+    }
+
+    return false;
+});
+// endregion: handle change lang

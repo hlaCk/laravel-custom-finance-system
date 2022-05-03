@@ -28,14 +28,15 @@
     "/images/logo.png": "/images/logo.png",
     "/images/no-image.png": "/images/no-image.png",
     "/images/pdf.png": "/images/pdf.png",
+    "/images/user-avatar.png": "/images/user-avatar.png",
     "/images/video.png": "/images/video.png",
     "/fonts/29Azer.ttf": "/fonts/29Azer.ttf",
     "/fonts/GESST.otf": "/fonts/GESST.otf",
     "/fonts/Gotham.otf": "/fonts/Gotham.otf",
+    "/fonts/FontAwesome.otf": "/fonts/FontAwesome.otf",
     "/fonts/fontawesome-webfont.eot": "/fonts/fontawesome-webfont.eot",
     "/fonts/fontawesome-webfont.svg": "/fonts/fontawesome-webfont.svg",
     "/fonts/fontawesome-webfont.ttf": "/fonts/fontawesome-webfont.ttf",
     "/fonts/fontawesome-webfont.woff": "/fonts/fontawesome-webfont.woff",
-    "/fonts/fontawesome-webfont.woff2": "/fonts/fontawesome-webfont.woff2",
-    "/fonts/FontAwesome.otf": "/fonts/FontAwesome.otf"
+    "/fonts/fontawesome-webfont.woff2": "/fonts/fontawesome-webfont.woff2"
 }
