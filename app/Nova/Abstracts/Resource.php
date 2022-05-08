@@ -444,14 +444,14 @@ abstract class Resource extends NovaResource
         $for_pivot ??= $request->viaRelationship();
         $hideFromRelationshipsIndex = static::$hideAttributesFromRelationshipsIndex;
         $applyHideFromRelationshipsIndex =
-            function ($m) use ($hideFromRelationshipsIndex) {
+            function ($__res) use ($hideFromRelationshipsIndex) {
                 if( !empty($hideFromRelationshipsIndex) ) {
-                    return $m->{in_array($m->attribute, $hideFromRelationshipsIndex)
+                    return $__res->{in_array($__res->attribute, $hideFromRelationshipsIndex)
                         ? 'hideFromRelationships'
                         : 'showOnRelationships'}();
                 }
 
-                return $m;
+                return $__res;
             };
 
         $fields = collect(static::rawFieldsForRelationships($request, $for_pivot))
