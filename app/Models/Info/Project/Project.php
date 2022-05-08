@@ -6,6 +6,7 @@ use App\Interfaces\IBooleanStatus;
 use App\Models\Abstracts\Model;
 use App\Models\Info\Client;
 use App\Models\Info\Contractor\Contractor;
+use App\Models\Info\Contractor\ContractorProject;
 use App\Models\Sheet\Credit;
 use App\Models\Sheet\Expense;
 use App\Traits\THasBooleanStatus;
@@ -89,7 +90,18 @@ class Project extends Model implements IBooleanStatus
 
     public function contractors()
     {
-        return $this->belongsToMany(Contractor::class);
+        return $this->belongsToMany(Contractor::class)
+                    ->using(ContractorProject::class)
+                    ->withPivot([
+                                    'date',
+                                    'remarks',
+                                    'unit',
+                                    'quantity',
+                                    'price',
+//                                    'total',
+                                    'deleted_at',
+                                ])
+                    ->withTimestamps();
     }
 
     /**

@@ -153,6 +153,29 @@ abstract class Field extends FieldElement implements JsonSerializable, Resolvabl
      */
     public function __construct($name, $attribute = null, callable $resolveCallback = null)
     {
+//        if( is_null($attribute) && is_null($resolveCallback) && !is_string($name) && !($name instanceof Closure) ) {
+//            $attribute = $name;
+//            $name = 'Element';
+//        }
+
+//        $_name = $name;
+//        try {
+//            [ $name, $attribute, $resolveCallback ] = parseNovaFieldArguments($name, $attribute, $resolveCallback);
+//            $attribute ??= $name;
+//            if( is_string($name) ) {
+//                $request = getNovaRequest();
+//                $model =
+//                    resourceModelExtractor(
+//                        $request->resource ? $request->resource() : currentNovaResourceClassCalled()
+//                    );
+//                if( class_exists($model) && is_callable([ $model, 'trans' ]) ) {
+//                    $name = (string) $model::trans($name);
+//                }
+//            }
+//        } catch( \Exception $exception ) {
+//            $name = $_name;
+//        }
+
         $this->name = $name;
         $this->resolveCallback = $resolveCallback;
 
@@ -164,6 +187,17 @@ abstract class Field extends FieldElement implements JsonSerializable, Resolvabl
             $this->attribute = 'ComputedField';
         } else {
             $this->attribute = $attribute ?? str_replace(' ', '_', Str::lower($name));
+        }
+
+        if( is_string($this->name) ) {
+            $request = getNovaRequest();
+            $model =
+                resourceModelExtractor(
+                    $request->resource ? $request->resource() : currentNovaResourceClassCalled()
+                );
+            if( class_exists($model) && is_callable([ $model, 'trans' ]) ) {
+                $this->name = (string) $model::trans($this->name);
+            }
         }
     }
 
@@ -902,5 +936,19 @@ abstract class Field extends FieldElement implements JsonSerializable, Resolvabl
     public function validationKey()
     {
         return $this->attribute;
+    }
+
+    /**
+     * Set the callback to be run to authorize viewing the filter or action.
+     *
+     * @param \Closure $callback
+     *
+     * @return $this
+     */
+    public function canSee(Closure $callback)
+    {
+        $this->seeCallback = $callback;
+
+        return $this;
     }
 }

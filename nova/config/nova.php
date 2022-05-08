@@ -173,4 +173,7 @@ return [
 
     'currency' => 'USD',
 
+    // string: default locale to format money by formatValueAsCurrency()
+    'money_locale'        => 'en',
+
 ];

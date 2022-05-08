@@ -3,10 +3,11 @@
 namespace App\Nova\Info;
 
 use App\Nova\Abstracts\Resource as BaseResource;
-use App\Nova\Fields\Field;
+use App\Nova\Fields\Name;
 use App\Nova\Fields\StatusSelect;
 use App\Nova\Sheet\Expense;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 
 class EntryCategory extends BaseResource
@@ -59,14 +60,12 @@ class EntryCategory extends BaseResource
     public function fields(Request $request)
     {
         return [
-            ID::make(__('ID'), 'id')
-              ->sortable(),
+            ID::make(),
 
-            Field::Text(__('models/info/entry_category.fields.name'), 'name')
-                 ->rules('required')
-                 ->required(),
+            Name::make()
+                ->requiredRule(),
 
-            Field::HasMany(static::$model::trans('expenses'), 'expenses', Expense::class),
+            HasMany::make(static::$model::trans('expenses'), 'expenses', Expense::class),
 
             StatusSelect::forResource($this),
         ];

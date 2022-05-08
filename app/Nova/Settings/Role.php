@@ -3,12 +3,13 @@
 namespace App\Nova\Settings;
 
 use App\Nova\Abstracts\Resource;
-use App\Nova\Fields\Field;
+use App\Nova\Fields\Name;
 use App\Nova\Info\User;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphToMany;
+use Laravel\Nova\Fields\Text;
 
 class Role extends Resource
 {
@@ -49,69 +50,18 @@ class Role extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make(__('ID'), 'id')
-              ->sortable(),
+            ID::make(),
 
-            Field::Text(__('models/settings/role.fields.name'), 'name')
-                 ->rules('required')
-                 ->required(),
+            Name::make()
+                ->requiredRule(),
 
-            Field::Text(__('models/settings/role.fields.guard_name'), 'guard_name')
-                 ->rules('required')
-                 ->required(),
+            Text::make(__('models/settings/role.fields.guard_name'), 'guard_name')
+                ->requiredRule(),
 
             BelongsToMany::make(__('models/settings/role.fields.permissions'), 'Permissions', Permission::class),
 
             MorphToMany::make(__('models/settings/role.fields.users'), 'users', User::class),
         ];
-    }
-
-    /**
-     * Get the cards available for the request.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return array
-     */
-    public function cards(Request $request)
-    {
-        return [];
-    }
-
-    /**
-     * Get the filters available for the resource.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return array
-     */
-    public function filters(Request $request)
-    {
-        return [];
-    }
-
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return array
-     */
-    public function lenses(Request $request)
-    {
-        return [];
-    }
-
-    /**
-     * Get the actions available for the resource.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return array
-     */
-    public function actions(Request $request)
-    {
-        return [];
     }
 
     public static function icon()

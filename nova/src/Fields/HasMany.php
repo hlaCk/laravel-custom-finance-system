@@ -53,6 +53,8 @@ class HasMany extends Field implements ListableField, RelatableField
      */
     public function __construct($name, $attribute = null, $resource = null)
     {
+        [$name, $attribute, $resource] = parseNovaFieldArguments($name, $attribute, $resource);
+
         parent::__construct($name, $attribute);
 
         $resource = $resource ?? ResourceRelationshipGuesser::guessResource($name);

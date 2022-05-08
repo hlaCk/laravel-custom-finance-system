@@ -3,7 +3,7 @@
 namespace App\Nova\Info\Contractor;
 
 use App\Nova\Abstracts\Resource as BaseResource;
-use App\Nova\Fields\Field;
+use App\Nova\Fields\Name;
 use App\Nova\Fields\StatusSelect;
 use App\Nova\Info\Project\Project;
 use Illuminate\Http\Request;
@@ -61,22 +61,20 @@ class Contractor extends BaseResource
     public function fields(Request $request)
     {
         return [
-            ID::make(__('ID'), 'id')
-              ->sortable(),
+            ID::make(),
 
-            Field::Text(__('models/info/contractor/contractor.fields.name'), 'name')
-                 ->rules('required')
-                 ->required(),
+            Name::make()
+                ->requiredRule(),
 
             BelongsTo::make(
                 __('models/info/contractor/contractor.fields.contractor_speciality'),
                 'contractor_speciality',
                 ContractorSpeciality::class
             )
-                     ->nullableRule()
-                     ->showCreateRelationButton(),
+                     ->nullableRule(),
 
-            BelongsToMany::make(static::$model::trans('projects'), 'projects', Project::class),
+            BelongsToMany::make(static::$model::trans('projects'), 'projects', Project::class)
+                         ->fields(fn($r) => ContractorProject::getFieldsForRelationships($r)),
 
             StatusSelect::forResource($this),
         ];

@@ -1,0 +1,78 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Http\Request;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use App\Nova\Fields\Name;
+use App\Nova\Abstracts\Resource;
+
+class {{ class }} extends Resource
+{
+    /**
+     * The model the resource corresponds to.
+     *
+     * @var string|\{{ namespacedModel }}
+     */
+    public static $model = \{{ namespacedModel }}::class;
+
+    /**
+     * The single value that should be used to represent the resource when being displayed.
+     *
+     * @var string
+     */
+    public static $title = 'name';
+
+    /**
+     * The logical group associated with the resource.
+     *
+     * @var string
+     */
+    public static $group = 'Other';
+
+    /**
+     * The columns that should be searched.
+     *
+     * @var array
+     */
+    public static $search = [
+        'id',
+        'name'
+    ];
+
+    /**
+     * Get the fields displayed by the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function fields(Request $request)
+    {
+        return [
+            ID::make(),
+
+            Name::make()
+                ->requiredRule(),
+
+        ];
+    }
+
+    /**
+     * Get the fields displayed by the resource in relationships.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return array
+     */
+    public static function rawFieldsForRelationships(Request $request, ?bool $for_pivot = null): array
+    {
+        $for_pivot ??= $request->viaRelationship();
+        return [];
+    }
+
+    public static function icon()
+    {
+        return "<img src='/images/circle_copy.svg' class='inner-nav-icon'>";
+    }
+}

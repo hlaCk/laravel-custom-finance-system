@@ -5,6 +5,7 @@ namespace App\Nova\Abstracts;
 use App\Nova\Packages\SearchRelations\SearchesRelations;
 use Illuminate\Http\Request;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Makeable;
 use Laravel\Nova\Panel;
 use Laravel\Nova\Resource as NovaResource;
 
@@ -13,6 +14,7 @@ use Laravel\Nova\Resource as NovaResource;
  */
 abstract class Resource extends NovaResource
 {
+    use Makeable;
     use SearchesRelations;
     use \OptimistDigital\NovaTranslatable\HandlesTranslatable;
 
@@ -43,6 +45,12 @@ abstract class Resource extends NovaResource
      * @var bool
      */
     public static bool $partialResource = false;
+    /**
+     * The columns that should be hidden on relationship index view.
+     *
+     * @var array
+     */
+    public static $hideAttributesFromRelationshipsIndex = [];
     /**
      * Navigation icon preference.
      *
@@ -75,6 +83,18 @@ abstract class Resource extends NovaResource
         return ($currentResource = request('view')) &&
                method_exists(static::class, 'uriKey') &&
                $currentResource === 'resources/' . static::uriKey();
+    }
+
+    /**
+     * alias for __("models/model_name") and __("models/model_name.fields.field_name")
+     *
+     * @param string $key
+     *
+     * @return array|string|null
+     */
+    public static function trans(string $key, $replace = [], $locale = null)
+    {
+        return static::$model::trans($key, $replace, $locale);
     }
 
     /**
@@ -217,6 +237,26 @@ abstract class Resource extends NovaResource
     }
 
     /**
+     * Determine if is the resource available in global search.
+     *
+     * @return bool
+     */
+    public static function isGloballySearchable()
+    {
+        return !static::isPartialResource() && static::$globallySearchable;
+    }
+
+    /**
+     * Determine if is the resource available in global search.
+     *
+     * @return bool
+     */
+    public static function isPartialResource()
+    {
+        return (bool) static::$partialResource;
+    }
+
+    /**
      * Get the displayable label of navigation.
      *
      * @return string
@@ -291,16 +331,6 @@ abstract class Resource extends NovaResource
     }
 
     /**
-     * Determine if is the resource available in global search.
-     *
-     * @return bool
-     */
-    public static function isPartialResource()
-    {
-        return (bool) static::$partialResource;
-    }
-
-    /**
      * @return string
      */
     public static function icon()
@@ -338,16 +368,6 @@ abstract class Resource extends NovaResource
     }
 
     /**
-     * Determine if is the resource available in global search.
-     *
-     * @return bool
-     */
-    public static function isGloballySearchable()
-    {
-        return !static::isPartialResource() && static::$globallySearchable;
-    }
-
-    /**
      * @param bool                                                                           $wrap_function wrap the result with closure
      * @param null|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model $query
      *
@@ -361,4 +381,95 @@ abstract class Resource extends NovaResource
         return $wrap_function ? $result : $result();
     }
 
+    /**
+     * Merge a value based on a current resource if its match this resource.
+     *
+     * @param array|mixed $attributes
+     *
+     * @return \Illuminate\Http\Resources\MergeValue|mixed
+     */
+    public function mergeWhenCurrentResourceIsSelf($attributes = [])
+    {
+        return $this->mergeWhenCurrentResourceIs(static::class, $attributes);
+    }
+
+    /**
+     * Merge a value based on a given resource if its match current resource.
+     *
+     * @param string|\App\Nova\Abstracts\Resource|mixed $resource
+     * @param array|mixed                               $attributes
+     *
+     * @return \Illuminate\Http\Resources\MergeValue|mixed
+     */
+    public function mergeWhenCurrentResourceIs($resource, $attributes = [])
+    {
+        $resource = value($resource);
+        $resource = !is_string($resource) ? get_class($resource) : $resource;
+
+        return $this->mergeWhen(isCurrentResource($resource), $attributes);
+    }
+
+    public function parseFields(Request $request, $grouped_fields)
+    {
+        $fields = [];
+        foreach( $grouped_fields as $index => $_fields ) {
+            $_fields = array_wrap($_fields);
+            if( is_numeric($index) ) {
+                $fields = array_merge($fields, $_fields);
+            } else {
+                if( is_string($index) ) {
+                    $_args = explode(",", $index);
+                    $index = array_shift($_args);
+                    $_args[] = $_fields;
+
+                    $parseFields = method_exists($this, $index) ? $this->{$index}(...$_args) : null;
+                    $parseFields ??= is_callable($index) ? $index(...$_args) : $_fields;
+                    $fields[] = $parseFields;
+                }
+            }
+        }
+
+        return array_merge($fields, static::getFieldsForRelationships($request));
+    }
+
+    /**
+     * Get prepared fields displayed by the resource in relationships.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return array
+     */
+    public static function getFieldsForRelationships(Request $request, ?bool $for_pivot = null): array
+    {
+        $for_pivot ??= $request->viaRelationship();
+        $hideFromRelationshipsIndex = static::$hideAttributesFromRelationshipsIndex;
+        $applyHideFromRelationshipsIndex =
+            function ($m) use ($hideFromRelationshipsIndex) {
+                if( !empty($hideFromRelationshipsIndex) ) {
+                    return $m->{in_array($m->attribute, $hideFromRelationshipsIndex)
+                        ? 'hideFromRelationships'
+                        : 'showOnRelationships'}();
+                }
+
+                return $m;
+            };
+
+        $fields = collect(static::rawFieldsForRelationships($request, $for_pivot))
+            ->when(!empty($hideFromRelationshipsIndex), fn($e) => $e->each($applyHideFromRelationshipsIndex));
+
+        return $fields->all();
+    }
+
+    /**
+     * Get the fields displayed by the resource in relationships.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return array
+     */
+    public static function rawFieldsForRelationships(Request $request, ?bool $for_pivot = null): array
+    {
+        $for_pivot ??= $request->viaRelationship();
+        return [];
+    }
 }

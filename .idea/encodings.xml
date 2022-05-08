@@ -18,8 +18,9 @@
     <file url="file://$PROJECT_DIR$/app/Interfaces/Sheet/IExpense.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Models/Abstracts/Authenticatable.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Models/Abstracts/Model.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Models/Abstracts/Pivot.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Models/Info/Contractor/Contractor.php" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/app/Models/Info/Contractor/ContractorSpeciality.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Models/Info/Contractor/ContractorProject.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Models/Info/Contractor/ContractorSpeciality.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Models/Info/CreditCategory.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Models/Info/EntryCategory.php" charset="UTF-8" />
@@ -32,7 +33,9 @@
     <file url="file://$PROJECT_DIR$/app/Models/Sheet/Credit.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Models/Sheet/Expense.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Nova/Chart/Account.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Nova/Fields/Name.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Nova/Info/Contractor/Contractor.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Nova/Info/Contractor/ContractorProject.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Nova/Info/Contractor/ContractorSpeciality.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Nova/Info/Contractor/ProjectCost.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Nova/Info/CreditCategory.php" charset="UTF-8" />
@@ -135,6 +138,11 @@
     <file url="file://$PROJECT_DIR$/nova-components/YearToDate/src/Http/Resources/ProjectExpensesYtdByMonthResource.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/nova-components/YearToDate/src/Http/Resources/ProjectResource.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/nova-components/YearToDate/webpack.config.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nova/src/Fields/Abstracts/FieldCollection.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nova/src/Fields/Abstracts/FieldElement.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nova/src/Fields/Abstracts/Stack.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nova/src/Fields/Traits/TShowOnRelationshipsCollection.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/nova/src/Fields/Traits/TShowOnRelationshipsStack.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/css/my_app.css" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/js/bootstrap-helpers.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/js/dynamic_triggers.js" charset="UTF-8" />
@@ -145,6 +153,7 @@
     <file url="file://$PROJECT_DIR$/resources/lang/ar/models/chart/account.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/lang/ar/models/info/client.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/lang/ar/models/info/contractor/contractor.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/resources/lang/ar/models/info/contractor/contractor_project.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/lang/ar/models/info/contractor/contractor_speciality.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/lang/ar/models/info/contractor/project_cost.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/lang/ar/models/info/credit_category.php" charset="UTF-8" />
@@ -157,6 +166,7 @@
     <file url="file://$PROJECT_DIR$/resources/lang/en/models/chart/account.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/lang/en/models/info/client.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/lang/en/models/info/contractor/contractor.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/resources/lang/en/models/info/contractor/contractor_project.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/lang/en/models/info/contractor/contractor_speciality.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/lang/en/models/info/contractor/project_cost.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/lang/en/models/info/credit_category.php" charset="UTF-8" />

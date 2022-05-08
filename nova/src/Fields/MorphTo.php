@@ -97,7 +97,7 @@ class MorphTo extends Field implements RelatableField
      *
      * @var bool
      */
-    public $displaysWithTrashed = true;
+    public $displaysWithTrashed = false;
 
     /**
      * The default related class value for the field.

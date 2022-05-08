@@ -3,12 +3,13 @@
 namespace App\Nova\Chart;
 
 use App\Nova\Abstracts\Resource as BaseResource;
-use App\Nova\Fields\Field;
+use App\Nova\Fields\Name;
 use App\Nova\Fields\StatusSelect;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Account extends BaseResource
@@ -55,24 +56,21 @@ class Account extends BaseResource
     public function fields(Request $request)
     {
         return [
-            ID::make(__('ID'), 'id')
-              ->sortable(),
+            ID::make(),
 
-            Field::Text(__('models/chart/account.fields.name'), 'name')
-                 ->rules('required')
-                 ->required(),
+            Name::make()
+                ->requiredRule(),
 
-            Field::Select('type')
-                 ->options(static::$model::trans('types'))
-                 ->displayUsing(fn($q) => $q ? static::$model::trans("types.{$q}") : '-')
-                 ->rules('nullable')
-                 ->nullable()
-                 ->default(static::$model::DEFAULT_TYPE),
+            Select::make('type')
+                  ->options(static::$model::trans('types'))
+                  ->displayUsing(fn($q) => $q ? static::$model::trans("types.{$q}") : '-')
+                  ->nullableRule()
+                  ->default(fn($r) => $r->editing ? static::$model::DEFAULT_TYPE : null),
 
             BelongsTo::make(static::$model::trans('parent_account'), 'account', Account::class)
                      ->showCreateRelationButton()
                      ->hideFromIndex()
-                     ->nullable(),
+                     ->nullableRule(),
 
             HasMany::make(static::$model::trans('sub_accounts'), 'sub_accounts', Account::class)
                    ->sortable(),

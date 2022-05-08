@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Http\Resources\MergeValue;
+use Illuminate\Http\Resources\MissingValue;
+
 if( !function_exists('isRequestNovaIndex') ) {
     function isRequestNovaIndex(\Illuminate\Http\Request $request): bool
     {
@@ -27,6 +30,13 @@ if( !function_exists('isRequestNovaUpdate') ) {
     {
         return $request instanceof \Laravel\Nova\Http\Requests\NovaRequest &&
                $request->editMode === 'update';
+    }
+}
+
+if( !function_exists('isRequestNovaAttach') ) {
+    function isRequestNovaAttach(\Illuminate\Http\Request $request): bool
+    {
+        return $request->editing && in_array($request->editMode, [ 'attach', 'update-attached' ]);
     }
 }
 
@@ -80,7 +90,7 @@ if( !function_exists('getNovaParentResourceId') ) {
     }
 }
 
-if( !function_exists('currentNovaResourceClass') ) {
+if( !function_exists('currentNovaResourceClassCalled') ) {
     /**
      * Get Nova Resource Class through debug backtrace.
      *
@@ -88,26 +98,89 @@ if( !function_exists('currentNovaResourceClass') ) {
      *
      * @return string|\App\Nova\Abstracts\Resource|null
      */
-    function currentNovaResourceClass(\Closure $callback = null): ?string
+    function currentNovaResourceClassCalled(\Closure $callback = null, ?array $resolveByKeyValue = null): ?string
     {
         $class = null;
-        foreach( ($debug = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)) as $index => $item ) {
-            if( isset($item[ 'class' ]) && $item[ 'class' ] == \Laravel\Nova\Resource::class ) {
-                $class = data_get($debug, ($index - 1) . ".class");
+
+        $resolveByKey = 'class';
+        $resolveByValue = \Laravel\Nova\Resource::class;
+        $defaultResolveByOffset = fn() => fn($index, $trace) => $index - 1;
+        $resolveByOffset = $defaultResolveByOffset();
+
+        $resolveByKeyValue =
+            is_null($resolveByKeyValue) || !is_array($resolveByKeyValue) || !count($resolveByKeyValue)
+                ? [
+                $resolveByKey => $resolveByValue,
+                'offset'      => $resolveByOffset,
+            ]
+                :
+                $resolveByKeyValue;
+        try {
+            $resolveByKey = key($resolveByKeyValue);
+            $resolveByValue = head($resolveByKeyValue);
+            $resolveByOffset = data_get($resolveByKeyValue, 'offset', $defaultResolveByOffset);
+        } catch( Exception $exception ) {
+            $resolveByKey = 'class';
+            $resolveByValue = \Laravel\Nova\Resource::class;
+            $resolveByOffset = $defaultResolveByOffset();
+        }
+        $resolveByKey = trim(value($resolveByKey));
+        $resolveByValue = trim(value($resolveByValue));
+        $resolveByOffset = isClosure($resolveByOffset) ? $resolveByOffset : fn($index, $trace) => $resolveByValue;
+
+        $debug = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+
+        foreach( $debug as $index => $item ) {
+            if( isset($item[ $resolveByKey ]) && $item[ $resolveByKey ] == $resolveByValue ) {
+                $index = (double) ($resolveByOffset($index, $item) ?? $index - 1);
+                $class = data_get($debug, ($index) . ".class");
+                if( is_null($class) || $class === 'Laravel\Nova\Resource' ) {
+                    $_debug = array_reverse(slice($debug, 0, $index));
+                    foreach( $_debug as $_index => $_item ) {
+                        if(
+                            isset($_item[ $resolveByKey ]) &&
+                            is_subclass_of($_item[ $resolveByKey ], \Laravel\Nova\Resource::class)
+                        ) {
+                            $class = $_item[ $resolveByKey ];
+                            break;
+                        }
+                    }
+                }
                 break;
             }
         }
 
-        if( is_null($class) ) {
+        if( is_null($class) && class_exists($resolveByValue) ) {
             foreach( $debug as $index => $item ) {
-                if( isset($item[ 'class' ]) && is_subclass_of($item[ 'class' ], \Laravel\Nova\Resource::class) ) {
-                    $class = data_get($item, "class");
+                if( isset($item[ $resolveByKey ]) && (
+                        is_subclass_of($item[ $resolveByKey ], $resolveByValue) ||
+                        is_a($item[ $resolveByKey ], $resolveByValue)
+                    ) ) {
+                    $index = (double) ($resolveByOffset($index, $item) ?? $index - 1);
+                    $class = data_get($debug, ($index) . ".class");
                     break;
                 }
             }
         }
 
-        return with($class ?? getNovaResource(), $callback ?? fn($model) => $model);
+        return with($class, $callback ?? fn($model) => $model);
+    }
+}
+
+if( !function_exists('currentNovaResourceClass') ) {
+    /**
+     * Get Nova Resource Class through request debug backtrace.
+     *
+     * @param \Closure|null $callback
+     *
+     * @return string|\App\Nova\Abstracts\Resource|null
+     */
+    function currentNovaResourceClass(\Closure $callback = null): ?string
+    {
+//        if( getNovaRequest()->viaResource() ) {
+        return with(getNovaResource(), $callback ?? fn($model) => $model);
+//        }
+
     }
 }
 
@@ -122,7 +195,7 @@ if( !function_exists('currentNovaResourceModelClass') ) {
     function currentNovaResourceModelClass(\Closure $callback = null): ?string
     {
         return with(
-            currentNovaResourceClass(\Closure::fromCallable('resourceModelExtractor')),
+            currentNovaResourceClassCalled(\Closure::fromCallable('resourceModelExtractor')),
             $callback ?? fn($model) => $model
         );
     }
@@ -138,7 +211,9 @@ if( !function_exists('resourceModelExtractor') ) {
      */
     function resourceModelExtractor($resource)
     {
-        return class_exists($resource) ? ($resource::$model ?? null) : null;
+        return class_exists(
+            is_object($resource) ? get_class($resource) : $resource
+        ) ? ($resource::$model ?? null) : null;
     }
 }
 
@@ -173,10 +248,11 @@ if( !function_exists('getNovaResourceInfoFromRequest') ) {
 
             if( $request->segment(2) === 'resources' ) {
                 $resourceInfo = [
-                    'resource'     => Nova::resourceForKey($resourceName = $request->segment(3)),
-                    'resourceName' => $resourceName,
-                    'resourceId'   => $resourceId = $request->segment(4),
-                    'mode'         => $request->segment(5) ?? ($resourceId ? 'view' : 'index'),
+//                    'resource'     => $request->resource()?: Nova::resourceForKey($resourceName = $request->segment(3)),
+'resource'     => Nova::resourceForKey($resourceName = $request->segment(3)),
+'resourceName' => $resourceName,
+'resourceId'   => $resourceId = $request->segment(4),
+'mode'         => $request->segment(5) ?? ($resourceId ? 'view' : 'index'),
                 ];
             }
         } catch( Exception $exception ) {
@@ -199,14 +275,20 @@ if( !function_exists('getNovaRequestParameters') ) {
         try {
             $request ??= getNovaRequest();
 
+
             /** @var \Illuminate\Routing\Route $route */
             $route = call_user_func($request->getRouteResolver());
 
             if( is_null($route) ) {
                 return $results;
             }
-
+//dd(
+//    $request->route()->hasParameter('resource'),
+//   $route->hasParameter('resource'),
+//   $request->hasParameter('resource')
+//);
             $results = $route->parameters();
+
             if( is_null($key) ) {
                 if( is_array($results) && isset($results[ 'resource' ]) ) {
                     $results[ 'resource_class' ] = Nova::resourceForKey($results[ 'resource' ]);
@@ -237,9 +319,12 @@ if( !function_exists('getNovaResource') ) {
      */
     function getNovaResource(): ?string
     {
-
+        $request = getNovaRequest();
+        $resource = $request->resource ? $request->resource() : null;
+//dd($resource);
         try {
-            $resource = getNovaResourceInfoFromRequest(null, 'resource');
+            $resource = $resource ?: getNovaResourceInfoFromRequest(null, 'resource');
+//            $resource = getNovaResourceInfoFromRequest(null, 'resource');
         } catch( Exception $exception ) {
             $resource = null;
         }
@@ -278,6 +363,36 @@ if( !function_exists('isActiveNavigationItem') ) {
     }
 }
 
+if( !function_exists('isRequestRelationshipTypeHasMany') ) {
+    /**
+     * @param \Illuminate\Http\Request|null $request
+     *
+     * @return bool
+     */
+    function isRequestRelationshipTypeHasMany(?\Illuminate\Http\Request $request = null): bool
+    {
+        $request ??= getNovaRequest();
+        return $request->relationshipType === 'hasMany';
+    }
+}
+
+if( !function_exists('iisViaRelationship') ) {
+    /**
+     * determines if the request via relationship
+     *
+     * @param \Laravel\Nova\Http\Requests\NovaRequest|null $request
+     *
+     * @return bool
+     */
+    function isViaRelationship(?\Laravel\Nova\Http\Requests\NovaRequest $request = null): bool
+    {
+        $request ??= getNovaRequest();
+        return ($request->editing && in_array($request->editMode, [ 'attach', 'update-attached' ])) ||
+               $request->relationshipType === 'hasMany' ||
+               $request->viaResource;
+    }
+}
+
 if( !function_exists('isCurrentResource') ) {
     /**
      * Check if current resource is the given resource.
@@ -288,10 +403,16 @@ if( !function_exists('isCurrentResource') ) {
      */
     function isCurrentResource(string $resource): bool
     {
-        return ($currentResource = request('view')) &&
-               class_exists($resource) &&
-               method_exists($resource, 'uriKey') &&
-               $currentResource === 'resources/' . $resource::uriKey();
+        $request = getNovaRequest();
+        return (
+                   $request->resource &&
+                   $request->resource() === $resource
+               ) || (
+                   ($currentResource = request('view')) &&
+                   class_exists($resource) &&
+                   method_exists($resource, 'uriKey') &&
+                   $currentResource === 'resources/' . $resource::uriKey()
+               );
     }
 }
 
@@ -490,7 +611,7 @@ if( !function_exists('formatAttributeAsCurrency') ) {
         $attribute = value($attribute);
         $model = value($model);
         $locale = value($locale, currentLocale());
-        return \Laravel\Nova\Fields\Currency::make($attribute)
+        return \Laravel\Nova\Fields\Currency::make('Element', $attribute)
                                             ->formatMoney($model->$attribute, null, $locale);
     }
 }
@@ -508,7 +629,7 @@ if( !function_exists('formatValueAsCurrency') ) {
         $locale = value($locale, currentLocale());
         $locale ??= config('nova.money_locale', currentLocale());
 
-        return \Laravel\Nova\Fields\Currency::make($value)
+        return \Laravel\Nova\Fields\Currency::make('Element', $value)
                                             ->formatMoney($value, null, $locale);
     }
 }
@@ -520,5 +641,51 @@ if( !function_exists('makeFormatValueAsCurrency') ) {
     function makeFormatValueAsCurrency(): Closure
     {
         return static fn($v, $l = null) => formatValueAsCurrency($v, $l);
+    }
+}
+
+if( !function_exists('parseNovaFieldArguments') ) {
+    /**
+     * @param string               $name
+     * @param string|callable|null $attribute
+     * @param string|callable|null $resolveCallback
+     *
+     * @return array|\Closure
+     */
+    function parseNovaFieldArguments($name, $attribute = null, $resolveCallback = null): array
+    {
+        if( is_null($attribute) && is_null($resolveCallback) ) {
+            $attribute = $name;
+        } else {
+            if( is_null($resolveCallback) ) {
+                if( $attribute instanceof Closure ||
+                    (is_callable($attribute) && is_object($attribute)) ||
+                    class_exists($attribute) ) {
+                    $resolveCallback = $attribute;
+                    $attribute = $name;
+                }
+            }
+        }
+        return [ $name, $attribute, $resolveCallback ];
+    }
+}
+
+if( !function_exists('whenCurrentResourceIs') ) {
+    /**
+     * if current resource equal to the given resource call $whenTrue|null else call $whenFalse|null
+     *
+     * @param string|\App\Nova\Abstracts\Resource $resource
+     * @param callable|null|mixed                 $whenTrue
+     * @param callable|null|mixed                 $whenFalse
+     * @param mixed|null                          $with
+     *
+     * @return array|mixed
+     */
+    function whenCurrentResourceIs($resource, $whenTrue = [], $whenFalse = [], $with = null)
+    {
+        $resource = value($resource);
+        $resource = !is_string($resource) ? get_class($resource) : $resource;
+
+        return when(isCurrentResource($resource), $whenTrue, $whenFalse, $with);
     }
 }

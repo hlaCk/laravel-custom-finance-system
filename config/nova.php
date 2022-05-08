@@ -178,6 +178,6 @@ return [
     'money_locale'        => 'en',
 
     // string|null: force locale for carbon
-    'force_carbon_locale' => null,
+    'force_carbon_locale' => 'en',
 
 ];

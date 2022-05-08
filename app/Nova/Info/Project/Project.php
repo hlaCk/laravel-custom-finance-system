@@ -3,15 +3,17 @@
 namespace App\Nova\Info\Project;
 
 use App\Nova\Abstracts\Resource as BaseResource;
-use App\Nova\Fields\Field;
+use App\Nova\Fields\Name;
 use App\Nova\Fields\StatusSelect;
 use App\Nova\Info\Client;
 use App\Nova\Info\Contractor\Contractor;
+use App\Nova\Info\Contractor\ContractorProject;
 use App\Nova\Sheet\Credit;
 use App\Nova\Sheet\Expense;
-use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Fields\Currency;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 
 class Project extends BaseResource
@@ -54,56 +56,45 @@ class Project extends BaseResource
      *
      * @return array
      */
-    public function fields(Request $request)
+    public function fields($request)
     {
         return [
-            ID::make(__('ID'), 'id')
-              ->sortable(),
+            ID::make(),
 
-            Field::Text(__('models/info/project/project.fields.name'), 'name')
-                 ->rules('required')
-                 ->required(),
+            Name::make()
+                ->requiredRule(),
 
-            Field::Currency(__('models/info/project/project.fields.base_cost'), 'base_cost')
-                 ->default(0)
-                 ->rules('required')
-                 ->required(),
+            Currency::make('base_cost')
+                    ->default(0)
+                    ->requiredRule(),
 
-            Field::Currency(__('models/info/project/project.fields.cost'), 'cost', fn()=>$this->cost_label)
-                 ->exceptOnForms(),
+            Currency::make('cost', fn() => $this->cost)
+                    ->exceptOnForms(),
 
             BelongsTo::make(
-                __('models/info/project/project.fields.client'),
                 'client',
                 Client::class
             )
-                     ->nullable()
-                     ->showCreateRelationButton(),
+                     ->nullableRule(),
 
             BelongsTo::make(
-                __('models/info/project/project.fields.project_status'),
                 'project_status',
                 ProjectStatus::class
             )
                      ->default(
-                         fn() => \App\Models\Info\Project\ProjectStatus::where(
-                             'name',
+                         fn($r) => $r->editing ? \App\Models\Info\Project\ProjectStatus::byName(
                              static::$model::DEFAULT_PROJECT_STATUS_NAME
-                         )->first()->id
-                     )
-                     ->showCreateRelationButton(),
+                         )->first()->id : null
+                     ),
 
-            Field::HasMany(static::$model::trans('project_costs'), 'project_costs', ProjectCost::class),
+            HasMany::make('project_costs', ProjectCost::class),
 
-            BelongsToMany::make(
-                __('models/info/project/project.fields.contractors'),
-                'contractors',
-                Contractor::class
-            ),
+            BelongsToMany::make('contractors', Contractor::class)
+                         ->fields(fn($r) => ContractorProject::getFieldsForRelationships($r)),
 
-            Field::HasMany(static::$model::trans('credits'), 'credits', Credit::class),
+            HasMany::make('credits', Credit::class),
 
-            Field::HasMany(static::$model::trans('expenses'), 'expenses', Expense::class),
+            HasMany::make('expenses', Expense::class),
 
             StatusSelect::forResource($this),
         ];

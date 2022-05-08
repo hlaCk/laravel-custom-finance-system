@@ -2,296 +2,183 @@
 
 namespace Laravel\Nova\Fields;
 
-use Laravel\Nova\Element;
+use Laravel\Nova\Fields\Abstracts\FieldElement as AbstractFieldElement;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-abstract class FieldElement extends Element
+abstract class FieldElement extends AbstractFieldElement
 {
-    /**
-     * The field's assigned panel.
-     *
-     * @var string
-     */
-    public $panel;
 
     /**
-     * Indicates if the element should be shown on the index view.
+     * Indicates if the element should be shown on Relationships index & details view.
      *
      * @var \Closure|bool
      */
-    public $showOnIndex = true;
+    public $showOnRelationships = false;
 
     /**
-     * Indicates if the element should be shown on the detail view.
+     * Which resource to apply $showOnRelationships on
      *
-     * @var \Closure|bool
+     * @var \Closure|array|null
      */
-    public $showOnDetail = true;
+    public $showOnRelationshipsList = [];
 
     /**
-     * Indicates if the element should be shown on the creation view.
+     * Check if current request is for relationships.
      *
-     * @var \Closure|bool
-     */
-    public $showOnCreation = true;
-
-    /**
-     * Indicates if the element should be shown on the update view.
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
      *
-     * @var \Closure|bool
-     */
-    public $showOnUpdate = true;
-
-    /**
-     * Specify that the element should be hidden from the index view.
-     *
-     * @param  \Closure|bool  $callback
-     * @return $this
-     */
-    public function hideFromIndex($callback = true)
-    {
-        $this->showOnIndex = is_callable($callback) ? function () use ($callback) {
-            return ! call_user_func_array($callback, func_get_args());
-        }
-        : ! $callback;
-
-        return $this;
-    }
-
-    /**
-     * Specify that the element should be hidden from the detail view.
-     *
-     * @param  \Closure|bool  $callback
-     * @return $this
-     */
-    public function hideFromDetail($callback = true)
-    {
-        $this->showOnDetail = is_callable($callback) ? function () use ($callback) {
-            return ! call_user_func_array($callback, func_get_args());
-        }
-        : ! $callback;
-
-        return $this;
-    }
-
-    /**
-     * Specify that the element should be hidden from the creation view.
-     *
-     * @param  \Closure|bool  $callback
-     * @return $this
-     */
-    public function hideWhenCreating($callback = true)
-    {
-        $this->showOnCreation = is_callable($callback) ? function () use ($callback) {
-            return ! call_user_func_array($callback, func_get_args());
-        }
-        : ! $callback;
-
-        return $this;
-    }
-
-    /**
-     * Specify that the element should be hidden from the update view.
-     *
-     * @param  \Closure|bool  $callback
-     * @return $this
-     */
-    public function hideWhenUpdating($callback = true)
-    {
-        $this->showOnUpdate = is_callable($callback) ? function () use ($callback) {
-            return ! call_user_func_array($callback, func_get_args());
-        }
-        : ! $callback;
-
-        return $this;
-    }
-
-    /**
-     * Specify that the element should be hidden from the index view.
-     *
-     * @param  \Closure|bool  $callback
-     * @return $this
-     */
-    public function showOnIndex($callback = true)
-    {
-        $this->showOnIndex = $callback;
-
-        return $this;
-    }
-
-    /**
-     * Specify that the element should be hidden from the detail view.
-     *
-     * @param  \Closure|bool  $callback
-     * @return $this
-     */
-    public function showOnDetail($callback = true)
-    {
-        $this->showOnDetail = $callback;
-
-        return $this;
-    }
-
-    /**
-     * Specify that the element should be hidden from the creation view.
-     *
-     * @param  \Closure|bool  $callback
-     * @return $this
-     */
-    public function showOnCreating($callback = true)
-    {
-        $this->showOnCreation = $callback;
-
-        return $this;
-    }
-
-    /**
-     * Specify that the element should be hidden from the update view.
-     *
-     * @param  \Closure|bool  $callback
-     * @return $this
-     */
-    public function showOnUpdating($callback = true)
-    {
-        $this->showOnUpdate = $callback;
-
-        return $this;
-    }
-
-    /**
-     * Check for showing when updating.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  mixed  $resource
      * @return bool
      */
-    public function isShownOnUpdate(NovaRequest $request, $resource): bool
+    public function isRelationshipView(NovaRequest $request): bool
     {
-        if (is_callable($this->showOnUpdate)) {
-            $this->showOnUpdate = call_user_func($this->showOnUpdate, $request, $resource);
-        }
-
-        return $this->showOnUpdate;
+        return ($request->editing && in_array($request->editMode, [ 'attach', 'update-attached' ])) ||
+               $request->relationshipType === 'hasMany' ||
+               $request->viaResource ||
+               $request->relatedResource;
     }
 
     /**
-     * Check showing on index.
+     * Check showing on relationships.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  mixed  $resource
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param mixed                                   $resource
+     *
      * @return bool
      */
-    public function isShownOnIndex(NovaRequest $request, $resource): bool
+    public function isShownOnRelationships(NovaRequest $request, $resource): bool
     {
-        if (is_callable($this->showOnIndex)) {
-            $this->showOnIndex = call_user_func($this->showOnIndex, $request, $resource);
+        if( is_callable($this->showOnRelationships) ) {
+            $this->showOnRelationships = call_user_func($this->showOnRelationships, $request, $resource);
         }
 
-        return $this->showOnIndex;
+        return $this->showOnRelationships;
     }
 
     /**
-     * Check showing on detail.
+     * Specify that the element should only be shown on the relationships index & details view.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  mixed  $resource
-     * @return bool
+     * @param \Closure|array|null $relationships
+     *
+     * @return $this
      */
-    public function isShownOnDetail(NovaRequest $request, $resource): bool
+    public function onlyOnRelationships($relationships = [])
     {
-        if (is_callable($this->showOnDetail)) {
-            $this->showOnDetail = call_user_func($this->showOnDetail, $request, $resource);
+        $this->showOnIndex()
+             ->showOnDetail()
+             ->hideWhenCreating()
+             ->hideWhenUpdating()
+             ->showOnRelationships($relationships);
+
+        return $this;
+    }
+
+    /**
+     * Specify that the element should be shown in relationships index & details view.
+     *
+     * @param \Closure|array|null $relationships
+     * @param \Closure|bool       $callback
+     *
+     * @return $this
+     */
+    public function showOnRelationships($relationships = [], $callback = true)
+    {
+        if( is_array($callback) ) {
+            $_relationships = $callback;
+            /** @var \Closure|bool $relationships */
+            $callback = $relationships;
+            $relationships = $_relationships;
         }
 
-        return $this->showOnDetail;
-    }
-
-    /**
-     * Check for showing when creating.
-     *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return bool
-     */
-    public function isShownOnCreation(NovaRequest $request): bool
-    {
-        if (is_callable($this->showOnCreation)) {
-            $this->showOnCreation = call_user_func($this->showOnCreation, $request);
+        if( is_bool($relationships) ) {
+            $_callback = $relationships;
+            /** @var \Closure|array|null $callback */
+            $relationships = $callback;
+            $callback = $_callback;
         }
 
-        return $this->showOnCreation;
-    }
-
-    /**
-     * Specify that the element should only be shown on the index view.
-     *
-     * @return $this
-     */
-    public function onlyOnIndex()
-    {
-        $this->showOnIndex = true;
-        $this->showOnDetail = false;
-        $this->showOnCreation = false;
-        $this->showOnUpdate = false;
+        $this->showOnRelationshipsList = $relationships;
+        $this->showOnRelationships = function (NovaRequest $request) use ($callback) {
+            return $this->isRelatedResourceIn($request) && (is_callable($callback) ? call_user_func_array(
+                    $callback,
+                    func_get_args()
+                )
+                    : $callback);
+        };
 
         return $this;
     }
 
     /**
-     * Specify that the element should only be shown on the detail view.
+     * Check if current request is for relationships.
+     *
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Closure|array|null                     $resources
+     *
+     * @return bool|mixed
+     */
+    public function isRelatedResourceIn(NovaRequest $request, $resources = null)
+    {
+        $resources ??= $this->showOnRelationshipsList;
+        if( empty($resources = value($resources)) ) {
+            return true;
+        }
+
+        $related = $request->viaResource ? $request->viaResource() : null;
+        $related ??= $request->relatedResource ? $request->relatedResource() : null;
+        return in_array($related, $resources);
+    }
+
+    /**
+     * Specify that the element should be hidden from relationships index & details.
+     *
+     * @param \Closure|array|null $relationships
      *
      * @return $this
      */
-    public function onlyOnDetail()
+    public function exceptOnRelationships($relationships = [])
     {
-        parent::onlyOnDetail();
-
-        $this->showOnIndex = false;
-        $this->showOnDetail = true;
-        $this->showOnCreation = false;
-        $this->showOnUpdate = false;
+        $this->showOnIndex()
+             ->showOnDetail()
+             ->showOnCreating()
+             ->showOnUpdating()
+             ->hideFromRelationships($relationships);
 
         return $this;
     }
 
     /**
-     * Specify that the element should only be shown on forms.
+     * Specify that the element should be hidden in relationships index & details view.
+     *
+     * @param \Closure|array|null $relationships
+     * @param \Closure|bool       $callback
      *
      * @return $this
      */
-    public function onlyOnForms()
+    public function hideFromRelationships($relationships = [], $callback = true)
     {
-        $this->showOnIndex = false;
-        $this->showOnDetail = false;
-        $this->showOnCreation = true;
-        $this->showOnUpdate = true;
+        if( is_array($callback) ) {
+            $_relationships = $callback;
+            /** @var \Closure|bool $relationships */
+            $callback = $relationships;
+            $relationships = $_relationships;
+        }
+
+        if( is_bool($relationships) ) {
+            $_callback = $relationships;
+            /** @var \Closure|array|null $callback */
+            $relationships = $callback;
+            $callback = $_callback;
+        }
+
+        $this->showOnRelationshipsList = $relationships;
+        $this->showOnRelationships = function (NovaRequest $request) use ($callback) {
+            return !($this->isRelatedResourceIn($request) && (is_callable($callback) ? call_user_func_array(
+                    $callback,
+                    func_get_args()
+                ) : $callback));
+        };
 
         return $this;
     }
 
-    /**
-     * Specify that the element should be hidden from forms.
-     *
-     * @return $this
-     */
-    public function exceptOnForms()
-    {
-        $this->showOnIndex = true;
-        $this->showOnDetail = true;
-        $this->showOnCreation = false;
-        $this->showOnUpdate = false;
-
-        return $this;
-    }
-
-    /**
-     * Prepare the field element for JSON serialization.
-     *
-     * @return array
-     */
-    public function jsonSerialize()
-    {
-        return array_merge(parent::jsonSerialize(), [
-            'panel' => $this->panel,
-        ]);
-    }
 }

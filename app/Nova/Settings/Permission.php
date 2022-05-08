@@ -3,9 +3,10 @@
 namespace App\Nova\Settings;
 
 use App\Nova\Abstracts\Resource;
-use App\Nova\Fields\Field;
+use App\Nova\Fields\Name;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Text;
 
 class Permission extends Resource
 {
@@ -38,27 +39,15 @@ class Permission extends Resource
     ];
 
     /**
-     * Get the fields displayed by the resource.
+     * Get the actions available for the resource.
      *
      * @param \Illuminate\Http\Request $request
      *
      * @return array
      */
-    public function fields(Request $request)
+    public function actions(Request $request)
     {
-        return [
-            ID::make(__('ID'), 'id')
-              ->sortable(),
-
-            Field::Text(__('models/settings/permission.fields.name'), 'name')
-                 ->rules('required')
-                 ->required(),
-
-            Field::Text(__('models/settings/permission.fields.guard_name'), 'guard_name')
-                 ->rules('required')
-                 ->required(),
-
-        ];
+        return [];
     }
 
     /**
@@ -74,6 +63,27 @@ class Permission extends Resource
     }
 
     /**
+     * Get the fields displayed by the resource.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return array
+     */
+    public function fields(Request $request)
+    {
+        return [
+            ID::make(),
+
+            Name::make()
+                ->requiredRule(),
+
+            Text::make(__('models/settings/permission.fields.guard_name'), 'guard_name')
+                ->requiredRule(),
+
+        ];
+    }
+
+    /**
      * Get the filters available for the resource.
      *
      * @param \Illuminate\Http\Request $request
@@ -83,6 +93,11 @@ class Permission extends Resource
     public function filters(Request $request)
     {
         return [];
+    }
+
+    public static function icon()
+    {
+        return "<img src='/images/circle_copy.svg' class='inner-nav-icon'>";
     }
 
     /**
@@ -95,22 +110,5 @@ class Permission extends Resource
     public function lenses(Request $request)
     {
         return [];
-    }
-
-    /**
-     * Get the actions available for the resource.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return array
-     */
-    public function actions(Request $request)
-    {
-        return [];
-    }
-
-    public static function icon()
-    {
-        return "<img src='/images/circle_copy.svg' class='inner-nav-icon'>";
     }
 }

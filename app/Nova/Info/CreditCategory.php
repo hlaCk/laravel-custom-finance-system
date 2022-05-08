@@ -3,11 +3,11 @@
 namespace App\Nova\Info;
 
 use App\Nova\Abstracts\Resource as BaseResource;
-use App\Nova\Fields\Field;
+use App\Nova\Fields\Name;
 use App\Nova\Fields\StatusSelect;
 use App\Nova\Sheet\Credit;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 
 class CreditCategory extends BaseResource
@@ -60,14 +60,12 @@ class CreditCategory extends BaseResource
     public function fields(Request $request)
     {
         return [
-            ID::make(__('ID'), 'id')
-              ->sortable(),
+            ID::make(),
 
-            Field::Text(__('models/info/credit_category.fields.name'), 'name')
-                 ->rules('required')
-                 ->required(),
+            Name::make()
+                ->requiredRule(),
 
-            Field::HasMany(static::$model::trans('credits'), 'credits', Credit::class),
+            HasMany::make(static::$model::trans('credits'), 'credits', Credit::class),
 
             StatusSelect::forResource($this),
         ];

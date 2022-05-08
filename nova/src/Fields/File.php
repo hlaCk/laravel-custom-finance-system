@@ -100,6 +100,9 @@ class File extends Field implements StorableContract, DeletableContract, Downloa
      */
     public function __construct($name, $attribute = null, $disk = 'public', $storageCallback = null)
     {
+        if( is_null($attribute) ) {
+            $attribute = $name;
+        }
         parent::__construct($name, $attribute);
 
         $this->disk($disk);

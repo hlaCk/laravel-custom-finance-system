@@ -47,13 +47,15 @@ class StatusSelect extends Select
      */
     public static function forResource(?Resource $resource = null): self
     {
-        $model = currentNovaResourceModelClass();
+        $model = !is_null($resource) ?
+            resourceModelExtractor($resource) :
+            currentNovaResourceModelClass();
 
         return static::make()
                      ->transName()
-                     ->setResource($resource ?? currentNovaResourceClass())
+                     ->setResource($resource ?? currentNovaResourceClassCalled() ?? currentNovaResourceClass())
                      ->options($model::getAllStatuses())
-                     ->default($model::getDefaultStatus())
+                     ->default(fn($r)=>$r->editing ? $model::getDefaultStatus() : null)
                      ->sortable()
                      ->displayUsing(fn($a) => $model::getStatusLabel($a));
     }

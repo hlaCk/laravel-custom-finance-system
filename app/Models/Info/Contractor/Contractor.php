@@ -4,10 +4,7 @@ namespace App\Models\Info\Contractor;
 
 use App\Interfaces\IBooleanStatus;
 use App\Models\Abstracts\Model;
-use App\Models\Info\Client;
 use App\Models\Info\Project\Project;
-use App\Models\Sheet\Credit;
-use App\Models\Sheet\Expense;
 use App\Traits\THasBooleanStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -78,7 +75,18 @@ class Contractor extends Model implements IBooleanStatus
 
     public function projects()
     {
-        return $this->belongsToMany(Project::class);
+        return $this->belongsToMany(Project::class)
+                    ->using(ContractorProject::class)
+                    ->withPivot([
+                                    'date',
+                                    'remarks',
+                                    'unit',
+                                    'quantity',
+                                    'price',
+//                                    'total',
+                                    'deleted_at',
+                                ])
+                    ->withTimestamps();
     }
 
     public function getContractorSpecialityNameAttribute()

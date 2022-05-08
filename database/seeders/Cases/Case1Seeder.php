@@ -35,7 +35,7 @@ class Case1Seeder extends Seeder
                 is_array($attr) ? $attr[ 1 ] : ($this->$attr ?? $attr)
             );
 
-        setCurrentLocale('ar');
+//        setCurrentLocale('ar');
         Project::factory()
                ->count($this->projects)
 //               ->hasContractors($getRandomLimit('contractors'))
@@ -52,8 +52,20 @@ class Case1Seeder extends Seeder
                    if( $contractors_count = $getRandomLimit([ 0, $this->contractors ]) ) {
                        $contractors = Contractor::inRandomOrder()
                                                 ->limit($contractors_count)
-                                                ->pluck('id')
-                                                ->toArray();
+                                                ->pluck('name', 'id')
+                                                ->mapWithKeys(function ($name, $id) use ($project) {
+                                                    return [
+                                                        $id => [
+                                                            'date'     => $project->created_at,
+                                                            'remarks'  => "Contractor {$id}:{$name} Project {$project->id}:{$project->name}",
+                                                            'unit'     => 'meter',
+                                                            'quantity' => 1,
+                                                            'price'    => 2,
+//                                                            'total'    => 2,
+                                                            //                                                            'deleted_at'=>null,
+                                                        ],
+                                                    ];
+                                                });
 
                        $project->contractors()->sync($contractors);
                    }

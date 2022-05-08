@@ -14,6 +14,11 @@ class Number extends Text
      */
     public function __construct($name, $attribute = null, $resolveCallback = null)
     {
+        if( is_null($attribute) && is_null($resolveCallback) && !is_string($name) && !($name instanceof \Closure) ) {
+            $attribute = $name;
+            $name = 'Element';
+        }
+
         parent::__construct($name, $attribute, $resolveCallback);
 
         $this->withMeta(['type' => 'number']);

@@ -3,8 +3,9 @@
 namespace App\Nova\Info\Contractor;
 
 use App\Nova\Abstracts\Resource as BaseResource;
-use App\Nova\Fields\Field;
+use App\Nova\Fields\Name;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 
 class ContractorSpeciality extends BaseResource
@@ -57,13 +58,12 @@ class ContractorSpeciality extends BaseResource
     public function fields(Request $request)
     {
         return [
-            ID::make(__('ID'), 'id')
-              ->sortable(),
+            ID::make(),
 
-            Field::Text(__('models/info/contractor/contractor_speciality.fields.name'), 'name')
-                 ->requiredRule(),
+            Name::make()
+                ->requiredRule(),
 
-            Field::HasMany(static::$model::trans('contractors'), 'contractors', Contractor::class),
+            HasMany::make(static::$model::trans('contractors'), 'contractors', Contractor::class),
 
         ];
     }

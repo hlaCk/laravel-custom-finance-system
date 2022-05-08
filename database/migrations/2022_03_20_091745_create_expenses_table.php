@@ -20,7 +20,7 @@ class CreateExpensesTable extends Migration
             $table->unsignedBigInteger('entry_category_id')->nullable();
             $table->double('amount')->nullable()->default(0);
             $table->boolean('vat_included')->nullable()->default(false);
-            $table->text('remarks')->nullable();
+            $table->longText('remarks')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

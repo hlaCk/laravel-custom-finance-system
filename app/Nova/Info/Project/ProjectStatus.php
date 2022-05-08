@@ -3,8 +3,9 @@
 namespace App\Nova\Info\Project;
 
 use App\Nova\Abstracts\Resource as BaseResource;
-use App\Nova\Fields\Field;
+use App\Nova\Fields\Name;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 
 class ProjectStatus extends BaseResource
@@ -57,12 +58,16 @@ class ProjectStatus extends BaseResource
     public function fields(Request $request)
     {
         return [
-            ID::make(__('ID'), 'id')
-              ->sortable(),
+            ID::make(),
 
-            Field::Text(__('models/info/project/project_status.fields.name'), 'name')
-                 ->rules('required')
-                 ->required(),
+            Name::make()
+                ->requiredRule(),
+
+            HasMany::make(
+                Project::trans('plural'),
+                'projects',
+                Project::class
+            ),
         ];
     }
 }

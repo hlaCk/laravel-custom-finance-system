@@ -17,6 +17,16 @@ class CreateContractorProjectTable extends Migration
             $table->id();
             $table->unsignedBigInteger('contractor_id');
             $table->unsignedBigInteger('project_id');
+
+            $table->timestamp('date')->useCurrent()->nullable();
+            $table->longText('remarks')->nullable();
+            $table->string('unit')->nullable();
+            $table->unsignedDouble('quantity');
+            $table->unsignedDouble('price');
+//            $table->unsignedDouble('total');
+
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

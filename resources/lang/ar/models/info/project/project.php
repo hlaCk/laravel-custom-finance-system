@@ -18,6 +18,15 @@ return [
         'created_at'     => 'تاريخ الانشاء',
         'updated_at'     => 'تاريخ التعديل',
         'deleted_at'     => 'تاريخ الحذف',
+
+        // region: contractor_project
+        'date'       => 'التاريخ',
+        'remarks'    => 'البيان',
+        'unit'       => 'الوحدة',
+        'quantity'   => 'الكمية',
+        'price'      => 'السعر',
+        'total'      => 'الاجمالي',
+        // endregion: contractor_project
     ],
     'statuses' => [
         1 => 'مفعل',

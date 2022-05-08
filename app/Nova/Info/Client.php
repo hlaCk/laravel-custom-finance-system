@@ -3,11 +3,13 @@
 namespace App\Nova\Info;
 
 use App\Nova\Abstracts\Resource as BaseResource;
-use App\Nova\Fields\Field;
+use App\Nova\Fields\Name;
 use App\Nova\Fields\StatusSelect;
 use App\Nova\Info\Project\Project;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Select;
 
 class Client extends BaseResource
 {
@@ -53,22 +55,19 @@ class Client extends BaseResource
     public function fields(Request $request)
     {
         return [
-            ID::make(__('ID'), 'id')
-              ->sortable(),
+            ID::make(),
 
-            Field::Text(__('models/info/client.fields.name'), 'name')
-                 ->rules('required')
-                 ->required()
-                 ->translatable(),
+            Name::make()
+                ->requiredRule()
+                ->translatable(),
 
-            Field::Select('type')
-                 ->options(static::$model::trans('types'))
-                 ->displayUsing(fn($q) => $q ? static::$model::trans("types.{$q}") : '-')
-                 ->rules('nullable')
-                 ->nullable()
-                 ->default(static::$model::DEFAULT_TYPE),
+            Select::make('type')
+                  ->options(static::$model::trans('types'))
+                  ->displayUsing(fn($q) => $q ? static::$model::trans("types.{$q}") : '-')
+                  ->nullableRule()
+                  ->default(fn($r) => $r->editing ? static::$model::DEFAULT_TYPE : null),
 
-            Field::HasMany(static::$model::trans('projects'), 'projects', Project::class),
+            HasMany::make(static::$model::trans('projects'), 'projects', Project::class),
 
             StatusSelect::forResource($this),
         ];

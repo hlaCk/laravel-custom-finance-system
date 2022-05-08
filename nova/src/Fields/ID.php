@@ -24,40 +24,45 @@ class ID extends Field
     /**
      * Create a new field.
      *
-     * @param  string|null  $name
-     * @param  string|null  $attribute
-     * @param  mixed|null  $resolveCallback
+     * @param string|null $name
+     * @param string|null $attribute
+     * @param mixed|null  $resolveCallback
+     *
      * @return void
      */
-    public function __construct($name = null, $attribute = null, $resolveCallback = null)
+    public function __construct($name = 'ID', $attribute = 'id', $resolveCallback = null)
     {
         parent::__construct($name ?? 'ID', $attribute, $resolveCallback);
+
+        $this->sortable()
+             ->showOnRelationships();
     }
 
     /**
      * Create a new, resolved ID field for the given resource.
      *
-     * @param  \Laravel\Nova\Resource  $resource
+     * @param \Laravel\Nova\Resource $resource
+     *
      * @return static
      */
     public static function forResource($resource)
     {
         $model = $resource->model();
 
-        $methods = collect(['fieldsForIndex', 'fieldsForDetail'])
+        $methods = collect([ 'fieldsForIndex', 'fieldsForDetail' ])
             ->filter(function ($method) use ($resource) {
                 return method_exists($resource, $method);
             })->all();
 
         $field = transform(
             $resource->buildAvailableFields(app(NovaRequest::class), $methods)
-                    ->whereInstanceOf(self::class)
-                    ->first(),
+                     ->whereInstanceOf(self::class)
+                     ->first(),
             function ($field) use ($model) {
                 return tap($field)->resolve($model);
             },
             function () use ($model) {
-                return ! is_null($model) && $model->exists ? static::forModel($model) : null;
+                return !is_null($model) && $model->exists ? static::forModel($model) : null;
             }
         );
 
@@ -67,7 +72,8 @@ class ID extends Field
     /**
      * Create a new, resolved ID field for the given model.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param \Illuminate\Database\Eloquent\Model $model
+     *
      * @return static
      */
     public static function forModel($model)
@@ -75,34 +81,12 @@ class ID extends Field
         return tap(static::make('ID', $model->getKeyName()), function ($field) use ($model) {
             $value = $model->getKey();
 
-            if (is_int($value) && $value >= 9007199254740991) {
+            if( is_int($value) && $value >= 9007199254740991 ) {
                 $field->asBigInt();
             }
 
             $field->resolve($model);
         });
-    }
-
-    /**
-     * Resolve the given attribute from the given resource.
-     *
-     * @param  mixed  $resource
-     * @param  string  $attribute
-     * @return mixed
-     */
-    protected function resolveAttribute($resource, $attribute)
-    {
-        if (! is_null($resource)) {
-            $pivotValue = optional($resource->pivot)->getKey();
-
-            if (is_int($pivotValue) || is_string($pivotValue)) {
-                $this->pivotValue = $pivotValue;
-            }
-        }
-
-        return Util::safeInt(
-            parent::resolveAttribute($resource, $attribute)
-        );
     }
 
     /**
@@ -141,8 +125,34 @@ class ID extends Field
      */
     public function jsonSerialize()
     {
-        return array_merge(parent::jsonSerialize(), array_filter([
-            'pivotValue' => $this->pivotValue ?? null,
-        ]));
+        return array_merge(
+            parent::jsonSerialize(),
+            array_filter([
+                             'pivotValue' => $this->pivotValue ?? null,
+                         ])
+        );
+    }
+
+    /**
+     * Resolve the given attribute from the given resource.
+     *
+     * @param mixed $resource
+     * @param string $attribute
+     *
+     * @return mixed
+     */
+    protected function resolveAttribute($resource, $attribute)
+    {
+        if( !is_null($resource) ) {
+            $pivotValue = optional($resource->pivot)->getKey();
+
+            if( is_int($pivotValue) || is_string($pivotValue) ) {
+                $this->pivotValue = $pivotValue;
+            }
+        }
+
+        return Util::safeInt(
+            parent::resolveAttribute($resource, $attribute)
+        );
     }
 }

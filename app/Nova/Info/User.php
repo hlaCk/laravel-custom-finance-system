@@ -3,6 +3,7 @@
 namespace App\Nova\Info;
 
 use App\Nova\Abstracts\Resource;
+use App\Nova\Fields\Name;
 use App\Nova\Settings\Role;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
@@ -60,10 +61,8 @@ class User extends Resource
             \App\Nova\Packages\Fields\Gravatar::make()
                                               ->maxWidth(50),
 
-            Text::make(__('models/info/user.fields.name'),'name')
-                ->sortable()
-                ->rules('required')
-                ->required(),
+            Name::make()
+                ->requiredRule(),
 
             Text::make(__('models/info/user.fields.email'),'email')
                 ->sortable()

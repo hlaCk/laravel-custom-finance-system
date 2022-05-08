@@ -3,9 +3,15 @@
 namespace App\Models\Info\Project;
 
 use App\Models\Abstracts\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @method static Builder|static byName($name)
+ * @see ProjectStatus::scopeByName()
+ *
+ */
 class ProjectStatus extends Model
 {
     use HasFactory;
@@ -49,9 +55,19 @@ class ProjectStatus extends Model
         'deleted_at',
     ];
 
-
     public function projects()
     {
         return $this->hasMany(Project::class);
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param array|string|null                     $name
+     *
+     * @return Builder
+     */
+    public function scopeByName(Builder $builder, $name)
+    {
+        return $builder->whereIn('name', (array) $name);
     }
 }

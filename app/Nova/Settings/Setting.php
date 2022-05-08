@@ -3,10 +3,11 @@
 namespace App\Nova\Settings;
 
 use App\Nova\Abstracts\Resource;
-use App\Nova\Fields\Field;
 use App\Nova\Fields\StatusSelect;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 
 class Setting extends Resource
 {
@@ -43,29 +44,15 @@ class Setting extends Resource
     ];
 
     /**
-     * Get the fields displayed by the resource.
+     * Get the actions available for the resource.
      *
      * @param \Illuminate\Http\Request $request
      *
      * @return array
      */
-    public function fields(Request $request)
+    public function actions(Request $request)
     {
-        return [
-            ID::make(__('ID'), 'id')
-              ->sortable(),
-
-            Field::Text(__('models/settings/setting.fields.key'),'key')
-                 ->rules('required')
-                 ->required(),
-
-            Field::Textarea(__('models/settings/setting.fields.value'),'value')
-                 ->rules('required')
-                 ->required()
-                 ->translatable(),
-
-            StatusSelect::forResource($this),
-        ];
+        return [];
     }
 
     /**
@@ -81,6 +68,29 @@ class Setting extends Resource
     }
 
     /**
+     * Get the fields displayed by the resource.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return array
+     */
+    public function fields(Request $request)
+    {
+        return [
+            ID::make(),
+
+            Text::make(__('models/settings/setting.fields.key'), 'key')
+                ->requiredRule(),
+
+            Textarea::make(__('models/settings/setting.fields.value'), 'value')
+                    ->requiredRule()
+                    ->translatable(),
+
+            StatusSelect::forResource($this),
+        ];
+    }
+
+    /**
      * Get the filters available for the resource.
      *
      * @param \Illuminate\Http\Request $request
@@ -90,6 +100,11 @@ class Setting extends Resource
     public function filters(Request $request)
     {
         return [];
+    }
+
+    public static function icon()
+    {
+        return "<img src='/images/circle_copy.svg' class='inner-nav-icon'>";
     }
 
     /**
@@ -102,22 +117,5 @@ class Setting extends Resource
     public function lenses(Request $request)
     {
         return [];
-    }
-
-    /**
-     * Get the actions available for the resource.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return array
-     */
-    public function actions(Request $request)
-    {
-        return [];
-    }
-
-    public static function icon()
-    {
-        return "<img src='/images/circle_copy.svg' class='inner-nav-icon'>";
     }
 }
