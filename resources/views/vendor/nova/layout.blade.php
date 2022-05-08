@@ -40,6 +40,7 @@
     @stack('css')
 </head>
 <body class="min-w-site bg-40 text-90 font-medium min-h-full">
+
 <div id="nova">
     <div v-cloak class="flex min-h-screen">
         <!-- Sidebar -->

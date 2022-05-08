@@ -61,6 +61,7 @@
     <file url="file://$PROJECT_DIR$/app/Policies/Settings/SettingPolicy.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Policies/Sheet/CreditPolicy.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Policies/Sheet/ExpensePolicy.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Providers/HelpersServiceProvider.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Traits/Info/Client.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Traits/Info/Contractor/ContractorSpeciality.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Traits/Info/CreditCategory.php" charset="UTF-8" />
@@ -70,6 +71,7 @@
     <file url="file://$PROJECT_DIR$/app/Traits/Info/Project/ProjectStatus.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Traits/Info/User.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/Traits/TTightNovaResource.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/Widgets/Abstracts/EmptyWidget.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/composer-all.json" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/database/factories/Abstract/Factory.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/database/factories/AbstractFactory.php" charset="UTF-8" />

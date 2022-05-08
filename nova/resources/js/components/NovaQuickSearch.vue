@@ -63,11 +63,6 @@ export default {
         closeKeyToggle: "Escape",
     }),
 
-    metaInfo() {
-        return {
-            title: 'NovaQuickSearch',
-        }
-    },
     mounted() {
         document.addEventListener("click", e => {
             let classList = Array.from(classList = e.target.classList)

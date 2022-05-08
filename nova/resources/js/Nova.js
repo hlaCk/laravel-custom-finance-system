@@ -86,7 +86,7 @@ export default class Nova {
       store,
       components: { Loading },
       metaInfo: {
-        titleTemplate: `${window.config.appName}`,
+        titleTemplate: `%s | ${window.config.appName}`,
       },
       mounted: function () {
         this.$loading = this.$refs.loading
