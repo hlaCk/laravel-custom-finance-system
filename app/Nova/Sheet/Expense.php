@@ -3,8 +3,10 @@
 namespace App\Nova\Sheet;
 
 use App\Nova\Abstracts\Resource as BaseResource;
+use App\Nova\Info\Contractor\Contractor;
 use App\Nova\Info\EntryCategory;
 use App\Nova\Info\Project\Project;
+use Epartment\NovaDependencyContainer\NovaDependencyContainer;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
@@ -51,12 +53,13 @@ class Expense extends BaseResource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request|\Laravel\Nova\Http\Requests\NovaRequest $request
      *
      * @return array
      */
     public function fields(Request $request)
     {
+//        dE($request->findModelOrFail()->entry_category_name);
         return [
             ID::make(),
 
@@ -81,6 +84,16 @@ class Expense extends BaseResource
             BelongsTo::make(static::$model::trans('entry_category'), 'entry_category', EntryCategory::class)
                      ->showCreateRelationButton()
                      ->sortable(),
+
+            NovaDependencyContainer::make([
+                                              BelongsTo::make('contractor', Contractor::class)
+                                                       ->sortable()
+                                                       ->nullableRule(),
+                                          ])
+                                   ->dependsOn(
+                                       'entry_category.entry_category_id',
+                                       \App\Models\Info\EntryCategory::OnlyHasContractor()
+                                   ),
 
             Textarea::make(__('models/sheet/expense.fields.remarks'), 'remarks')
                     ->nullableRule(),

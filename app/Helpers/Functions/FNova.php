@@ -1,8 +1,5 @@
 <?php
 
-use Illuminate\Http\Resources\MergeValue;
-use Illuminate\Http\Resources\MissingValue;
-
 if( !function_exists('isRequestNovaIndex') ) {
     function isRequestNovaIndex(\Illuminate\Http\Request $request): bool
     {
@@ -134,7 +131,10 @@ if( !function_exists('currentNovaResourceClassCalled') ) {
             if( isset($item[ $resolveByKey ]) && $item[ $resolveByKey ] == $resolveByValue ) {
                 $index = (double) ($resolveByOffset($index, $item) ?? $index - 1);
                 $class = data_get($debug, ($index) . ".class");
-                if( is_null($class) || $class === 'Laravel\Nova\Resource' ) {
+                if( is_null($class) || in_array($class, [
+                        'Laravel\Nova\Resource',
+                        'App\Nova\Abstracts\Resource',
+                    ]) ) {
                     $_debug = array_reverse(slice($debug, 0, $index));
                     foreach( $_debug as $_index => $_item ) {
                         if(

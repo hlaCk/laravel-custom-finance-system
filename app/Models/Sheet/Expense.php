@@ -4,9 +4,9 @@ namespace App\Models\Sheet;
 
 use App\Interfaces\Sheet\IExpense;
 use App\Models\Abstracts\Model;
+use App\Models\Info\Contractor\Contractor;
 use App\Models\Info\EntryCategory;
 use App\Models\Info\Project\Project;
-use App\Traits\THasBooleanStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -38,6 +38,7 @@ class Expense extends Model
         'remarks',
         'project_id',
         'entry_category_id',
+        'contractor_id',
     ];
 
     /**
@@ -60,6 +61,7 @@ class Expense extends Model
         'remarks'           => 'string',
         'project_id'        => 'integer',
         'entry_category_id' => 'integer',
+        'contractor_id'     => 'integer',
         'amount'            => 'double',
         'vat_included'      => 'boolean',
         'date'              => 'date',
@@ -82,9 +84,19 @@ class Expense extends Model
         return $this->belongsTo(EntryCategory::class);
     }
 
+    public function contractor()
+    {
+        return $this->belongsTo(Contractor::class);
+    }
+
     public function getEntryCategoryNameAttribute()
     {
         return optional($this->entry_category)->name;
+    }
+
+    public function getContractorNameAttribute()
+    {
+        return optional($this->contractor)->name;
     }
 
     /**

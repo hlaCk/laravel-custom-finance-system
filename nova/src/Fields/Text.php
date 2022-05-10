@@ -78,4 +78,11 @@ class Text extends Field
 
         return parent::jsonSerialize();
     }
+
+    public static function input($name, $value)
+    {
+        return static::make($name = value($name), $name)
+                     ->nullable()
+                     ->withMeta([ 'value' => value($value) ]);
+    }
 }

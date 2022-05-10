@@ -7,6 +7,7 @@ use App\Nova\Fields\Name;
 use App\Nova\Fields\StatusSelect;
 use App\Nova\Sheet\Expense;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 
@@ -64,6 +65,13 @@ class EntryCategory extends BaseResource
 
             Name::make()
                 ->requiredRule(),
+
+            Boolean::make('has_contractor')
+                   ->default(false)
+                   ->falseValue(0)
+                   ->trueValue(1)
+                   ->sortable()
+                   ->requiredRule(),
 
             HasMany::make(static::$model::trans('expenses'), 'expenses', Expense::class),
 

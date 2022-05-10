@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Sheet\Expense;
+use App\Providers\Observers\Sheet\ExpenseObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -28,6 +30,8 @@ class AppServiceProvider extends ServiceProvider
 
             \URL::forceScheme('https');
         }
+
+        Expense::observe(ExpenseObserver::class);
     }
 
 }

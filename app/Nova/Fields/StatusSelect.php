@@ -47,17 +47,55 @@ class StatusSelect extends Select
      */
     public static function forResource(?Resource $resource = null): self
     {
-        $model = !is_null($resource) ?
-            resourceModelExtractor($resource) :
+        $model = !is_null($resource)
+            ?
+            resourceModelExtractor($resource)
+            :
             currentNovaResourceModelClass();
 
         return static::make()
-                     ->transName()
                      ->setResource($resource ?? currentNovaResourceClassCalled() ?? currentNovaResourceClass())
+                     ->transName($model)
                      ->options($model::getAllStatuses())
-                     ->default(fn($r)=>$r->editing ? $model::getDefaultStatus() : null)
+                     ->default(fn($r) => $r->editing ? $model::getDefaultStatus() : null)
                      ->sortable()
                      ->displayUsing(fn($a) => $model::getStatusLabel($a));
+    }
+
+    /**
+     * returns translated name.
+     *
+     * @param \App\Models\Abstracts\Model|string|null $model
+     *
+     * @return $this
+     */
+    public function transName($model = null): self
+    {
+        if( is_null($model) && ($resource = $this->resource) ) {
+            $model = !is_null($resource)
+                ?
+                resourceModelExtractor($resource)
+                :
+                currentNovaResourceModelClass();
+        }
+
+        if( $model && class_exists($model) && is_callable([ $model, 'trans' ]) ) {
+            $this->name = (string) $model::trans($this->name);
+            return $this;
+        }
+
+        $request = getNovaRequest();
+        $model =
+            resourceModelExtractor(
+                $request->resource ? $request->resource() : currentNovaResourceClassCalled()
+            );
+        if( class_exists($model) && is_callable([ $model, 'trans' ]) ) {
+            $this->name = (string) $model::trans($this->name);
+            return $this;
+        }
+//        $this->name = $this->resource ?? currentNovaResourceModelClass(fn($model) => $model::trans($this->name));
+
+        return $this;
     }
 
     /**
@@ -68,18 +106,6 @@ class StatusSelect extends Select
     public function setResource($resource): self
     {
         $this->resource = $resource;
-
-        return $this;
-    }
-
-    /**
-     * returns translated name.
-     *
-     * @return $this
-     */
-    public function transName(): self
-    {
-        $this->name = currentNovaResourceModelClass(fn($model) => $model::trans($this->name));
 
         return $this;
     }

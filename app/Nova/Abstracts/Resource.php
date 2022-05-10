@@ -17,6 +17,7 @@ abstract class Resource extends NovaResource
     use Makeable;
     use SearchesRelations;
     use \OptimistDigital\NovaTranslatable\HandlesTranslatable;
+    use \Epartment\NovaDependencyContainer\HasDependencies;
 
     /**
      * The per-page options used the resource index.

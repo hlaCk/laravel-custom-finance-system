@@ -5,6 +5,7 @@ namespace App\Models\Info\Contractor;
 use App\Interfaces\IBooleanStatus;
 use App\Models\Abstracts\Model;
 use App\Models\Info\Project\Project;
+use App\Models\Sheet\Expense;
 use App\Traits\THasBooleanStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -71,6 +72,11 @@ class Contractor extends Model implements IBooleanStatus
     public function contractor_speciality()
     {
         return $this->belongsTo(ContractorSpeciality::class);
+    }
+
+    public function expenses()
+    {
+        return $this->hasMany(Expense::class);
     }
 
     public function projects()

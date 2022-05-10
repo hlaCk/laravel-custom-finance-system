@@ -6,9 +6,14 @@ use App\Interfaces\IBooleanStatus;
 use App\Models\Abstracts\Model;
 use App\Models\Sheet\Expense;
 use App\Traits\THasBooleanStatus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property-read bool $isHasContractor
+ * @see EntryCategory::getIsHasContractorAttribute()
+ */
 class EntryCategory extends Model implements IBooleanStatus
 {
     use HasFactory;
@@ -16,7 +21,7 @@ class EntryCategory extends Model implements IBooleanStatus
     use THasBooleanStatus;
     use \App\Traits\HasTranslations;
 
-    public $translatable = [  ];
+    public $translatable = [];
 
     /**
      * The attributes that are mass assignable.
@@ -24,7 +29,9 @@ class EntryCategory extends Model implements IBooleanStatus
      * @var string[]
      */
     protected $fillable = [
-        'name', 'status',
+        'name',
+        'has_contractor',
+        'status',
     ];
 
     /**
@@ -44,8 +51,9 @@ class EntryCategory extends Model implements IBooleanStatus
      * @var array
      */
     protected $casts = [
-        'name' => 'string',
-        'status' => 'integer',
+        'name'           => 'string',
+        'has_contractor' => 'boolean',
+        'status'         => 'integer',
     ];
 
     protected $dates = [
@@ -59,9 +67,36 @@ class EntryCategory extends Model implements IBooleanStatus
         return static::ACTIVE;
     }
 
+    /**
+     * @param Model|int $entry_category_id
+     *
+     * @return bool
+     */
+    public static function isHasContractor($entry_category_id)
+    {
+        $entry_category =
+            $entry_category_id instanceof Model ? $entry_category_id : EntryCategory::find($entry_category_id);
+
+        return $entry_category->has_contractor;
+    }
+
     public function expenses()
     {
         return $this->hasMany(Expense::class);
     }
 
+    public function getIsHasContractorAttribute()
+    {
+        return $this->has_contractor;
+    }
+
+    public function scopeOnlyHasContractor(Builder $builder)
+    {
+        return $builder->where('has_contractor', true);
+    }
+
+    public function scopeOnlyDoesntHaveContractor(Builder $builder)
+    {
+        return $builder->where('has_contractor', false);
+    }
 }

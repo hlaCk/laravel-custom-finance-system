@@ -13,6 +13,7 @@
         "crayon/nova-language-management": "^1.0",
         "ebess/advanced-nova-media-library": "*",
         "eolica/nova-locale-switcher": "*",
+        "epartment/nova-dependency-container": "*",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.54",
@@ -27,9 +28,9 @@
         "optimistdigital/nova-translatable": "^1.10",
         "orlyapps/nova-belongsto-depend": "*",
         "pishran/nova-rtl-theme": "^1.5",
-        "sheets/report-components": "*",
-        "sheets/projects-report-y-t-d": "*",
         "sheets/company-report-y-t-d": "*",
+        "sheets/projects-report-y-t-d": "*",
+        "sheets/report-components": "*",
         "spatie/laravel-permission": "^5.1",
         "spatie/laravel-translatable": "^4.6",
         "spatie/laravel-translation-loader": "^2.7",
@@ -169,6 +170,10 @@
         "15": {
             "type": "path",
             "url": "./nova-components/CompanyReportYTD"
+        },
+        "16": {
+            "type": "path",
+            "url": "./Packages/nova-dependency-container"
         }
     }
 }

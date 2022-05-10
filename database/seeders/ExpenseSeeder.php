@@ -17,6 +17,7 @@ class ExpenseSeeder extends Seeder
         Expense::factory()
               ->count(100)
               ->makeProject()
+              ->anyContractor()
               ->create();
     }
 }

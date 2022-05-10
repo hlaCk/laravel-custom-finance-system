@@ -61,7 +61,7 @@ class Case1Seeder extends Seeder
                                                             'unit'     => 'meter',
                                                             'quantity' => 1,
                                                             'price'    => 2,
-//                                                            'total'    => 2,
+                                                            //                                                            'total'    => 2,
                                                             //                                                            'deleted_at'=>null,
                                                         ],
                                                     ];
@@ -78,6 +78,7 @@ class Case1Seeder extends Seeder
                    Expense::factory()
                           ->count($getRandomLimit('expenses'))
                           ->forProject($project)
+                          ->anyContractor()
                           ->create();
                });
 
