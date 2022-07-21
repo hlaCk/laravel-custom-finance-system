@@ -20,7 +20,7 @@ class ProjectController extends Controller
 {
     public function index(Request $request)
     {
-        return SelectOptionsResource::collection(Project::all(), 'name', 'id');
+        return SelectOptionsResource::collection(applyQueryOrderBy(Project::onlyActive())->get(), 'name', 'id');
     }
 
     public function show(Request $request, Project $project)
@@ -30,12 +30,12 @@ class ProjectController extends Controller
 
     public function expenses_index(Request $request, Project $project)
     {
-        return ProjectExpenseResource::collection($project->expenses);
+        return ProjectExpenseResource::collection(applyQueryOrderBy($project->expenses()));
     }
 
     public function entry_categories_index(Request $request)
     {
-        return SelectOptionsResource::collection(EntryCategory::all());
+        return SelectOptionsResource::collection(applyQueryOrderBy(EntryCategory::onlyActive()));
     }
 
     public function project_expenses_ytd_by_month_show(Request $request, Project $project)
@@ -268,12 +268,12 @@ class ProjectController extends Controller
 
     public function credit_categories_index(Request $request)
     {
-        return SelectOptionsResource::collection(CreditCategory::all());
+        return SelectOptionsResource::collection(applyQueryOrderBy(CreditCategory::onlyActive()));
     }
 
     public function credits_index(Request $request, Project $project)
     {
-        return ProjectCreditResource::collection($project->credits);
+        return ProjectCreditResource::collection(applyQueryOrderBy($project->credits()));
     }
 
 }

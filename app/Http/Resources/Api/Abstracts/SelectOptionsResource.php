@@ -2,9 +2,7 @@
 
 namespace App\Http\Resources\Api\Abstracts;
 
-use Illuminate\Http\Resources\Json\JsonResource;
-
-class SelectOptionsResource extends JsonResource
+class SelectOptionsResource extends AbstractJsonResource
 {
     /**
      * Create a new anonymous resource collection.
@@ -17,11 +15,19 @@ class SelectOptionsResource extends JsonResource
      */
     public static function collection($resources, $labelKey = 'name', $valueKey = 'id')
     {
+        try {
+            $resources = isBuilder($resources) ? $resources->get([$valueKey, $labelKey]) : $resources;
+
+        } catch (\Exception $exception) {
+            dE($resources->toSql(),[$valueKey, $labelKey],$exception->getMessage());
+        }
         foreach( $resources as &$resource ) {
+            $label = $labelKey instanceof \Closure ? $labelKey($resource) : $resource[ $labelKey ];
+            $value = $valueKey instanceof \Closure ? $valueKey($resource) : $resource[ $valueKey ];
             /** @var iterable $resource */
             $resource[ '_select_options' ] = [
-                'value' => $valueKey instanceof \Closure ? $valueKey($resource) : $resource[ $valueKey ],
-                'label' => $labelKey instanceof \Closure ? $labelKey($resource) : $resource[ $labelKey ],
+                'value' => $value,
+                'label' => $label,
             ];
         }
         unset($resource);

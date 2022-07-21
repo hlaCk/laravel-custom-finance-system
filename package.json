@@ -15,7 +15,8 @@
         "build-projects-report-y-t-d": "cd nova-components/ProjectsReportYTD && npm run dev",
         "build-projects-report-y-t-d-prod": "cd nova-components/ProjectsReportYTD && npm run prod",
         "build-company-report-y-t-d": "cd nova-components/CompanyReportYTD && npm run dev",
-        "build-company-report-y-t-d-prod": "cd nova-components/CompanyReportYTD && npm run prod"
+        "build-company-report-y-t-d-prod": "cd nova-components/CompanyReportYTD && npm run prod",
+        "build-contractor-belongs-to-project": "cd nova-components/ContractorBelongsToProject && npm run prod"
     },
     "devDependencies": {
         "axios": "^0.21",

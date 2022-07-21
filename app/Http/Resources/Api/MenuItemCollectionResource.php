@@ -2,19 +2,20 @@
 
 namespace App\Http\Resources\Api;
 
-use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Api\Abstracts\AbstractJsonResource;
 
 /**
  *
  */
-class MenuItemCollectionResource extends JsonResource
+class MenuItemCollectionResource extends AbstractJsonResource
 {
     protected ?string $_locale;
 
     /**
      * Create a new resource instance.
      *
-     * @param  mixed  $resource
+     * @param mixed $resource
+     *
      * @return void
      */
     public function __construct($resource)
@@ -63,8 +64,8 @@ class MenuItemCollectionResource extends JsonResource
         }
 
         return [
-            'id' => $menu->id,
-            'type' => $menu->type,
+            'id'    => $menu->id,
+            'type'  => $menu->type,
 
             $this->mergeWhen(!is_null($route), compact('route')),
             'title' => $title,

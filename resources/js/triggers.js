@@ -1,3 +1,59 @@
+
+// region: handle change lang
+// document.addEventListener("keyup",  (e) => console.log(e.key, e));
+
+Nova.addShortcut( 'shift+ctrl+l', e => {
+    Nova.request()
+        .get( `/panel/locale/` + (
+            Nova.config.locale === 'en' ? 'ar' : 'en'
+        ) )
+        .then( e => location.reload() )
+        .catch( e => console.error( e ) );
+
+    return false;
+} )
+// endregion: handle change lang
+
+// region: handle change lang
+// document.addEventListener("keyup",  (e) => console.log(e.key, e));
+let updateSidebarIsHidden = el => setTimeout( () => localStorage.setItem(
+    "toggle-sidebar-hidden",
+    +(
+        el && el.classList.contains( 'toggle-sidebar-hidden' )
+    ),
+), 10 )
+let toggleSidebarHiddenCB = function (e) {
+    let parentElementSelector = '#nova .min-h-screen ';
+    let parentElement = document.querySelector( parentElementSelector )
+    let content = document.querySelector( parentElementSelector + '.content:not(.content-box)' );
+    let navbar = document.querySelector( parentElementSelector + '.w-sidebar' );
+    let hamburgerElement = document.querySelector( '.hamburger-menu' )
+
+    if( hamburgerElement ) {
+        if( window.getComputedStyle( hamburgerElement ).display !== 'none' ) {
+            if( parentElement && parentElement.classList.contains( 'toggle-sidebar-hidden' ) ) {
+                parentElement.classList.remove( 'toggle-sidebar-hidden' )
+            }
+
+            hamburgerElement.dispatchEvent( new Event( 'click' ) )
+            updateSidebarIsHidden( parentElement )
+            return false
+        }
+    }
+
+    parentElement && parentElement.classList.toggle( 'toggle-sidebar-hidden' )
+    updateSidebarIsHidden( parentElement )
+    return false;
+}
+
+Nova.addShortcut( 'shift+f12', e => toggleSidebarHiddenCB( e ) )
+
+if( +localStorage.getItem( "toggle-sidebar-hidden" ) ) {
+    toggleSidebarHiddenCB( new KeyboardEvent( 'keydown' ) )
+}
+// endregion: handle change lang
+
+
 // region: triggers
 // Nova.$on("resources-loaded", () => {
 //     let resourceName = Nova.app.$route.params.resourceName || false;

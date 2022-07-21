@@ -6,10 +6,12 @@ use App\Nova\Abstracts\Resource as BaseResource;
 use App\Nova\Fields\Name;
 use App\Nova\Fields\StatusSelect;
 use App\Nova\Info\Project\Project;
+use App\Nova\Sheet\Expense;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Contractor extends BaseResource
 {
@@ -78,5 +80,35 @@ class Contractor extends BaseResource
 
             StatusSelect::forResource($this),
         ];
+    }
+
+    public static function relatableQuery(NovaRequest $request, $query)
+    {
+        $query = parent::relatableQuery($request, $query);
+
+//        logger($request->method());
+//        if( isCurrentResource(Expense::class) ) {
+//            $expense = $request->findModelQuery()
+//                               ->with([
+//                                          'project' => fn($q) => $q->select(
+//                                              \App\Models\Info\Project\Project::make()->getQualifiedKeyName()
+//                                          ),
+//                                          'project.contractors' => fn($q) => $q->select(
+//                                              \App\Models\Info\Contractor\Contractor::make()->getQualifiedKeyName()
+//                                          ),
+//                                      ])
+//                               ->firstOrFail('project_id');
+//            $project = optional($expense->project);
+//            $contractors = optional($project->contractors);
+//
+//            if( $contractors_ids = toCollect($contractors->pluck('id'))->filter()->unique()->toArray() ) {
+//                $query->whereIn(
+//                    \App\Models\Info\Contractor\Contractor::make()->getQualifiedKeyName(),
+//                    $contractors_ids
+//                );
+//            }
+//        }
+
+        return $query;
     }
 }

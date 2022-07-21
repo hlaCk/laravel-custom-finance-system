@@ -382,3 +382,15 @@ body #nova .side_navigation_menu_container .sidemenu .sidebar-dropdown .nav_inne
     left: 0 !important;
     right: auto !important;
 }
+
+/* sidebar scroll */
+html:lang(en) .w-sidebar.side_navigation_menu_container {
+    overflow: auto;
+    height: 100vh !important;
+    direction: rtl !important;
+}
+
+html:lang(en) .sidemenu {
+    direction: ltr !important;
+}
+/* sidebar scroll */

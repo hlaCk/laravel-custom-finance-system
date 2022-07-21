@@ -582,7 +582,7 @@ if ( !function_exists('iif') ) {
      */
     function iif($var, $true = null, $false = null)
     {
-        return value($var ? $true : $false);
+        return value(value($var) ? $true : $false);
     }
 }
 #endregion

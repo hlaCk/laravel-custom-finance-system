@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="StickySelectionHighlights">
+    <option name="editorHighlights">
+      <map>
+        <entry key="$PROJECT_DIR$/nova-components/ContractorBelongsToProject/resources/js/components/mixins/FieldProject.js">
+          <value>
+            <PaintGroupHighlightMap>
+              <option name="paintGroups">
+                <map>
+                  <entry key="0">
+                    <value>
+                      <EditorHighlightsForPaintGroup>
+                        <option name="highlights">
+                          <list>
+                            <HighlightOffset>
+                              <option name="start" value="2404" />
+                              <option name="end" value="2453" />
+                            </HighlightOffset>
+                          </list>
+                        </option>
+                      </EditorHighlightsForPaintGroup>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </PaintGroupHighlightMap>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

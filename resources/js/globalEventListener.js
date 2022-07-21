@@ -1,100 +1,88 @@
+let applyOnResources = [ 'expenses' ];
+let _contractors = [];
+let _element_contractor_name = 'contractor_id';
+let _element_project_name = 'project';
+let _element_entry_category_name = 'entry_category';
+
+let preUpdateContractorElement = ()=>getNovaElement( _element_contractor_name, true, data => data.data ).then( e => e && e.setAttribute( 'disabled', true ) );
+let updateContractorElement = async (id) => {
+    let contractorElement = await getNovaElement( _element_contractor_name, true, data => data.data )
+    let projectElement = await getNovaElement( _element_project_name, true, data => data.data )
+    if( !contractorElement || !projectElement ) return;
+
+    let contractorId = contractorElement.value
+    let project_id = projectElement.value || "";
+
+    if( contractorElement.hasAttribute( '_value' ) ) {
+        contractorId = contractorElement.getAttribute( '_value' );
+    } else {
+        contractorElement.setAttribute( '_value', contractorId )
+    }
+    contractorElement.setAttribute( 'disabled', true )
+
+    let updateConstructorsElement = async ($contractors, $selectElement) => {
+        let validOptions = {}
+        Array.from( $selectElement.options ).forEach( ($option, $index) => {
+            if( !$option.value || Number( $option.value ) in $contractors ) {
+                $option.style.display = "";
+                validOptions[ $option.value || 0 ] = $index;
+            } else {
+                $option.style.display = "none";
+            }
+        } )
+
+        $selectElement.value = Number( $selectElement.value ) in $contractors
+                               ? $selectElement.value
+                               : 0
+        $selectElement.selectedIndex = validOptions[ $selectElement.value || 0 ] || 0
+        $selectElement.setAttribute( '_options', $selectElement.options.length )
+        return true
+    };
+
+    if( _contractors[ project_id ] ) {
+        $promise = updateConstructorsElement( _contractors[ project_id ], contractorElement )
+    } else {
+        $promise = Nova.request().get( `/api/contractor/data` )
+                       .then( response => {
+                           let {data: data, project_id: $project_id} = response.data
+                           _contractors = {};
+                           Array.from( data ).forEach( ($model) => {
+                               let _data = {}
+                               let $_data = $model[ 'data' ]
+                               Object.keys( $_data )
+                                     .forEach( v => _data[ $_data[ v ][ 'value' ] ] = $_data[ v ][ 'label' ] )
+                               _contractors[ $model[ 'project_id' ] ] = _data
+                           } )
+
+                           if( _contractors[ project_id ] ) {
+                               return updateConstructorsElement( _contractors[ project_id ], contractorElement )
+                           }
+
+                           return false
+                       } )
+    }
+
+    return $promise
+        .then( (success) => {
+            if( success ) {
+                contractorElement.dispatchEvent( new Event( 'change' ) )
+                Nova.$emit( `${_element_contractor_name}-change`, contractorElement.value )
+            }
+        } )
+        .finally( () => {
+            contractorElement.removeAttribute( 'disabled' )
+        } );
+};
+let _callAfter = (timeout = 10) => callAfter( timeout, updateContractorElement, preUpdateContractorElement );
+
 /**
- * @round-change : On round change.
- * To listen event on url panel/resources/round-results/new
+ * @project-change : On entry_category change.
+ * To listen event on url panel/resources/expenses/new or edit
  */
-//
-// Nova.$on("round-change", (round_id) => {
-//     let resourceName = Nova.app.$route.params.resourceName || false;
-//     if (resourceName == "round-results") {
-//         var place = document.querySelector("#place");
-//         if (place) {
-//             var place_id = place.value;
-//         } else {
-//             var place_id = false;
-//         }
-//         if (round_id && round_id !== '' && place_id && place_id != '') {
-//             Nova.request().post('/panel/round-result/prize', {
-//                 round_id: round_id,
-//                 place_id: place_id,
-//             }).then(response => {
-//                 var prize = document.querySelector("#prize,#prize_read[dusk='prize_read']");
-//                 if (prize) {
-//                     if (response.data.prize && response.data.prize != '') {
-//                         prize.value = response.data.prize.prize.toFixed(2);
-//                     } else {
-//                         prize.value = null;
-//                     }
-//                     prize.dispatchEvent(new Event('change'));
-//                 }
-//             });
-//         }
-//     }
-// });
-//
-// /**
-//  * @place-change : On place change.
-//  * To listen event on url panel/resources/round-results/new
-//  */
-// Nova.$on("place-change", (place_id) => {
-//     let resourceName = Nova.app.$route.params.resourceName || false;
-//     if (resourceName == "round-results") {
-//         var round = document.querySelector("#round_id,[data-testid='rounds-select']");
-//         var round_id = round && round.value || false;
-//
-//         if (round_id && round_id !== '' && place_id && place_id != '') {
-//             Nova.request().post('/panel/round-result/prize', {
-//                 round_id: round_id,
-//                 place_id: place_id,
-//             }).then(response => {
-//                 var prize = document.querySelector("#prize,#prize_read[dusk='prize_read']");
-//                 if (prize) {
-//                     prize.value = response.data && response.data.prize && response.data.prize.prize_formatted || null;
-//                     prize.dispatchEvent(new Event('change'));
-//                 }
-//             });
-//         }
-//     }
-// });
-//
-// /**
-//  * @layout_page-change : On layout_page change.
-//  * To listen event on url all urls
-//  */
-// Nova.$on("layout_page-change", (layoutId) => {
-//     let resourceName = Nova.app.$route.params.resourceName || false;
-//     var round = document.querySelector("#round_id,[data-testid='rounds-select']");
-//
-//     if (layoutId && layoutId !== '') {
-//         Nova.request().post('/panel/layout-page/image', {
-//             layoutId: layoutId
-//         }).then(response => {
-//             // console.log(response);
-//             var layoutPageSelect = document.querySelector("[dusk='layout_page'][data-testid='layout-pages-select']");
-//             if (layoutPageSelect) {
-//                 if (response.data.image_url && response.data.image_url != '') {
-//                     var img = document.querySelector(".layout_page_image");
-//                     var imageExist = false;
-//                     if (img) {
-//                         var imageExist = true;
-//                     } else {
-//                         var img = document.createElement('img');
-//                     }
-//                     img.src = response.data.image_url;
-//                     img.width = "256";
-//                     if (imageExist) {
-//                         img && img.load && img.load();
-//                     } else {
-//                         var div = document.createElement('div');
-//                         div.classList.add("layout_page_image_div");
-//                         img.classList.add("layout_page_image");
-//                         div.appendChild(img);
-//                         layoutPageSelect.parentNode.insertBefore(div, layoutPageSelect.nextSibling);
-//                     }
-//                 }
-//
-//                 var event = new Event('change');
-//                 layoutPageSelect.dispatchEvent(event);
-//             }
-//         });
-//     }
-// });
+onNovaElementChange( _element_project_name, _callAfter(), applyOnResources )
+onNovaElementChange( _element_entry_category_name, _callAfter(), applyOnResources )
+onNovaLoaded( async () => {
+    await waitForNovaElements( 100, {
+        [ _element_contractor_name ]: () => Nova.$emit( `${_element_entry_category_name}-change`, false ),
+    } )
+}, applyOnResources )

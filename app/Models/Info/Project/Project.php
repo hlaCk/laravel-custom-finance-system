@@ -129,6 +129,21 @@ class Project extends Model implements IBooleanStatus
         return $this->hasMany(Expense::class);
     }
 
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param int|int[]|null                        $expense
+     *
+     * @return Builder
+     */
+    public function scopeByExpense(Builder $builder, $expense = null)
+    {
+        $expenses = toCollectWithModel($expense)
+            ->map(fn($p) => isModel($p) ? $p->id : $p)
+            ->filter()
+            ->toArray();
+
+        return $builder->whereHas('expenses', fn($q) => $q->whereIn(Expense::make()->getQualifiedKeyName(), $expenses));
+    }
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $builder

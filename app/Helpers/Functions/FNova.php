@@ -689,3 +689,42 @@ if( !function_exists('whenCurrentResourceIs') ) {
         return when(isCurrentResource($resource), $whenTrue, $whenFalse, $with);
     }
 }
+
+if( !function_exists('getNovaResourceByUriKey') ) {
+    /**
+     * Get the resource class name for a given key.
+     *
+     * @param string $key
+     *
+     * @return string
+     */
+    function getNovaResourceByUriKey($key)
+    {
+        return tap(\Laravel\Nova\Nova::resourceForKey($key), function ($resource) {
+            abort_if(is_null($resource), 404);
+        });
+    }
+}
+
+//if( !function_exists('getNovaResourceModelQuery') ) {
+    /**
+     * Get the resource class name for a given key.
+     *
+     * @param string $key
+     *
+     * @return string
+     */
+//    function getNovaResourceModelQuery($key, $default = null)
+//    {
+//        /** @var \App\Nova\Abstracts\Resource $resource */
+//        if( $resource = getNovaResourceByUriKey($key) ) {
+//            $model = $resource::newModel();
+//
+//            $query = $model->newQueryWithoutScopes()
+//                ->whereKey($resourceId ?? $this->resourceId)
+//                ->find($this->viaResourceId) : null;
+//
+//        }
+//        return $query
+//    }
+//}

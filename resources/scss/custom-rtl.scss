@@ -105,6 +105,18 @@ body {
     }
 
 }
+
+/* sidebar scroll */
+html:not(:lang(en)) .w-sidebar.side_navigation_menu_container {
+    overflow: auto;
+    height: 100vh !important;
+    direction: ltr !important;
+}
+html:not(:lang(en)) .sidemenu {
+    direction: rtl !important;
+}
+/* sidebar scroll */
+
 #menu-builder-header{
     left: 0 !important;
     right: auto !important;

@@ -2,9 +2,9 @@
 
 namespace App\Http\Resources\Api;
 
-use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Api\Abstracts\AbstractJsonResource;
 
-class MenuResource extends JsonResource
+class MenuResource extends AbstractJsonResource
 {
     protected ?string $_locale;
 

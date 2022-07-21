@@ -65,9 +65,9 @@ class NovaDependencyContainer extends Field
             is_array($value = value($value)) ||
             $value instanceof iterator ||
             $value instanceof \Traversable ||
-            $value instanceof \Illuminate\Database\Eloquent\Builder
+            isBuilder($value)
         ) {
-            $value = $value instanceof \Illuminate\Database\Eloquent\Builder ? $value->pluck('id') : $value;
+            $value = isBuilder($value) ? $value->pluck('id') : $value;
             $value = $value instanceof iterator ? iterator_to_array($value) : $value;
             foreach( $value as $index => $item ) {
                 $callback($item, $index, $value);

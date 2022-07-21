@@ -625,3 +625,53 @@ if( !function_exists('collectExcept') ) {
         return count($exists) ? $collect->except($exists) : $collect;
     }
 }
+
+if( !function_exists('route_path') ) {
+    /**
+     * @param \Closure|string|mixed $path
+     *
+     * @return string
+     */
+    function route_path($path = ''): string
+    {
+        return trim(
+            app_path(
+                'routes' . DIRECTORY_SEPARATOR . trim(value($path))
+            )
+        );
+    }
+}
+
+if( !function_exists('applyQueryOrderBy') ) {
+    /**
+     * @param $query
+     * @param $column
+     * @param $direction
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\Relation|\Illuminate\Database\Query\Builder|\Illuminate\Support\Collection|mixed
+     */
+    function applyQueryOrderBy($query, $column = 'id', $direction = 'desc')
+    {
+        $direction = strtolower($direction);
+        if( !in_array($direction, [ 'asc', 'desc', 'latest', 'oldest' ], true) ) {
+            throw new InvalidArgumentException('Order direction must be "asc" or "desc".');
+        }
+        $isLatest = in_array($direction, [ 'desc', 'latest' ], true);
+
+        if( isBuilder($query) ) {
+            /** @var \Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Relations\Relation $query */
+            return $query->orderBy($column, $direction);
+        }
+
+        if( is_array($query) ) {
+            $query = toCollect($query);
+        }
+
+        if( is_collection($query) ) {
+            /** @var \Illuminate\Support\Collection $query */
+            return $query->sortBy(fn($v) => $v->$column, SORT_REGULAR, $isLatest);
+        }
+
+        return $query;
+    }
+}

@@ -2,9 +2,7 @@
 
 namespace App\Http\Resources\Api\Abstracts;
 
-use Illuminate\Http\Resources\Json\JsonResource;
-
-abstract class DataByProjectBTableResource extends JsonResource
+abstract class DataByProjectBTableResource extends AbstractJsonResource
 {
 
     /**

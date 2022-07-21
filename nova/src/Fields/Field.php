@@ -199,6 +199,8 @@ abstract class Field extends FieldElement implements JsonSerializable, Resolvabl
                 $this->name = (string) $model::trans($this->name);
             }
         }
+
+        $this->withMeta([ 'extraAttributes' => [ 'field-attribute' => $this->attribute ] ]);
     }
 
     /**

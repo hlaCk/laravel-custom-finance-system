@@ -511,7 +511,7 @@ if ( !function_exists('isModel') ) {
     function isModel($object)
     {
         try {
-            return ($object instanceof Model) || is_a($object, Model::class);
+            return ($object instanceof Model) || is_a($object, Model::class) || is_subclass_of($object, Model::class);
         } catch (Exception $exception) {
 
         }

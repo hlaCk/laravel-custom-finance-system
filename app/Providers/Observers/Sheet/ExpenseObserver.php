@@ -18,7 +18,7 @@ class ExpenseObserver
     public function saving(Expense $expense)
     {
         if( !$expense->entry_category_id || !EntryCategory::isHasContractor($expense->entry_category_id) ) {
-            $expense->contractor_id = null;
+//            $expense->contractor_id = null;
         }
     }
 }

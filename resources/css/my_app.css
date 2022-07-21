@@ -1,7 +1,25 @@
 .z--1 {
     z-index: -1 !important;
 }
+
 .content-box {
-    overflow: scroll;
+    overflow: auto;
     height: calc(100vh - 60px);
+}
+
+.content:not(.content-box) {
+    overflow: hidden !important;
+}
+
+.toggle-sidebar-hidden .w-sidebar {
+    display: none !important;
+    position: fixed;
+    padding-top: 5.5rem !important;
+    z-index: 1000;
+    height: 100%;
+    overflow: auto;
+}
+
+.toggle-sidebar-hidden .content:not(.content-box) {
+    max-width: none !important;
 }

@@ -89,7 +89,7 @@ class Contractor extends Model implements IBooleanStatus
                                     'unit',
                                     'quantity',
                                     'price',
-//                                    'total',
+                                    //                                    'total',
                                     'deleted_at',
                                 ])
                     ->withTimestamps();
@@ -98,5 +98,42 @@ class Contractor extends Model implements IBooleanStatus
     public function getContractorSpecialityNameAttribute()
     {
         return ($contractor_speciality = $this->contractor_speciality) ? $contractor_speciality->name : "";
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $builder
+     * @param bool|\Closure|string                  $latest
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|Builder
+     */
+    public function scopeLatestActive(Builder $builder, $latest = true)
+    {
+        $latest = is_bool($latest = value($latest)) ? iif($latest === true, 'desc', 'asc') : $latest;
+        return $builder
+            ->orderBy($builder->getModel()->getQualifiedKeyName(), $latest)
+            ->onlyActive();
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder                                         $builder
+     * @param int|int[]|\App\Models\Info\Project\Project|\App\Models\Info\Project\Project[] $project
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|Builder
+     */
+    public function scopeByProject(Builder $builder, $project)
+    {
+        $projects = toCollectWithModel($project)
+            ->map(fn($p) => isModel($p) ? $p->id : $p)
+            ->filter()
+            ->toArray();
+
+        if( $projects ) {
+            return $builder->whereHas(
+                'projects',
+                fn(Builder $q) => $q->whereIn(Project::make()->getQualifiedKeyName(), $projects)
+            );
+        }
+
+        return $builder;
     }
 }

@@ -16,6 +16,7 @@
         "epartment/nova-dependency-container": "*",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "info/contractor-belongs-to-project": "*",
         "laravel/framework": "^8.54",
         "laravel/helpers": "^1.4",
         "laravel/nova": "*",
@@ -174,6 +175,10 @@
         "16": {
             "type": "path",
             "url": "./Packages/nova-dependency-container"
+        },
+        "17": {
+            "type": "path",
+            "url": "./nova-components/ContractorBelongsToProject"
         }
     }
 }

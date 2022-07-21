@@ -5,6 +5,7 @@ namespace App\Models\Sheet;
 use App\Interfaces\Sheet\IExpense;
 use App\Models\Abstracts\Model;
 use App\Models\Info\Contractor\Contractor;
+use App\Models\Info\Contractor\ContractorProject;
 use App\Models\Info\EntryCategory;
 use App\Models\Info\Project\Project;
 use Illuminate\Database\Eloquent\Builder;
@@ -87,6 +88,43 @@ class Expense extends Model
     public function contractor()
     {
         return $this->belongsTo(Contractor::class);
+    }
+
+    public function contractors()
+    {
+        $p=$this->project()
+             ->with(['contractors'=>fn($q)=>$q->select(Contractor::make()->getQualifiedKeyName())])
+             ->firstOrFail(Project::make()->getQualifiedKeyName())
+             ->getRelation('contractors')
+             ->pluck('id')
+        ->toArray();
+
+        return $this->contractor()->orWhereIn(Contractor::make()->getQualifiedKeyName(), $p);
+    }
+
+    public function contractor_for_project()
+    {
+        $expense = $this->id ? $this : getNovaRequest()->findModelOrFail();
+dd(
+    $this->contractors
+);
+dd(
+    $this->project()
+            ->with(['contractors'=>fn($q)=>$q->select(Contractor::make()->getQualifiedKeyName())])
+            ->firstOrFail(Project::make()->getQualifiedKeyName())
+            ->getRelation('contractors')
+            ->pluck('id')
+);
+//        $result = $this->contractor()->getBaseQuery()->onlyActive()
+//                                                 ->byProject($expense->project_id)
+//                                                 ->with(['projects'=>fn($q)=>$q->byExpense($expense->id)])
+//        ;
+//        dd($result->get('sdf'));
+//        return $result;
+        /** @var Builder $result */
+        $result = Contractor::onlyActive()->byProject($expense->project_id)->with('projects.expenses');
+        dd($result->setModel($this->contractor()->getModel())->get());
+        return Contractor::onlyActive()->byProject($expense->project_id)->with('projects.expenses');
     }
 
     public function getEntryCategoryNameAttribute()

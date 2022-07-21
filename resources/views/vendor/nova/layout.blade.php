@@ -47,7 +47,7 @@
         <div class="flex-none pt-header min-h-screen w-sidebar bg-grad-sidebar side_navigation_menu_container">
             <a href="{{ \Laravel\Nova\Nova::path() }}">
                 <div
-                    class="menu-logo-conntainer absolute pin-t pin-l pin-r bg-logo flex items-center w-sidebar h-header px-6 text-white">
+                    class="overflow-hidden z-10 menu-logo-conntainer absolute pin-t pin-l pin-r bg-logo flex items-center w-sidebar h-header px-6 text-white">
                     @include('nova::partials.logo')
                 </div>
             </a>
@@ -82,10 +82,10 @@
 
             <nova-quick-search dusk="nova-quick-search-component"></nova-quick-search>
 
-            <div data-testid="content" class="px-view py-view mx-auto content-box">
-                @yield('content')
+            <div data-testid="content" class="px-view py-view mx-auto content-box flipped-content-box">
+                    @yield('content')
 
-                @include('nova::partials.footer')
+                    @include('nova::partials.footer')
             </div>
         </div>
     </div>

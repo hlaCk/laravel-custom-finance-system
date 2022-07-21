@@ -9,4 +9,7 @@
     <customRepositories />
     <composerUpdateOptions />
   </component>
+  <component name="JavaScriptSettings">
+    <option name="languageLevel" value="FLOW" />
+  </component>
 </project>
