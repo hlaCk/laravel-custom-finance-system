@@ -376,7 +376,7 @@ if( !function_exists('isRequestRelationshipTypeHasMany') ) {
     }
 }
 
-if( !function_exists('iisViaRelationship') ) {
+if( !function_exists('isViaRelationship') ) {
     /**
      * determines if the request via relationship
      *
